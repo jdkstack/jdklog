@@ -31,7 +31,7 @@
     <developer>
       <id>jdklog</id>
       <name>Joe</name>
-      <email>sanshiwu.com@gmail.com</email>
+      <email>jdkstack@gmail.com</email>
     </developer>
   </developers>
   <modules>
@@ -40,9 +40,9 @@
     <module>jdklog-examples</module>
   </modules>
   <scm>
-    <connection>scm:git:git@github.com:sanshiwu/jdklog.git</connection>
-    <developerConnection>scm:git:git@github.com:sanshiwu/jdklog.git</developerConnection>
-    <url>git@github.com:sanshiwu/jdklog.git</url>
+    <connection>scm:git:git@github.com:jdkstack/jdklog.git</connection>
+    <developerConnection>scm:git:git@github.com:jdkstack/jdklog.git</developerConnection>
+    <url>git@github.com:jdkstack/jdklog.git</url>
     <tag>jdklog-11.0.11</tag>
   </scm>
   <properties>
