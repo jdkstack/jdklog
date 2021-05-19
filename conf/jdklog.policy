@@ -1,0 +1,96 @@
+// 安全管理器的意义是,让java代码只能在某个目录下有权限操作,目录之外的任何目录禁止操作,比如删除文件,写文件等.
+
+//以下是非生产环境参考配置开始.
+grant codeBase "file:${java.home}/lib/-" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:${java.home}/jre/lib/ext/-" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:${java.home}/../lib/-" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:${java.home}/lib/ext/-" {
+        permission java.security.AllPermission;
+};
+
+// 如果在IDEA编辑器下需要配置.
+grant {
+         // IDEA编辑器执行运行需要,非必须,有可见的异常抛出不影响程序执行(全路径).
+         //permission java.io.FilePermission "breakgen64.dll", "read";
+         // IDEA编辑器调试运行需要,非必须,有可见的异常抛出不影响程序执行(全路径).
+         //permission java.io.FilePermission "debugger-agent-storage.jar", "read";
+         // IDEA编辑器调试运行需要,必须,有可见的异常抛出导致程序终止.
+         permission java.util.PropertyPermission "intellij.debug.agent","read,write";
+};
+
+// 正常情况,需要控制哪些目录,哪些代码,有权限.(比如只能在程序的安装目录下拥有权限,除此之外不应该赋予任何的权限).
+// 对某目录下以及子路目下的代码赋予权限,其他目录无任何权限.
+grant codeBase "file:${jdklog.home}${/}-" {
+        //属性全限需要赋值给入口的程序.
+        permission java.util.PropertyPermission "*", "read";
+        //根目录下的文件和文件夹的读取全限赋给所有根目录下代码.
+        permission java.io.FilePermission "${jdklog.home}${/}-", "read";
+};
+
+//单独为某个代码块赋值全限.
+grant codeBase "file:${jdklog.home}${/}-" {
+        // 为日志目录配置`write`全限.
+        permission java.io.FilePermission "logs", "write";
+        permission java.io.FilePermission "logs1", "write";
+        permission java.io.FilePermission "logs2", "write";
+        permission java.io.FilePermission "logs5", "write";
+        permission java.io.FilePermission "logs${/}*", "write";
+        permission java.io.FilePermission "logs1${/}*", "write";
+        permission java.io.FilePermission "logs2${/}*", "write";
+        permission java.io.FilePermission "logs5${/}*", "write";
+        // 配置classLoader设置和获取全限.
+        permission java.lang.RuntimePermission "setContextClassLoader";
+        permission java.lang.RuntimePermission "getClassLoader";
+};
+//以上是非生产环境参考配置结束.
+
+//以下是生产环境参考配置开始.
+//grant codeBase "file:${java.home}/lib/-" {
+//        permission java.security.AllPermission;
+//};
+
+//grant codeBase "file:${java.home}/jre/lib/ext/-" {
+//        permission java.security.AllPermission;
+//};
+
+//grant codeBase "file:${java.home}/../lib/-" {
+//        permission java.security.AllPermission;
+//};
+
+//grant codeBase "file:${java.home}/lib/ext/-" {
+//        permission java.security.AllPermission;
+//};
+
+// 给根目录下的所有代码赋全限.
+//grant codeBase "file:${jdklog.home}${/}-" {
+        //属性全限需要赋值给入口的程序.
+//        permission java.util.PropertyPermission "*", "read";
+        //根目录下的文件和文件夹的读取全限赋给所有根目录下代码.
+//        permission java.io.FilePermission  "${jdklog.home}${/}-", "read";
+//};
+
+//单独为某个代码块赋值全限.
+//grant codeBase "file:${jdklog.home}${/}lib/jdklog-core-11.0.11.jar" {
+//        为日志目录配置写全限.
+//        permission java.io.FilePermission "logs", "write";
+//        permission java.io.FilePermission "logs1", "write";
+//        permission java.io.FilePermission "logs2", "write";
+//        permission java.io.FilePermission "logs5", "write";
+//        permission java.io.FilePermission "logs${/}*", "write";
+//        permission java.io.FilePermission "logs1${/}*", "write";
+//        permission java.io.FilePermission "logs2${/}*", "write";
+//        permission java.io.FilePermission "logs5${/}*", "write";
+//        配置classLoader设置和获取全限.
+//        permission java.lang.RuntimePermission "setContextClassLoader";
+//        permission java.lang.RuntimePermission "getClassLoader";
+//};
+//以上是生产环境参考配置结束.
