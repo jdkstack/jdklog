@@ -32,7 +32,7 @@ public final class ClassLoadingUtils {
    * <p>java:S1452:返回值最好不要使用通配符,因为jdk底层方法使用了?通配符.此处忽略处理.
    *
    * @param className .
-   * @return Constructor<?>
+   * @return Constructor
    * @author admin
    */
   @SuppressWarnings("java:S1452")
@@ -54,7 +54,7 @@ public final class ClassLoadingUtils {
    * <p>java:S1452:返回值最好不要使用通配符,因为jdk底层方法使用了?通配符.此处忽略处理.
    *
    * @param className .
-   * @return Constructor<?>
+   * @return Constructor
    * @author admin
    */
   @SuppressWarnings("java:S1452")

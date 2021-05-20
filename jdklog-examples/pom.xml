@@ -13,8 +13,25 @@
     <dependency>
       <artifactId>jdklog-core</artifactId>
       <groupId>org.jdklog</groupId>
-      <scope>compile</scope>
       <version>11.0.11</version>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <!-- 覆盖父类的jar打包,并增加自动模块名称,导入依赖包,解决Unable to derive module descriptor for.-->
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>org.jdklog.logging.core</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+        <!-- https://maven.apache.org/plugins/maven-jar-plugin/examples/include-exclude.html-->
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.2.0</version>
+      </plugin>
+    </plugins>
+  </build>
 </project>

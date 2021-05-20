@@ -21,6 +21,7 @@ public class GzipOutputStreamByLevel extends GZIPOutputStream {
    * @param out .
    * @param bufSize .
    * @param level .
+   * @throws IOException IOException.
    * @author admin
    */
   public GzipOutputStreamByLevel(final OutputStream out, final int bufSize, final int level)
