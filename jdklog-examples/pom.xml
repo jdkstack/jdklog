@@ -6,14 +6,14 @@
   <parent>
     <artifactId>jdklog</artifactId>
     <groupId>org.jdklog</groupId>
-    <version>11.0.6</version>
+    <version>11.0.11</version>
   </parent>
   <artifactId>jdklog-examples</artifactId>
   <dependencies>
     <dependency>
       <artifactId>jdklog-core</artifactId>
       <groupId>org.jdklog</groupId>
-      <version>11.0.6</version>
+      <version>11.0.11</version>
     </dependency>
   </dependencies>
   <build>
@@ -24,7 +24,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>org.jdklog.logging.core</Automatic-Module-Name>
+              <Automatic-Module-Name>org.jdklog.logging.examples</Automatic-Module-Name>
             </manifestEntries>
           </archive>
         </configuration>

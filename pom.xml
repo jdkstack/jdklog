@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jdklog</groupId>
   <artifactId>jdklog</artifactId>
-  <version>11.0.6</version>
+  <version>11.0.11</version>
   <packaging>pom</packaging>
   <name>jdklog</name>
   <description>
@@ -43,7 +43,7 @@
     <connection>scm:git:git@github.com:jdkstack/jdklog.git</connection>
     <developerConnection>scm:git:git@github.com:jdkstack/jdklog.git</developerConnection>
     <url>git@github.com:jdkstack/jdklog.git</url>
-    <tag>jdklog-11.0.6</tag>
+    <tag>jdklog-11.0.11</tag>
   </scm>
   <properties>
     <!--  1:统一字符集编码UTF-8 -->
