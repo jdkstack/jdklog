@@ -3,8 +3,8 @@ package org.jdklog.logging.core.manager;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.jdklog.logging.api.handler.Handler;
@@ -25,7 +25,7 @@ public abstract class AbstractLogManager implements LogManager {
   private static final LogManager LOGMANAGER;
 
   /** 自定义类加载器,目前只支持系统类加载器,不支持自定义类加载器. */
-  private static final Map<ClassLoader, LoaderLogInfo> CLASSLOADERLOGGERS = new HashMap<>(10);
+  private static final Map<ClassLoader, LoaderLogInfo> CLASSLOADERLOGGERS = new ConcurrentHashMap<>(10);
 
   static {
     final String logManagerName =

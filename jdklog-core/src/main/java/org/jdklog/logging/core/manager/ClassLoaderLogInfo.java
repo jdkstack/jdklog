@@ -3,7 +3,6 @@ package org.jdklog.logging.core.manager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +25,7 @@ public class ClassLoaderLogInfo implements LoaderLogInfo {
   /** 保存系统加载时所有的Logger. */
   private final Map<String, Logger> loggers = new ConcurrentHashMap<>(1000);
   /** 保存系统加载时所有的Handler,包括公用的以及自定义的. */
-  private final Map<String, Handler> handlers = new HashMap<>(32);
+  private final Map<String, Handler> handlers = new ConcurrentHashMap<>(32);
   /** 保存系统加载时配置信息. */
   private final Properties props = new Properties();
 

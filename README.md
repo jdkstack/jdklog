@@ -4,3 +4,7 @@
 ![License](https://img.shields.io/badge/license-GPL2.0-000000.svg)
 
 Online document: https://www.jdklog.org
+
+VM OPTIONS:
+-D"org.jdklog.logging.core.manager"="org.jdklog.logging.core.manager.StudyJuliLogManager"
+-D"org.jdklog.logging.core.config.file"="./conf/jdklog.properties"

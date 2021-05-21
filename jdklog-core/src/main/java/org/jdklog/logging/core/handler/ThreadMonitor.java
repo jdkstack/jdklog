@@ -1,7 +1,7 @@
 package org.jdklog.logging.core.handler;
 
 import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +25,7 @@ public class ThreadMonitor implements Monitor {
   /** . */
   private static final Logger LOGGER = Logger.getLogger(ThreadMonitor.class.toString());
   /** 保存所有的线程,key是线程名字,value是线程. */
-  private final Map<String, Thread> threads = new WeakHashMap<>(32);
+  private final Map<String, Thread> threads = new ConcurrentHashMap<>(32);
   /** 最大阻塞时间. */
   private final long blockTime;
   /** 调用任务,优雅关闭时,调用对象shutdown方法. */
@@ -111,19 +111,18 @@ public class ThreadMonitor implements Monitor {
       final boolean isExecStart = 0 == execStart;
       final boolean isMaxExecTime = duration < maxExecTime;
       if (isExecStart || isMaxExecTime) {
-        LOGGER.logp(Level.SEVERE, name, "execute0", "线程运行正常.");
+        return;
+      }
+      if (duration <= this.blockTime) {
+        // 如果小于等于阻塞时间,打印线程异常warn信息.
+        LOGGER.logp(Level.SEVERE, name, "execute1", "线程{0}", studyThread);
+        LOGGER.logp(Level.SEVERE, name, "execute2", "锁定{0}毫秒", duration);
+        LOGGER.logp(Level.SEVERE, name, "execute3", "限制{0}毫秒", maxExecTime);
       } else {
-        if (duration <= this.blockTime) {
-          // 如果小于等于阻塞时间,打印线程异常warn信息.
-          LOGGER.logp(Level.SEVERE, name, "execute1", "线程{0}", studyThread);
-          LOGGER.logp(Level.SEVERE, name, "execute2", "锁定{0}毫秒", duration);
-          LOGGER.logp(Level.SEVERE, name, "execute3", "限制{0}毫秒", maxExecTime);
-        } else {
-          // 如果大于阻塞时间,打印线程可能的异常信息.
-          final StackTraceElement[] stackTraces = studyThread.getStackTrace();
-          for (final StackTraceElement stackTrace : stackTraces) {
-            LOGGER.logp(Level.SEVERE, name, "execute4", "线程运行异常?堆栈信息:{0}", stackTrace);
-          }
+        // 如果大于阻塞时间,打印线程可能的异常信息.
+        final StackTraceElement[] stackTraces = studyThread.getStackTrace();
+        for (final StackTraceElement stackTrace : stackTraces) {
+          LOGGER.logp(Level.SEVERE, name, "execute4", "线程运行异常?堆栈信息:{0}", stackTrace);
         }
       }
     }

@@ -6,14 +6,14 @@
   <parent>
     <artifactId>jdklog</artifactId>
     <groupId>org.jdklog</groupId>
-    <version>11.0.6</version>
+    <version>11</version>
   </parent>
   <artifactId>jdklog-core</artifactId>
   <dependencies>
     <dependency>
       <groupId>org.jdklog</groupId>
       <artifactId>jdklog-api</artifactId>
-      <version>11.0.6</version>
+      <version>11</version>
     </dependency>
   </dependencies>
 </project>
