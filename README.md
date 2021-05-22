@@ -6,5 +6,7 @@
 Online document: https://www.jdklog.org
 
 VM OPTIONS:
--D"org.jdklog.logging.core.manager"="org.jdklog.logging.core.manager.StudyJuliLogManager"
--D"org.jdklog.logging.core.config.file"="./conf/jdklog.properties"
+
+-D"org.jdkstack.jdklog.logging.core.manager"="org.jdkstack.jdklog.logging.core.manager.StudyJuliLogManager"
+
+-D"org.jdkstack.jdklog.logging.core.config.file"="./conf/jdklog.properties"

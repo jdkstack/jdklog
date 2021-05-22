@@ -5,13 +5,13 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>jdklog</artifactId>
-    <groupId>org.jdklog</groupId>
+    <groupId>org.jdkstack</groupId>
     <version>11.0.11</version>
   </parent>
   <artifactId>jdklog-core</artifactId>
   <dependencies>
     <dependency>
-      <groupId>org.jdklog</groupId>
+      <groupId>org.jdkstack</groupId>
       <artifactId>jdklog-api</artifactId>
       <version>11.0.11</version>
     </dependency>
@@ -24,7 +24,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>org.jdklog.logging.core</Automatic-Module-Name>
+              <Automatic-Module-Name>org.jdkstack.jdklog.logging.core</Automatic-Module-Name>
             </manifestEntries>
           </archive>
         </configuration>
