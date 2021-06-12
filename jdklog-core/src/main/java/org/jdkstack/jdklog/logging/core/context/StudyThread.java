@@ -3,6 +3,7 @@ package org.jdkstack.jdklog.logging.core.context;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdklog.logging.api.context.StudyContext;
+import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 
 /**
  * 自定义线程,便于系统内线程的监控.
