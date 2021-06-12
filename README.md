@@ -3,11 +3,10 @@
 ![Maven](https://raster.shields.io/badge/Maven-3.6.3-red.svg)
 ![License](https://img.shields.io/badge/license-GPL2.0-000000.svg)
 
-![google-java-format](https://img.shields.io/badge/google-java-format-red.svg)
+![google-java-format](https://img.shields.io/badge/google-javaformat-red.svg)
 ![tool-checkstyle](https://img.shields.io/badge/(google/sun)-checkstyle-orange.svg)
-
 ![editor-code-style](https://img.shields.io/badge/(google/sun)-codestyle-yellow.svg)
-![editor-inspections](https://img.shields.io/badge/nspections-000000.svg)
+![editor-inspections](https://img.shields.io/badge/idea-inspections-red.svg)
 
 Online document: https://www.jdklog.org
 
