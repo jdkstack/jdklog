@@ -1,6 +1,6 @@
 package org.jdkstack.jdklog.logging.core.queue;
 
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 
@@ -13,9 +13,9 @@ import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
  * @author admin
  */
 public abstract class AbstractQueue<T> implements StudyQueue<T> {
-  /** 双端链表阻塞队列,可以头尾操作. */
-  private final LinkedBlockingDeque<T> queue;
-  /** 队列初始容量默认5000. */
+  /** 有界数组阻塞队列,为了避免垃圾回收,采用数组而非链表Queue/Dqueue,数组对处理器的缓存机制更加友好. */
+  private final ArrayBlockingQueue<T> queue;
+  /** 队列初始容量默认2000. */
   private int capacity = Constants.CAPACITY;
 
   /**
@@ -26,7 +26,7 @@ public abstract class AbstractQueue<T> implements StudyQueue<T> {
    * @author admin
    */
   protected AbstractQueue() {
-    this.queue = new LinkedBlockingDeque<>(this.capacity);
+    this.queue = new ArrayBlockingQueue<>(this.capacity);
   }
 
   /**
@@ -39,7 +39,7 @@ public abstract class AbstractQueue<T> implements StudyQueue<T> {
    */
   protected AbstractQueue(final int capacity) {
     this.capacity = capacity;
-    this.queue = new LinkedBlockingDeque<>(capacity);
+    this.queue = new ArrayBlockingQueue<>(capacity);
   }
 
   /**
