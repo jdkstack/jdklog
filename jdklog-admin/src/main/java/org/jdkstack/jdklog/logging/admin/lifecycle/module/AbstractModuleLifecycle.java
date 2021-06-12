@@ -2,6 +2,7 @@ package org.jdkstack.jdklog.logging.admin.lifecycle.module;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.jdkstack.jdklog.logging.admin.lifecycle.Lifecycle;
 import org.jdkstack.jdklog.logging.admin.lifecycle.LifecycleException;
 import org.jdkstack.jdklog.logging.admin.lifecycle.LifecycleListener;
 import org.jdkstack.jdklog.logging.admin.lifecycle.LifecycleState;

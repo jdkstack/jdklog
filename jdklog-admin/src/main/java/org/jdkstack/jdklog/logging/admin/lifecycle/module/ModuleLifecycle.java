@@ -1,6 +1,5 @@
 package org.jdkstack.jdklog.logging.admin.lifecycle.module;
 
-
 import org.jdkstack.jdklog.logging.admin.lifecycle.Lifecycle;
 import org.jdkstack.jdklog.logging.admin.lifecycle.LifecycleListener;
 

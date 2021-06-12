@@ -1,6 +1,5 @@
 package org.jdkstack.jdklog.logging.admin.plugin.rest;
 
-
 import org.jdkstack.jdklog.logging.admin.plugin.AbstractPlugin;
 
 /**

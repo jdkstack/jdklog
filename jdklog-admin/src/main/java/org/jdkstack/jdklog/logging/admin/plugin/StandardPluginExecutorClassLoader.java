@@ -16,7 +16,8 @@ public class StandardPluginExecutorClassLoader extends URLClassLoader {
    * @param urls url
    * @param parent 父
    */
-  public StandardPluginExecutorClassLoader(final String classLoaderName, final URL[] urls, final ClassLoader parent) {
+  public StandardPluginExecutorClassLoader(
+      final String classLoaderName, final URL[] urls, final ClassLoader parent) {
     super(classLoaderName, urls, parent);
   }
 }

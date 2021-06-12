@@ -161,7 +161,12 @@ public final class RestServiceModuleLifecycle extends AbstractRestServiceModuleL
     return restController.singleton();
   }
 
-  /** 全限定名获取Class类,用来反射获取类信息 */
+  /**
+   * 检查元数据(AnnotatedElement 代替 class类) 用于进行检查操作
+   *
+   * @param fullyQualifiedName .
+   * @return Class .
+   */
   public Class<?> classForName(final String fullyQualifiedName) {
     Class<?> classObj = null;
     try {
@@ -172,10 +177,20 @@ public final class RestServiceModuleLifecycle extends AbstractRestServiceModuleL
     return classObj;
   }
 
+  /**
+   * .
+   *
+   * @return Map .
+   */
   public Map<String, String> getFullyQualifiedNames() {
     return this.fullyQualifiedNames;
   }
 
+  /**
+   * .
+   *
+   * @return Map .
+   */
   public Map<String, Class<?>> getFullyQualifiedClasses() {
     return this.fullyQualifiedClasses;
   }

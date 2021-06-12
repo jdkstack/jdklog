@@ -63,7 +63,7 @@ public abstract class AbstractRestServiceModuleLifecycle extends AbstractModuleL
         } else if ("arg1".equals(name)) {
           pmd.setParameterName("response");
         } else {
-         //
+          //
         }
       }
       if (annotations.length != 0) {
@@ -171,32 +171,32 @@ public abstract class AbstractRestServiceModuleLifecycle extends AbstractModuleL
    *
    * @param method 方法
    * @param annotationClass 注释类
-   * @return {@link String}
+   * @return String .
    */
   public abstract String getMethodPath(Method method, Class<? extends Annotation> annotationClass);
 
   /**
-   * 元数据映射得到控制器
+   * .
    *
-   * @return {@link Map<String, ControllerMetaData>}
+   * @return Map .
    */
   public Map<String, ControllerMetaData> getControllerMetaDataMap() {
     return this.controllerMetaDataMap;
   }
 
   /**
-   * 得到充分的路径
+   * .
    *
-   * @return {@link Map<String, MethodMetaData>}
+   * @return Map .
    */
   public Map<String, MethodMetaData> getFullyPaths() {
     return this.fullyPaths;
   }
 
   /**
-   * 得到完全路径参数
+   * .
    *
-   * @return {@link Map<String, List<ParameterMetaData>>}
+   * @return Map .
    */
   public Map<String, List<ParameterMetaData>> getFullyPathsParams() {
     return this.fullyPathsParams;

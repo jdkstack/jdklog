@@ -29,7 +29,8 @@ public class ResourceBundleManager {
 
   public static ResourceBundleManager getInstance(final Class<?> clazz) {
     final String packageName = clazz.getPackage().getName();
-    final Map<Locale, ResourceBundle> localeResourceBundleMap = ResourceBundleManager.resourceBundleManager.get(packageName);
+    final Map<Locale, ResourceBundle> localeResourceBundleMap =
+        ResourceBundleManager.resourceBundleManager.get(packageName);
     if (localeResourceBundleMap == null) {
       final Map<Locale, ResourceBundle> resourceBundles = new HashMap<>();
       final String bundleName = packageName + ".test";
@@ -51,7 +52,8 @@ public class ResourceBundleManager {
   public String getString(final Class<?> clazz, final Locale locale, final String key) {
     final String packageName = clazz.getPackage().getName();
     final Locale defaultLocale = Locale.getDefault();
-    final Map<Locale, ResourceBundle> localeResourceBundleMap = ResourceBundleManager.resourceBundleManager.get(packageName);
+    final Map<Locale, ResourceBundle> localeResourceBundleMap =
+        ResourceBundleManager.resourceBundleManager.get(packageName);
     ResourceBundle resourceBundle = null;
     if (locale == null) {
       resourceBundle = localeResourceBundleMap.get(defaultLocale);
@@ -66,7 +68,8 @@ public class ResourceBundleManager {
     return this.getString(clazz, defaultLocale, key, args);
   }
 
-  public String getString(final Class<?> clazz, final Locale locale, final String key, final Object... args) {
+  public String getString(
+      final Class<?> clazz, final Locale locale, final String key, final Object... args) {
     String value = this.getString(clazz, locale, key);
     if (value != null) {
       final MessageFormat temp = new MessageFormat(value);
