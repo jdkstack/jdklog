@@ -1,7 +1,6 @@
-package org.jdkstack.jdklog.logging.core.context;
+package org.jdkstack.jdklog.logging.api.context;
 
 import java.util.concurrent.TimeUnit;
-import org.jdkstack.jdklog.logging.api.context.StudyContext;
 
 /**
  * This is a class description.

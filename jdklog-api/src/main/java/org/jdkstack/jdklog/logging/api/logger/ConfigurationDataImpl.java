@@ -1,4 +1,4 @@
-package org.jdkstack.jdklog.logging.core.logger;
+package org.jdkstack.jdklog.logging.api.logger;
 
 import java.util.List;
 import org.jdkstack.jdklog.logging.api.filter.Filter;

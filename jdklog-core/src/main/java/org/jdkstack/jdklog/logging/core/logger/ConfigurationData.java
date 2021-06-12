@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
+import org.jdkstack.jdklog.logging.api.logger.ConfigurationDataImpl;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;

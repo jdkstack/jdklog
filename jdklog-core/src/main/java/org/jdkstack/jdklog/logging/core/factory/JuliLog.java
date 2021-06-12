@@ -2,6 +2,7 @@ package org.jdkstack.jdklog.logging.core.factory;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
+import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;
@@ -10,7 +11,6 @@ import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.LogRecord;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.spi.Log;
-import org.jdkstack.jdklog.logging.core.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.core.formatter.StudyJuliMessageFormat;
 import org.jdkstack.jdklog.logging.core.manager.JuliLogger;
 import org.jdkstack.jdklog.logging.core.manager.LogManagerUtils;

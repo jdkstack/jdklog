@@ -1,6 +1,7 @@
 package org.jdkstack.jdklog.logging.core.context;
 
 import org.jdkstack.jdklog.logging.api.context.StudyContext;
+import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
 import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 

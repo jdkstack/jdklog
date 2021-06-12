@@ -3,8 +3,8 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <!-- groupId 最少包括3部分,首先是com/org,紧跟着是公司名,然后是产品线(不是具体产品),是一堆产品的总成.-->
-  <!-- 例如com.alipay.sofa,org.springframework.cloud .-->
+  <!-- groupId 最少包括3部分,首先是com/org,紧跟着是公司名,然后是产品线(不是具体产品),是一堆产品的总称.-->
+  <!-- 例如com.alipay.sofa,org.springframework.cloud.-->
   <!-- 因为涉及到域名所属问题,索引groupId需要慎重的考虑,而不是随便命名.-->
   <groupId>org.jdkstack</groupId>
   <artifactId>jdklog</artifactId>
