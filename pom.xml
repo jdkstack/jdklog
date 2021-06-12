@@ -143,7 +143,7 @@
         <configuration>
           <!-- 官方规范地址: https://checkstyle.org/ -->
           <!-- 使用google规范. -->
-          <configLocation>checkstyle/google/google_checks.xml</configLocation>
+          <configLocation>style/checkstyle/google/google_checks.xml</configLocation>
           <!-- 使用sun规范. -->
           <!--<configLocation>checkstyle/sun/sun_checks.xml</configLocation>-->
           <encoding>UTF-8</encoding>
@@ -155,7 +155,7 @@
           <!-- 检测结果输出到控制台-->
           <logViolationsToConsole>true</logViolationsToConsole>
           <!-- -->
-          <suppressionsLocation>checkstyle/google/checkstyle-suppressions.xml</suppressionsLocation>
+          <suppressionsLocation>style/checkstyle/google/checkstyle-suppressions.xml</suppressionsLocation>
         </configuration>
         <dependencies>
           <dependency>

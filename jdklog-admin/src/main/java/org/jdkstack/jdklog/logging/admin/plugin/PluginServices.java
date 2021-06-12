@@ -29,7 +29,11 @@ public final class PluginServices {
     // Locale.US, "simpleServerAuthConfig.noModules"));
   }
 
-  /** 获得实例 */
+  /**
+   * .
+   *
+   * @return PluginServices .
+   */
   public static PluginServices getInstance() {
     return PluginServices.instance;
   }
@@ -39,7 +43,11 @@ public final class PluginServices {
     return PluginServices.instance;
   }
 
-  /** 加载所有插件 */
+  /**
+   * .
+   *
+   * @throws LifecycleException .
+   */
   public void loadPlugins() throws LifecycleException {
     try (final DirectoryStream<Path> paths =
         Files.newDirectoryStream(PluginServices.pluginHomeDirectory)) {
@@ -59,7 +67,7 @@ public final class PluginServices {
     }
   }
 
-  public Map<String,PluginServiceLifecycle> getPluginServiceLifecycles() {
+  public Map<String, PluginServiceLifecycle> getPluginServiceLifecycles() {
     return PluginServices.pluginServiceLifecycles;
   }
 }

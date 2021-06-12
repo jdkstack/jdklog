@@ -25,7 +25,11 @@ public class LifecycleService {
   /** 插件服务 */
   private LifecycleService() {}
 
-  /** 获得实例 */
+  /**
+   * .
+   *
+   * @return LifecycleService 生命周期
+   */
   public static LifecycleService getInstance() {
     return LifecycleService.instance;
   }

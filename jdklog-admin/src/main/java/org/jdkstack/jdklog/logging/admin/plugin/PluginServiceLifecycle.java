@@ -98,7 +98,8 @@ public class PluginServiceLifecycle extends AbstractModuleLifecycle implements P
    * @param urlsList url列表
    * @return {@link StandardPluginExecutorClassLoader}
    */
-  private StandardPluginExecutorClassLoader getClassLoader(final String pluginName, final List<URL> urlsList) {
+  private StandardPluginExecutorClassLoader getClassLoader(
+      final String pluginName, final List<URL> urlsList) {
     // 获取自定义的类加载器,加载所有URL格式的jar文件
     final ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
     final URL[] urls = urlsList.toArray(new URL[0]);
@@ -169,7 +170,8 @@ public class PluginServiceLifecycle extends AbstractModuleLifecycle implements P
    */
   private List<URL> jars2Urls(final Path pluginTargetDir) throws IOException {
     final List<URL> urls = new ArrayList<>();
-    try (final DirectoryStream<Path> paths = Files.newDirectoryStream(pluginTargetDir, PluginServiceLifecycle.fileExtension)) {
+    try (final DirectoryStream<Path> paths =
+        Files.newDirectoryStream(pluginTargetDir, PluginServiceLifecycle.fileExtension)) {
       for (final Path jar : paths) {
         urls.add(jar.toRealPath().toUri().toURL());
       }
@@ -197,7 +199,11 @@ public class PluginServiceLifecycle extends AbstractModuleLifecycle implements P
     System.out.println();
   }
 
-  /** 获取正常的插件列表 */
+  /**
+   * .
+   *
+   * @return Map .
+   */
   public Map<String, PluginEntity> getPluginEntitys() {
     return PluginServiceLifecycle.pluginEntitys;
   }

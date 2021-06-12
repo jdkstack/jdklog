@@ -20,7 +20,12 @@ public class PluginMeta {
   private String className;
   private int type;
 
-  public PluginMeta(final String name, final String description, final String version, final String className, final int type) {
+  public PluginMeta(
+      final String name,
+      final String description,
+      final String version,
+      final String className,
+      final int type) {
     this.name = name;
     this.description = description;
     this.version = version;
