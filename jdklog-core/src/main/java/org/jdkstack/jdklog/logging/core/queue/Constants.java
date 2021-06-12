@@ -70,7 +70,7 @@ public final class Constants {
   /** . */
   public static final int LEN_COUNT = 100;
   /** . */
-  public static final int CAPACITY = 5000;
+  public static final int CAPACITY = 2000;
   /** . */
   public static final int LIMIT = 200000;
   /** . */
