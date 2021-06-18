@@ -27,7 +27,7 @@ import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
 /**
  * This is a method description.
  *
- * <p>Another description after blank line.
+ * <p>BufferedWriter.
  *
  * @author admin
  */
