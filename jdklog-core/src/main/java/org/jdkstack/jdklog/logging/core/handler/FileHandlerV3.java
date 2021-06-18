@@ -1,13 +1,14 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -28,11 +29,11 @@ import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
 /**
  * This is a method description.
  *
- * <p>PrintWriter.
+ * <p>FileChannel.
  *
  * @author admin
  */
-public class FileHandler extends AbstractHandler {
+public class FileHandlerV3 extends AbstractHandler {
   /** . */
   private final Runnable consumerRunnable;
   /** . */
@@ -44,13 +45,7 @@ public class FileHandler extends AbstractHandler {
   /** . */
   private String directory;
   /** . */
-  private PrintWriter writer;
-  /** . */
-  private FileOutputStream fileStream;
-  /** . */
-  private BufferedOutputStream bufferedStream;
-  /** . */
-  private OutputStreamWriter streamWriter;
+  private FileChannel writer;
   /** . */
   private File logFilePath;
 
@@ -64,7 +59,7 @@ public class FileHandler extends AbstractHandler {
    *
    * @author admin
    */
-  public FileHandler() {
+  public FileHandlerV3() {
     // 读取日志配置文件,初始化配置.
     this.config();
     // 动态配置队列属性.
@@ -83,7 +78,7 @@ public class FileHandler extends AbstractHandler {
    * @param prefix prefix.
    * @author admin
    */
-  public FileHandler(final String prefix) {
+  public FileHandlerV3(final String prefix) {
     this.prefix = prefix;
     // 读取日志配置文件,初始化配置.
     this.config();
@@ -313,7 +308,7 @@ public class FileHandler extends AbstractHandler {
           if (null != this.writer) {
             // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).
             final String format = this.formatter.format(logRecord);
-            this.writer.write(format);
+            this.writer.write(ByteBuffer.wrap(format.getBytes(StandardCharsets.UTF_8)));
           }
         }
       }
@@ -321,7 +316,7 @@ public class FileHandler extends AbstractHandler {
       final boolean isWriter = null != this.writer;
       if (flag && isWriter) {
         // 刷新一次IO磁盘.
-        this.writer.flush();
+        this.writer.force(true);
       }
     } catch (final Exception e) {
       // ignore Exception.
@@ -333,16 +328,16 @@ public class FileHandler extends AbstractHandler {
   private void open() {
     this.writeLock.lock();
     try {
-      // java:S2093 这个严重问题,暂时无法解决,先忽略sonar的警告.因为文件不能关闭,需要长时间打开.但是sonar检测,需要关闭IO资源.
-      this.fileStream = new FileOutputStream(this.logFilePath, true);
-      // 创建一个buffered流,缓存大小默认8192.
-      this.bufferedStream = new BufferedOutputStream(this.fileStream, Constants.BATCH_BUF_SIZE);
-      // 创建一个输出流,使用UTF-8 编码.
-      this.streamWriter = new OutputStreamWriter(this.bufferedStream, StandardCharsets.UTF_8);
-      // 创建一个PrintWriter,启动自动刷新.
-      this.writer = new PrintWriter(this.streamWriter, true);
+      final Path path = this.logFilePath.toPath();
+      writer =
+          (FileChannel)
+              Files.newByteChannel(
+                  path,
+                  StandardOpenOption.CREATE,
+                  StandardOpenOption.WRITE,
+                  StandardOpenOption.APPEND);
       // 尝试写入一个空"".
-      this.writer.write("");
+      this.writer.write(ByteBuffer.allocate(0));
     } catch (final Exception e) {
       // 如何任何阶段发生了异常,主动关闭所有IO资源.
       this.closeIo();
@@ -362,58 +357,21 @@ public class FileHandler extends AbstractHandler {
   private void closeIo() {
     this.writeLock.lock();
     try {
-      this.fileStreamClose();
-      this.bufferedStreamClose();
-      this.streamWriterClose();
       this.writerClose();
+    } catch (IOException e) {
+      e.printStackTrace();
     } finally {
       this.writeLock.unlock();
     }
   }
 
-  private void writerClose() {
+  private void writerClose() throws IOException {
     // 尝试关闭print writer流.
     if (null != this.writer) {
-      this.writer.write("");
-      this.writer.flush();
+      this.writer.write(ByteBuffer.allocate(0));
+      this.writer.force(true);
       this.writer.close();
       this.writer = null;
-    }
-  }
-
-  private void streamWriterClose() {
-    // 尝试关闭stream writer流.
-    if (null != this.streamWriter) {
-      try {
-        this.streamWriter.flush();
-        this.streamWriter.close();
-      } catch (final IOException e) {
-        throw new StudyJuliRuntimeException(e);
-      }
-    }
-  }
-
-  private void bufferedStreamClose() {
-    // 尝试关闭buff文件流.
-    if (null != this.bufferedStream) {
-      try {
-        this.bufferedStream.flush();
-        this.bufferedStream.close();
-      } catch (final IOException e) {
-        throw new StudyJuliRuntimeException(e);
-      }
-    }
-  }
-
-  private void fileStreamClose() {
-    // 尝试关闭文件流.
-    if (null != this.fileStream) {
-      try {
-        this.fileStream.flush();
-        this.fileStream.close();
-      } catch (final IOException e) {
-        throw new StudyJuliRuntimeException(e);
-      }
     }
   }
 
