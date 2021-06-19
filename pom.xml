@@ -42,6 +42,7 @@
     <module>jdklog-core</module>
     <module>jdklog-examples</module>
     <module>jdklog-admin</module>
+    <module>jdklog-jmh</module>
   </modules>
   <scm>
     <connection>scm:git:git@github.com:jdkstack/jdklog.git</connection>
