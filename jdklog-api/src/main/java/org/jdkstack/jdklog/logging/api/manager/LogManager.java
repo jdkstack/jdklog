@@ -166,8 +166,8 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param classLoader .
-   * @param info .
+   * @param classLoader classLoader.
+   * @param info info.
    * @author admin
    */
   void put(ClassLoader classLoader, LoaderLogInfo info);
@@ -177,8 +177,8 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param logger .
-   * @param loggerName .
+   * @param logger logger.
+   * @param loggerName loggerName.
    * @author admin
    */
   void put(String loggerName, Logger logger);
@@ -188,7 +188,7 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param current .
+   * @param current current.
    * @return LoaderLogInfo .
    * @author admin
    */
@@ -209,7 +209,7 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param loggerName .
+   * @param loggerName loggerName.
    * @return boolean .
    * @author admin
    */
@@ -220,7 +220,7 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param name .
+   * @param name name.
    * @return String .
    * @author admin
    */
@@ -231,7 +231,7 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param name .
+   * @param name name.
    * @return Logger.
    * @author admin
    */
@@ -242,7 +242,7 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param loggerName .
+   * @param loggerName loggerName.
    * @return Handler[] .
    * @author admin
    */

@@ -210,7 +210,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param handler .
+   * @param handler handler.
    * @author admin
    */
   void removeHandler(Handler handler);
@@ -260,7 +260,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param msg .
+   * @param msg msg.
    * @author admin
    */
   void severe(String msg);
@@ -270,7 +270,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param msg .
+   * @param msg msg.
    * @author admin
    */
   void warning(String msg);
@@ -280,7 +280,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param msg .
+   * @param msg msg.
    * @author admin
    */
   void info(String msg);
@@ -290,7 +290,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param msg .
+   * @param msg msg.
    * @author admin
    */
   void config(String msg);
@@ -300,7 +300,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param msg .
+   * @param msg msg.
    * @author admin
    */
   void fine(String msg);
@@ -310,7 +310,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param msg .
+   * @param msg msg.
    * @author admin
    */
   void finer(String msg);
@@ -320,7 +320,7 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param msg .
+   * @param msg msg.
    * @author admin
    */
   void finest(String msg);
