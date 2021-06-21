@@ -67,7 +67,7 @@ jobs:
       #   make bootstrap
       #   make release
       - name: Compile project
-        run: mvn clean compile
+        run: mvn -X -e clean compile
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
