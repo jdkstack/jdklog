@@ -31,7 +31,7 @@
 #7.因为.idea文件夹中也包含.gitignore文件,如果想要保留所有,需要配置!/**/.gitignore.
 !/.gitignore
 #8.保留根目录下的所有README和LICENSE
-!README.md
+!*.md
 !LICENSE.txt
 #9.文件换行符使用LF.
 !.gitattributes
