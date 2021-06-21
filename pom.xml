@@ -55,11 +55,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <!-- 默认直接读取系统参数配置的jdk版本. -->
-    <!--
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <maven.compiler.compilerVersion>11</maven.compiler.compilerVersion>
-    -->
   </properties>
   <dependencyManagement>
     <!--  1:统一管理依赖版本 -->
@@ -88,12 +86,12 @@
             <arg>--add-exports=java.base/sun.util.logging=ALL-UNNAMED</arg>
             <arg>--add-exports=java.base/sun.util.logging=ALL-UNNAMED</arg>
           </compilerArgs>
-          <compilerVersion>${java.version}</compilerVersion>
+          <compilerVersion>${maven.compiler.compilerVersion}</compilerVersion>
           <encoding>UTF-8</encoding>
-          <source>${java.version}</source>
+          <source>${maven.compiler.source}</source>
           <!-- 如果我们的代码想要访问JDK模块化的代码,可以使用下面的选项.-->
           <!-- ALL-UNNAMED未命名的意思是开放给所有的包访问,如果想固定给某个包的话,填写对应的包名即可.-->
-          <target>${java.version}</target>
+          <target>${maven.compiler.target}</target>
         </configuration>
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.8.1</version>

@@ -32,6 +32,7 @@
 !/.gitignore
 #8.保留根目录下的所有README和LICENSE
 !*.md
+!*.yml
 !LICENSE.txt
 #9.文件换行符使用LF.
 !.gitattributes
