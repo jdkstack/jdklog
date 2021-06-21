@@ -234,6 +234,11 @@
             <executions>
               <execution>
                 <phase>package</phase>
+                <!--
+                maven package:打包到target目录.
+                maven install:打包到本地仓库.
+                maven deploy:打包上传到远程仓库.
+                -->
                 <goals>
                   <goal>jar-no-fork</goal>
                 </goals>

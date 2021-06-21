@@ -1,1 +1,1 @@
-https://github.com/github/opensource.guide
+<https://github.com/github/opensource.guide>
