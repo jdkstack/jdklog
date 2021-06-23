@@ -15,3 +15,9 @@
 ![(api/core)-lib](https://img.shields.io/badge/(api/core)-lib-red.svg)
 
 Online document: <https://www.jdklog.org>
+
+A lightweight, high performance, open source, application layer log service framework.
+Although the performance is lower than log4j2, but the advantage is  no dependency lib, only need openjdk.
+
+After jmh benchmark,the performance of log4j2 is higher than that of jdklog, but less than an order of magnitude(Even lower).
+Log4j2 performance is poor when output location information. And jdklog has its own advantages.
