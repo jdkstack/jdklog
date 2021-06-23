@@ -88,9 +88,15 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <excludes>
+                    <!-- 打uber包时,可能会有文件冲突,这些文件来自不同的jar.排除掉冲突的文件,但是具体排除谁,需要验证.-->
+                    <exclude>module-info.class</exclude>
                     <exclude>META-INF/*.SF</exclude>
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
+                    <exclude>META-INF/DEPENDENCIES</exclude>
+                    <exclude>META-INF/LICENSE</exclude>
+                    <exclude>META-INF/NOTICE</exclude>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
                   </excludes>
                 </filter>
               </filters>
