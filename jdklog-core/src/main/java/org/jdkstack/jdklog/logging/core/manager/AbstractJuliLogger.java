@@ -13,9 +13,8 @@ import org.jdkstack.jdklog.logging.api.metainfo.LogRecord;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.core.logger.ConfigurationData;
 
-
 /**
- * This is a class description.
+ * 提供所有日志的方法.
  *
  * <p>Another description after blank line.
  *

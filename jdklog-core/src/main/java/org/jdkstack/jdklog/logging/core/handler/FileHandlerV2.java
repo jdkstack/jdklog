@@ -141,7 +141,7 @@ public class FileHandlerV2 extends AbstractHandler {
   }
 
   /**
-   * JDK会调用这个方法.
+   * 调用日志log方法时,最后会调用此方法,将日志发送到队列中.
    *
    * <p>Another description after blank line.
    *
@@ -169,9 +169,9 @@ public class FileHandlerV2 extends AbstractHandler {
     }
     // 启动一个线程,开始生产日志.(考虑将LogRecord预先格式化成字符串消息,LogRecord对象生命周期结束.)
     LOG_PRODUCER_CONTEXT.executeInExecutorService(logRecord, this.producerWorker);
-    // 如果队列容量大于等于5000,通知消费者消费.如果此时生产者不再生产数据,则队列中会有<5000条数据永久存在,因此需要启动一个守护者线程GUARDIAN处理.
+    // 如果队列容量大于等于100,通知消费者消费.如果此时生产者不再生产数据,则队列中会有<100条数据永久存在,因此需要启动一个守护者线程GUARDIAN处理.
     final int size = this.fileQueue.size();
-    // 当前处理器的队列中日志消息达到5000条,处理一次.
+    // 当前处理器的队列中日志消息达到100条,处理一次.
     if (Constants.BATCH_SIZE <= size) {
       // 提交一个任务,用于通知消费者线程去消费队列数据.
       LOG_PRODUCER_NOTICE_CONSUMER_CONTEXT.executeInExecutorService(
@@ -313,7 +313,7 @@ public class FileHandlerV2 extends AbstractHandler {
   }
 
   /**
-   * 创建kafka客户端.
+   * 创建BufferedWriter客户端.
    *
    * <p>Another description after blank line.
    *

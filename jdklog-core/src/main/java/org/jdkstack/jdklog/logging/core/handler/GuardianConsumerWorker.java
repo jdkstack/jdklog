@@ -33,7 +33,7 @@ public class GuardianConsumerWorker implements StudyWorker<Handler> {
     if (isSys && isCheck) {
       final int size = handler.size();
       if (0 != size) {
-        // 一次处理5000条.
+        // 一次处理100条.
         handler.process(size);
       }
     }

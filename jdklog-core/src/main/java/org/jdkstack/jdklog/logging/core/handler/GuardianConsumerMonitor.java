@@ -8,7 +8,7 @@ import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.monitor.Monitor;
 
 /**
- * 当日志数据量小的时候,使用定时器将队列中不足5000的日志刷新到磁盘.
+ * 当日志数据量小的时候,使用定时器将队列中不足100的日志刷新到磁盘.
  *
  * <p>这个类性能比较差,因为是定时执行的,不是实时处理,会有几秒钟的延迟.
  *

@@ -11,7 +11,7 @@ import org.jdkstack.jdklog.logging.core.strategy.DeleteStrategy;
 import org.jdkstack.jdklog.logging.core.strategy.GzipCompressStrategy;
 
 /**
- * This is a class description.
+ * 文件操作工具类.
  *
  * <p>Another description after blank line.
  *
