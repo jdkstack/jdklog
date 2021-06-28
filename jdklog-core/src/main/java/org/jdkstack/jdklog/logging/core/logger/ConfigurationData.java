@@ -10,7 +10,7 @@ import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 
 /**
- * This is a class description.
+ * 保存配置信息,比如handler,filter等.
  *
  * <p>Another description after blank line.@SuppressWarnings({"java:S2250"})
  *
@@ -184,6 +184,15 @@ public class ConfigurationData implements ConfigurationDataImpl {
     return new ArrayList<>(this.handlers);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param logRecord logRecord.
+   * @return boolean .
+   * @author admin
+   */
   @Override
   public final boolean isLoggable(final Record logRecord) {
     return this.filter.isLoggable(logRecord);

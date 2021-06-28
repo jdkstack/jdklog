@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 
 /**
- * This is a class description.
+ * 日志消息阻塞队列,主要用于消息的短暂缓冲.
  *
  * <p>Another description after blank line.
  *

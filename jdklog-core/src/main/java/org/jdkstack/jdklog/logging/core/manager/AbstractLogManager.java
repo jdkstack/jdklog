@@ -14,7 +14,7 @@ import org.jdkstack.jdklog.logging.api.manager.LogManager;
 import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
 
 /**
- * This is a class description(需要优化).
+ * 日志核心,启动时初始化整个日志环境(需要优化).
  *
  * <p>Another description after blank line.
  *
@@ -25,7 +25,8 @@ public abstract class AbstractLogManager implements LogManager {
   private static final LogManager LOGMANAGER;
 
   /** 自定义类加载器,目前只支持系统类加载器,不支持自定义类加载器. */
-  private static final Map<ClassLoader, LoaderLogInfo> CLASSLOADERLOGGERS = new ConcurrentHashMap<>(10);
+  private static final Map<ClassLoader, LoaderLogInfo> CLASSLOADERLOGGERS =
+      new ConcurrentHashMap<>(10);
 
   static {
     final String logManagerName =

@@ -8,7 +8,7 @@ import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
 
 /**
- * This is a class description.
+ * 日志格式化工具.
  *
  * <p>Another description after blank line.
  *
@@ -67,7 +67,8 @@ public abstract class AbstractMessageFormatter implements Formatter {
    * @author admin
    */
   protected static boolean checkUnique() {
-    final Map<ClassLoader, LoaderLogInfo> classLoaderLoggers =  AbstractLogManager.getClassLoaderLoggers1();
+    final Map<ClassLoader, LoaderLogInfo> classLoaderLoggers =
+        AbstractLogManager.getClassLoaderLoggers1();
     final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     final LoaderLogInfo classLoaderLogInfo = classLoaderLoggers.get(classLoader);
     final String unique = classLoaderLogInfo.getProperty(Constants.UNIQUE, Constants.FALSE);
