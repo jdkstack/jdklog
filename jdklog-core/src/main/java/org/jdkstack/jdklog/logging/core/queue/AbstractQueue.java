@@ -1,11 +1,12 @@
 package org.jdkstack.jdklog.logging.core.queue;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 
 /**
- * This is a method description.
+ * This is a class description.
  *
  * <p>Another description after blank line.
  *
@@ -14,7 +15,7 @@ import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
  */
 public abstract class AbstractQueue<T> implements StudyQueue<T> {
   /** 有界数组阻塞队列,为了避免垃圾回收,采用数组而非链表Queue/Dqueue,数组对处理器的缓存机制更加友好. */
-  private final ArrayBlockingQueue<T> queue;
+  private final BlockingQueue<T> queue;
   /** 队列初始容量默认2000. */
   private int capacity = Constants.CAPACITY;
 
@@ -43,7 +44,7 @@ public abstract class AbstractQueue<T> implements StudyQueue<T> {
   }
 
   /**
-   * .
+   * 消费端采用poll方法,非阻塞,队列为空时返回空对象.
    *
    * <p>Another description after blank line.
    *
@@ -56,7 +57,7 @@ public abstract class AbstractQueue<T> implements StudyQueue<T> {
   }
 
   /**
-   * 将数据快速放入列队中
+   * 将数据快速放入列队中,采用阻塞方法put.
    *
    * <p>Another description after blank line.
    *
