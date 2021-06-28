@@ -28,17 +28,13 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class Log4j2Benchmark {
   private static final Logger LOGGER = LogManager.getLogger(Log4j2Benchmark.class);
 
-  public Log4j2Benchmark() {
-    //
-  }
-
   @Setup(Level.Trial)
-  public void up() {
+  public void setup() {
     //
   }
 
@@ -182,8 +178,8 @@ public class Log4j2Benchmark {
         "eleven");
   }
 
-  public static void main(String[] args) {
-    Options opt =
+  public static void main(final String... args) {
+    final Options opt =
         new OptionsBuilder()
             .include(Log4j2Benchmark.class.getSimpleName())
             .threads(1)
@@ -191,7 +187,7 @@ public class Log4j2Benchmark {
             .build();
     try {
       new Runner(opt).run();
-    } catch (RunnerException e) {
+    } catch (final RunnerException e) {
       // Conversion into unchecked exception is also allowed.
       throw new RuntimeException(e);
     }

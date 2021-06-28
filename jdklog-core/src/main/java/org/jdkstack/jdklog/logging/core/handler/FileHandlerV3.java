@@ -329,7 +329,7 @@ public class FileHandlerV3 extends AbstractHandler {
     this.writeLock.lock();
     try {
       final Path path = this.logFilePath.toPath();
-      writer =
+      this.writer =
           (FileChannel)
               Files.newByteChannel(
                   path,
@@ -358,8 +358,8 @@ public class FileHandlerV3 extends AbstractHandler {
     this.writeLock.lock();
     try {
       this.writerClose();
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (final IOException e) {
+      throw new StudyJuliRuntimeException("关闭IO异常.", e);
     } finally {
       this.writeLock.unlock();
     }

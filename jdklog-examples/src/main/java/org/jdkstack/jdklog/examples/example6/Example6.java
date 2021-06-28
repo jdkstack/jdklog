@@ -14,7 +14,7 @@ public class Example6 {
 
   private static final Log log = LogFactory.getLog(Example6.class);
 
-  public void main(int i) {
+  public void main(final int i) {
     log.error("Ex9>error>>>>我要去的日志文件是study_juli,当前的日志计数是:{}", " " + i);
     log.info("Ex9>info>>>>我要去的日志文件是study_juli,当前的日志计数是:{}", " " + i);
     log.warn("Ex9>warn>>>>我要去的日志文件是study_juli,当前的日志计数是:{}", " " + i);

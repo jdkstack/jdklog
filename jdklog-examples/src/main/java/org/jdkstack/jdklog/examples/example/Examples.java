@@ -44,20 +44,24 @@ public final class Examples {
   private static final WorkerContext LOG_BUSINESS_CONTEXT =
       new WorkerStudyContextImpl(LOG_BUSINESS, STUDY_BUSINESS_SCHEDULED_EXECUTOR_SERVICE);
 
-  public static void main(String[] args) {
-    long s = System.currentTimeMillis();
-    ExamplesWorker examplesWorker = new ExamplesWorker();
+  private Examples() {
+    //
+  }
+
+  public static void main(final String... args) {
+    final long start = System.currentTimeMillis();
+    final ExamplesWorker examplesWorker = new ExamplesWorker();
     // 1000个任务,会生成35W条日志.
     for (int i = 0; i < 1000; i++) {
       // 参数传递一个唯一消息ID.子线程也可以利用这个唯一消息ID.
       LOG_BUSINESS_CONTEXT.executeInExecutorServiceV2(
           UUID.randomUUID().toString(), i, examplesWorker);
     }
-    long e1 = System.currentTimeMillis();
-    System.out.println("消耗的时间:" + (e1 - s) / 1000 + "秒");
+    final long e1 = System.currentTimeMillis();
+    System.out.println("消耗的时间:" + (e1 - start) / 1000 + "秒");
     try {
       Thread.sleep(15000000);
-    } catch (InterruptedException e) {
+    } catch (final InterruptedException e) {
       e.printStackTrace();
     }
   }
