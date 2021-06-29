@@ -14,8 +14,6 @@
 ![annotation-rate](https://img.shields.io/badge/annotation-rate-red.svg)
 ![(api/core)-lib](https://img.shields.io/badge/(api/core)-lib-red.svg)
 
-Online document: <https://www.jdklog.org>
-
 A lightweight, high performance, open source, application layer log service framework.
 Although the performance is lower than log4j2(It didn't use lock-free queue,such as ring buffer), but the advantage is  no dependency lib, only need openjdk.
 
