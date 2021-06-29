@@ -49,7 +49,6 @@ public final class Examples {
   }
 
   public static void main(final String... args) {
-    final long start = System.currentTimeMillis();
     final StudyWorker<Integer> examplesWorker = new ExamplesWorker();
     // 1000个任务,会生成35W条日志.
     for (int i = 0; Constants.LOOP > i; i++) {
@@ -58,8 +57,6 @@ public final class Examples {
       final String uuid = uuidObj.toString();
       LOG_BUSINESS_CONTEXT.executeInExecutorServiceV2(uuid, i, examplesWorker);
     }
-    final long e1 = System.currentTimeMillis();
-    System.out.println("消耗的时间:" + (e1 - start) / Constants.LOOP + "秒");
     try {
       Thread.sleep(Constants.MAX_EXEC_TIME * Constants.BATCH_SIZE);
     } catch (final InterruptedException e) {
