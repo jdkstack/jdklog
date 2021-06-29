@@ -8,7 +8,7 @@ import org.jdkstack.jdklog.examples.example3.Examples3;
 import org.jdkstack.jdklog.examples.example3.Test3;
 import org.jdkstack.jdklog.examples.example4.Examples4;
 import org.jdkstack.jdklog.examples.example4.Test4;
-import org.jdkstack.jdklog.examples.example4.example6.Examples6;
+import org.jdkstack.jdklog.examples.example4.Example61.Examples6;
 import org.jdkstack.jdklog.examples.example5.Test5;
 import org.jdkstack.jdklog.examples.example6.Example6;
 import org.jdkstack.jdklog.logging.api.spi.Log;
@@ -59,7 +59,7 @@ public class ExamplesWorker implements StudyWorker<Integer> {
    * @author admin
    */
   @Override
-  public void handle(final Integer i) {
+  public final void handle(final Integer i) {
     // 输入到日志1example文件.
     this.test1.test(i);
     // 输入到日志2example文件.

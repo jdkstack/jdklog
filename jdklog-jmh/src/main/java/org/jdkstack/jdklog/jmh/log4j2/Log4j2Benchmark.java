@@ -4,6 +4,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.LifeCycle;
+import org.jdkstack.jdklog.jmh.Constants;
+import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -34,148 +36,165 @@ public class Log4j2Benchmark {
   private static final Logger LOGGER = LogManager.getLogger(Log4j2Benchmark.class);
 
   @Setup(Level.Trial)
-  public void setup() {
+  public final void setup() {
     //
   }
 
   @TearDown(Level.Trial)
-  public void down() {
+  public final void down() {
     ((LifeCycle) LogManager.getContext(false)).stop();
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughputSimple() {
+  public final void throughputSimple() {
     LOGGER.info("BenchmarkMessageParams.TEST");
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput1Param() {
-    LOGGER.info("p1={}", "one");
+  public final void throughput1Param() {
+    LOGGER.info("p1={}", Constants.ONE);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput2Params() {
-    LOGGER.info("p1={}, p2={}", "one", "two");
+  public final void throughput2Params() {
+    LOGGER.info("p1={}, p2={}", Constants.ONE, Constants.TWO);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput3Params() {
-    LOGGER.info("p1={}, p2={}, p3={}", "one", "two", "three");
+  public final void throughput3Params() {
+    LOGGER.info("p1={}, p2={}, p3={}", Constants.ONE, Constants.TWO, Constants.THREE);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput4Params() {
-    LOGGER.info("p1={}, p2={}, p3={}, p4={}", "one", "two", "three", "four");
-  }
-
-  @Benchmark
-  @BenchmarkMode(Mode.Throughput)
-  @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput5Params() {
-    LOGGER.info("p1={}, p2={}, p3={}, p4={}, p5={}", "one", "two", "three", "four", "five");
-  }
-
-  @Benchmark
-  @BenchmarkMode(Mode.Throughput)
-  @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput6Params() {
+  public final void throughput4Params() {
     LOGGER.info(
-        "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}", "one", "two", "three", "four", "five", "six");
+        "p1={}, p2={}, p3={}, p4={}",
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput7Params() {
+  public final void throughput5Params() {
+    LOGGER.info(
+        "p1={}, p2={}, p3={}, p4={}, p5={}",
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR,
+        Constants.FIVE);
+  }
+
+  @Benchmark
+  @BenchmarkMode(Mode.Throughput)
+  @OutputTimeUnit(TimeUnit.SECONDS)
+  public final void throughput6Params() {
+    LOGGER.info(
+        "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}",
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR,
+        Constants.FIVE,
+        Constants.SIX);
+  }
+
+  @Benchmark
+  @BenchmarkMode(Mode.Throughput)
+  @OutputTimeUnit(TimeUnit.SECONDS)
+  public final void throughput7Params() {
     LOGGER.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}",
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven");
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR,
+        Constants.FIVE,
+        Constants.SIX,
+        Constants.SEVEN);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput8Params() {
+  public final void throughput8Params() {
     LOGGER.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}",
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven",
-        "eight");
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR,
+        Constants.FIVE,
+        Constants.SIX,
+        Constants.SEVEN,
+        Constants.EIGHT);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput9Params() {
+  public final void throughput9Params() {
     LOGGER.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}, p9={}",
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven",
-        "eight",
-        "nine");
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR,
+        Constants.FIVE,
+        Constants.SIX,
+        Constants.SEVEN,
+        Constants.EIGHT,
+        Constants.NINE);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput10Params() {
+  public final void throughput10Params() {
     LOGGER.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}, p9={}, p10={}",
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven",
-        "eight",
-        "nine",
-        "ten");
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR,
+        Constants.FIVE,
+        Constants.SIX,
+        Constants.SEVEN,
+        Constants.EIGHT,
+        Constants.NINE,
+        Constants.TEN);
   }
 
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughput11Params() {
+  public final void throughput11Params() {
     LOGGER.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}, p9={}, p10={}, p11={}",
-        "one",
-        "two",
-        "three",
-        "four",
-        "five",
-        "six",
-        "seven",
-        "eight",
-        "nine",
-        "ten",
-        "eleven");
+        Constants.ONE,
+        Constants.TWO,
+        Constants.THREE,
+        Constants.FOUR,
+        Constants.FIVE,
+        Constants.SIX,
+        Constants.SEVEN,
+        Constants.EIGHT,
+        Constants.NINE,
+        Constants.TEN,
+        Constants.ELEVEN);
   }
 
   public static void main(final String... args) {
@@ -189,7 +208,7 @@ public class Log4j2Benchmark {
       new Runner(opt).run();
     } catch (final RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 }

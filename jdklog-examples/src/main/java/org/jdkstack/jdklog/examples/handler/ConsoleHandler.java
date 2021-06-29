@@ -112,7 +112,7 @@ public class ConsoleHandler extends AbstractHandler {
 
   @Override
   public final StudyQueue<Record> getFileQueue() {
-    return null;
+    throw new UnsupportedOperationException("未实现.");
   }
 
   @SuppressWarnings({"java:S2093", "java:S106"})
