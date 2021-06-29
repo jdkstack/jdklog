@@ -53,6 +53,8 @@ public final class Constants {
   /** . */
   public static final int BATCH_SIZE = 100;
   /** . */
+  public static final int LOOP = 1000;
+  /** . */
   public static final String JULI_CONFIG_EXCEPTION_MESSAGE =
       "SPI服务没有读取到任何实现,调试查看BuiltinClassLoader类1045行checkURL方法.";
   /** . */
@@ -71,8 +73,6 @@ public final class Constants {
   public static final int LEN_COUNT = 100;
   /** . */
   public static final int CAPACITY = 5000;
-  /** . */
-  public static final int LIMIT = 200000;
   /** . */
   public static final int MAP_CAPACITY = 16;
 

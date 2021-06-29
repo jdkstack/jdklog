@@ -106,18 +106,20 @@ public abstract class AbstractJuliLogger implements Logger {
     // Logger级别日志过滤规则, 如果日志不符合内置过滤规则,则过滤日志.
     final Level level = logRecord.getLevel();
     final boolean isLoggableBySystem = this.isLoggable(level);
-    // Logger级别的志过滤器,可以自定义过滤规则.
+    // 如果日志级别不匹配.
+    if (!isLoggableBySystem) {
+      // 需要考虑输出不符合的日志.
+      return;
+    }
+    // Handler级别的日志过滤器,可以自定义过滤规则.
     final boolean isFilter = null != this.config.getFilter();
     // 如果过滤器对象不是空,并且过滤器规则返回真,则过滤掉日志.
     if (isFilter && this.config.isLoggable(logRecord)) {
-      //
+      // 需要考虑输出不符合的日志.
+      return;
     }
     // 如果日志级别正常.打印日志.
-    if (isLoggableBySystem) {
-      this.sendLog(logRecord);
-    } else {
-      //
-    }
+    this.sendLog(logRecord);
   }
 
   /**

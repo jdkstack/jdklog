@@ -274,9 +274,6 @@ public class JuliLogger extends AbstractJuliLogger {
    */
   @Override
   public final void removeHandler(final Handler handler) {
-    if (null == handler) {
-      return;
-    }
     this.config.removeHandler(handler);
   }
 

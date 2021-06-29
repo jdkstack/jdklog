@@ -8,7 +8,7 @@ import org.jdkstack.jdklog.examples.example3.Examples3;
 import org.jdkstack.jdklog.examples.example3.Test3;
 import org.jdkstack.jdklog.examples.example4.Examples4;
 import org.jdkstack.jdklog.examples.example4.Test4;
-import org.jdkstack.jdklog.examples.example4.example6.Examples6;
+import org.jdkstack.jdklog.examples.example4.Example61.Examples6;
 import org.jdkstack.jdklog.examples.example5.Test5;
 import org.jdkstack.jdklog.examples.example6.Example6;
 import org.jdkstack.jdklog.logging.api.spi.Log;
@@ -59,31 +59,31 @@ public class ExamplesWorker implements StudyWorker<Integer> {
    * @author admin
    */
   @Override
-  public void handle(final Integer i) {
+  public final void handle(final Integer i) {
     // 输入到日志1example文件.
-    test1.test(i);
+    this.test1.test(i);
     // 输入到日志2example文件.
-    test2.test(i);
+    this.test2.test(i);
     // 输入到日志3example文件.
-    test3.test(i);
+    this.test3.test(i);
     // 输入到日志4example文件.
-    test4.test(i);
+    this.test4.test(i);
     // 输入到日志5example文件.
-    test5.test(i);
+    this.test5.test(i);
     // 输入到日志2study文件.
-    examples2.main(i);
+    this.examples2.main(i);
     // 输入到日志3study文件.
-    examples3.main(i);
+    this.examples3.main(i);
     // 输入到日志4study文件.
-    examples4.main(i);
+    this.examples4.main(i);
     // 输入到日志2study文件.
-    test.main(i);
+    this.test.main(i);
     // 输入到日志2study文件.
-    examples5.main(i);
+    this.examples5.main(i);
     // 输入到日志4study文件.
-    examples6.main(i);
+    this.examples6.main(i);
     // 输入到日志study_juli文件.
-    example6.main(i);
+    this.example6.main(i);
     // 输入到日志1study文件.
     LOG.error("Examples>error>>>>我要去的日志文件是1study,当前的日志计数是:{}", " " + i);
     LOG.info("Examples>info>>>>我要去的日志文件是1study,当前的日志计数是:{}", " " + i);

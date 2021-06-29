@@ -9,7 +9,7 @@ package org.jdkstack.jdklog.examples.example1;
  */
 public class Test1 {
 
-  public void test(int i) {
+  public void test(final int i) {
     new Examples1().main(i);
     new Examples2().main(i);
     new Examples3().main(i);

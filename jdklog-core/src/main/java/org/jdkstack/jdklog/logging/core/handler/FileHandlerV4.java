@@ -355,8 +355,8 @@ public class FileHandlerV4 extends AbstractHandler {
       this.fileStreamClose();
       try {
         this.writerClose();
-      } catch (IOException e) {
-        e.printStackTrace();
+      } catch (final IOException e) {
+        throw new StudyJuliRuntimeException("关闭IO异常.", e);
       }
     } finally {
       this.writeLock.unlock();

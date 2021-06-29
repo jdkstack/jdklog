@@ -12,14 +12,14 @@ import org.jdkstack.jdklog.logging.core.factory.LogFactory;
  */
 public class Examples7 {
 
-  private static final Log log = LogFactory.getLog(Examples7.class);
+  private static final Log LOG = LogFactory.getLog(Examples7.class);
 
-  public void main(int i) {
-    log.error("Examples>error>>>>我要去的日志文件是3example,当前的日志计数是:{}", "" + i);
-    log.info("Examples>info>>>>我要去的日志文件是3example,当前的日志计数是:{}", "" + i);
-    log.warn("Examples>warn>>>>我要去的日志文件是3example,当前的日志计数是:{}", "" + i);
-    log.fatal("Examples>fatal>>>>我要去的日志文件是3example,当前的日志计数是:{}", "" + i);
-    log.debug("Examples>debug>>>>我要去的日志文件是3example,当前的日志计数是:{}", "" + i);
-    log.trace("Examples>trace>>>>我要去的日志文件是3example,当前的日志计数是:{}", "" + i);
+  public void main(final int i) {
+    LOG.error("Examples>error>>>>我要去的日志文件是3example,当前的日志计数是:{}", String.valueOf(i));
+    LOG.info("Examples>info>>>>我要去的日志文件是3example,当前的日志计数是:{}", String.valueOf(i));
+    LOG.warn("Examples>warn>>>>我要去的日志文件是3example,当前的日志计数是:{}", String.valueOf(i));
+    LOG.fatal("Examples>fatal>>>>我要去的日志文件是3example,当前的日志计数是:{}", String.valueOf(i));
+    LOG.debug("Examples>debug>>>>我要去的日志文件是3example,当前的日志计数是:{}", String.valueOf(i));
+    LOG.trace("Examples>trace>>>>我要去的日志文件是3example,当前的日志计数是:{}", String.valueOf(i));
   }
 }

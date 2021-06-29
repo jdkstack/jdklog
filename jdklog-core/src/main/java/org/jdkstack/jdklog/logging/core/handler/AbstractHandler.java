@@ -20,12 +20,10 @@ import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.monitor.Monitor;
-import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 import org.jdkstack.jdklog.logging.core.context.StudyThreadFactory;
 import org.jdkstack.jdklog.logging.core.context.WorkerStudyContextImpl;
 import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
-import org.jdkstack.jdklog.logging.core.queue.EventQueue;
 
 /**
  * This is a class description.
@@ -100,8 +98,6 @@ public abstract class AbstractHandler implements Handler {
   private static final int OFF_VALUE = LogLevel.OFF.intValue();
   /** 全局handler日志计数. */
   protected static final AtomicLong GLOBAL_COUNTER = new AtomicLong(0L);
-  /** . */
-  protected static final StudyQueue<String> EVENT_QUEUE = new EventQueue("EventQueue");
 
   static {
     // 线程监控任务.
