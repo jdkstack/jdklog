@@ -10,7 +10,11 @@ import org.jdkstack.jdklog.logging.core.factory.LogFactory;
  *
  * @author admin
  */
-public class Example61 {
+public final class Example61 {
+
+  private Example61() {
+    //
+  }
 
   /**
    * This is a class description.

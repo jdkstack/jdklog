@@ -33,7 +33,7 @@ public final class ClassLoadingUtils {
    * @return Constructor
    * @author admin
    */
-  @SuppressWarnings("java:S1452")
+  @SuppressWarnings({"java:S1452", "java:S2658"})
   public static Constructor<?> constructor(final String className) {
     // 获取当前类加载器.
     final ClassLoader systemClassLoader = Thread.currentThread().getContextClassLoader();
@@ -55,7 +55,7 @@ public final class ClassLoadingUtils {
    * @return Constructor
    * @author admin
    */
-  @SuppressWarnings("java:S1452")
+  @SuppressWarnings({"java:S1452", "java:S2658"})
   public static Constructor<?> constructor2(final String className) {
     final ClassLoader systemClassLoader = Thread.currentThread().getContextClassLoader();
     try {
