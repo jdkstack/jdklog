@@ -106,27 +106,20 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
     sb.append(' ');
     final String unique = LogManagerUtils.getProperty(Constants.UNIQUE, Constants.FALSE);
     if (unique.equals(Constants.TRUE)) {
-      // 日志unique id.
-      final String uniqueId = logRecord.getUniqueId();
-      sb.append(uniqueId);
+      final String traceId = logRecord.getTraceId();
+      sb.append(traceId);
+      sb.append(' ');
+      final String spanId0 = logRecord.getSpanId0();
+      sb.append(spanId0);
+      sb.append(' ');
+      final String spanId1 = logRecord.getSpanId1();
+      sb.append(spanId1);
       sb.append(' ');
     }
     // 日志序列号.
     final long serialNumber = logRecord.getSerialNumber();
     sb.append(serialNumber);
     sb.append(' ');
-    final String host = logRecord.getHost();
-    if (Objects.nonNull(host)) {
-      // 日志进程host.
-      sb.append(host);
-      sb.append(' ');
-    }
-    final String port = logRecord.getPort();
-    if (Objects.nonNull(port)) {
-      // 日志进程port.
-      sb.append(port);
-      sb.append(' ');
-    }
     // 日志自定义字段.
     final Map<String, String> customs = logRecord.getCustoms();
     for (final Map.Entry<String, String> entry : customs.entrySet()) {

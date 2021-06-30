@@ -30,6 +30,8 @@ public final class Constants {
   public static final String TEN = "ten";
   /** . */
   public static final String ELEVEN = "eleven";
+  /** . */
+  public static final int LOOP = 5;
 
   private Constants() {
     //

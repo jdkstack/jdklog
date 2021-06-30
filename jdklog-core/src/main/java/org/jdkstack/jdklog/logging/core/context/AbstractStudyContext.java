@@ -1,5 +1,6 @@
 package org.jdkstack.jdklog.logging.core.context;
 
+import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.context.StudyContext;
 import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
@@ -106,17 +107,17 @@ public abstract class AbstractStudyContext implements StudyContext {
    *
    * <p>用于监控方法的执行时间.
    *
-   * @param unique .
+   * @param contextBean .
    * @param event 作为handler的参数传递.
    * @param handler 一个处理器,用于执行具体业务逻辑.
    * @author admin
    */
   @Override
   public final <T> void dispatchV2(
-      final String unique, final T event, final StudyWorker<T> handler) {
+      final Bean contextBean,  final T event, final StudyWorker<T> handler) {
     try {
       // 增加开始时间.
-      this.beginDispatchV2(unique);
+      this.beginDispatchV2(contextBean);
       // 执行具体业务,传递event参数.
       handler.handle(event);
     } catch (final Exception e) {
@@ -135,7 +136,7 @@ public abstract class AbstractStudyContext implements StudyContext {
    * @author admin
    */
   @Override
-  public final void beginDispatchV2(final String unique) {
+  public final void beginDispatchV2(final Bean contextBean) {
     // 获取当前线程.
     final Thread thread = Thread.currentThread();
     // 当前线程是不是StudyThread.
@@ -143,7 +144,7 @@ public abstract class AbstractStudyContext implements StudyContext {
       // 得到当前真实线程.
       final StudyThreadImpl th = (StudyThreadImpl) thread;
       // 设置开始时间和当前上下文对象.
-      th.beginEmissionV2(unique, this);
+      th.beginEmissionV2(contextBean, this);
     }
   }
 

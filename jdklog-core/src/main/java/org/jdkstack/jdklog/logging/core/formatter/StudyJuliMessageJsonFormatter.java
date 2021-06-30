@@ -108,10 +108,18 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     final String lineNumberValue = inQuotes(lineNumberStr);
     sb.append(lineNumberKey).append(": ").append(lineNumberValue).append(',');
     if (checkUnique()) {
-      final String uniqueIdKey = inQuotes("uniqueId");
-      final String uniqueIdStr = logRecord.getUniqueId();
-      final String uniqueIdValue = inQuotes(uniqueIdStr);
-      sb.append(uniqueIdKey).append(": ").append(uniqueIdValue).append(',');
+      final String traceIdKey = inQuotes("traceId");
+      final String traceIdStr = logRecord.getTraceId();
+      final String traceIdValue = inQuotes(traceIdStr);
+      sb.append(traceIdKey).append(": ").append(traceIdValue).append(',');
+      final String spanId0Key = inQuotes("spanId0");
+      final String spanId0Str = logRecord.getSpanId0();
+      final String spanId0Value = inQuotes(spanId0Str);
+      sb.append(spanId0Key).append(": ").append(spanId0Value).append(',');
+      final String spanId1Key = inQuotes("spanId1");
+      final String spanId1Str = logRecord.getSpanId1();
+      final String spanId1Value = inQuotes(spanId1Str);
+      sb.append(spanId1Key).append(": ").append(spanId1Value).append(',');
     }
     final String serialNumberKey = inQuotes("serialNumber");
     final long serialNumber = logRecord.getSerialNumber();

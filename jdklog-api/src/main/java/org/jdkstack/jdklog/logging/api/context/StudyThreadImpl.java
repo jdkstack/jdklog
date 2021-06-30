@@ -56,26 +56,6 @@ public interface StudyThreadImpl {
    *
    * <p>Another description after blank line.
    *
-   * @return String String.
-   * @author admin
-   */
-  String getUnique();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param unique unique.
-   * @author admin
-   */
-  void setUnique(String unique);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @param contextParam contextParam.
    * @author admin
    */
@@ -95,11 +75,11 @@ public interface StudyThreadImpl {
    *
    * <p>Another description after blank line.
    *
-   * @param uniqueParam uniqueParam.
+   * @param contextBean contextBean.
    * @param contextParam contextParam.
    * @author admin
    */
-  void beginEmissionV2(String uniqueParam, StudyContext contextParam);
+  void beginEmissionV2(Bean contextBean, StudyContext contextParam);
 
   /**
    * This is a method description.
@@ -129,4 +109,24 @@ public interface StudyThreadImpl {
    * @author admin
    */
   void setDaemon(boolean on);
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return Bean Bean.
+   * @author admin
+   */
+  Bean getContextBean();
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param contextBean contextBean.
+   * @author admin
+   */
+  void setContextBean(Bean contextBean);
 }

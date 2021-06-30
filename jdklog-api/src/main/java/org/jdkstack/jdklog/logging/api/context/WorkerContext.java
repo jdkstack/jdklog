@@ -49,11 +49,11 @@ public interface WorkerContext {
    *
    * <p>Another description after blank line.
    *
-   * @param unique 唯一消息ID.
+   * @param contextBean 线程上下文数据.
    * @param event 处理对象.
    * @param handler 处理器.
    * @param <T> 传入handler的元素.
    * @author admin
    */
-  <T> void executeInExecutorServiceV2(String unique, T event, StudyWorker<T> handler);
+  <T> void executeInExecutorServiceV2(Bean contextBean, T event, StudyWorker<T> handler);
 }
