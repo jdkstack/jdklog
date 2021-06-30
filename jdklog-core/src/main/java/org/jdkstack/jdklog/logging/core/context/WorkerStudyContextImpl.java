@@ -2,6 +2,7 @@ package org.jdkstack.jdklog.logging.core.context;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
+import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.context.WorkerContext;
 import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 
@@ -77,15 +78,15 @@ public class WorkerStudyContextImpl extends AbstractStudyContext implements Work
    *
    * <p>Another description after blank line.
    *
-   * @param unique .
+   * @param contextBean .
    * @param event .
    * @param handler .
    * @author admin
    */
   @Override
   public final <T> void executeInExecutorServiceV2(
-      final String unique, final T event, final StudyWorker<T> handler) {
-    final Runnable task = () -> this.dispatchV2(unique, event, handler);
+      final Bean contextBean, final T event, final StudyWorker<T> handler) {
+    final Runnable task = () -> this.dispatchV2(contextBean, event, handler);
     this.executorService.submit(task);
   }
 

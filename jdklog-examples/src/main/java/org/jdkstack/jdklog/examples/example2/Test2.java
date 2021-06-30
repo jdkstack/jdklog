@@ -9,16 +9,24 @@ package org.jdkstack.jdklog.examples.example2;
  */
 public class Test2 {
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param i i.
+   * @author admin
+   */
   public void test(final int i) {
-    new Examples1().main(i);
-    new Examples2().main(i);
-    new Examples3().main(i);
-    new Examples4().main(i);
-    new Examples5().main(i);
-    new Examples6().main(i);
-    new Examples7().main(i);
-    new Examples8().main(i);
-    new Examples9().main(i);
-    new Examples10().main(i);
+    new Examples1().logMain(i);
+    new Examples2().logMain(i);
+    new Examples3().logMain(i);
+    new Examples4().logMain(i);
+    new Examples5().logMain(i);
+    new Examples6().logMain(i);
+    new Examples7().logMain(i);
+    new Examples8().logMain(i);
+    new Examples9().logMain(i);
+    new Examples10().logMain(i);
   }
 }

@@ -1,7 +1,7 @@
 package org.jdkstack.jdklog.logging.core.context;
 
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.context.StudyContext;
 import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 
@@ -25,8 +25,8 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
   private long execStart;
   /** 线程运行的上下文环境. */
   private StudyContext context;
-  /** 线程从开始到结束之间唯一的UUID. */
-  private String unique;
+  /** 线程运行的上下文数据. */
+  private Bean contextBean;
 
   /**
    * 自定义线程.
@@ -107,32 +107,6 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
   }
 
   /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String
-   * @author admin
-   */
-  @Override
-  public String getUnique() {
-    return this.unique;
-  }
-
-  /**
-   * 动态设置唯一日志消息ID.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param unique .
-   * @author admin
-   */
-  @Override
-  public void setUnique(final String unique) {
-    this.unique = unique;
-  }
-
-  /**
    * 当线程开始时,开始时间设置成当前系统的时间戳毫秒数.
    *
    * @author admin
@@ -142,8 +116,6 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
     if (null == this.context) {
       // 设置当前系统时间为开始时间,代表线程开始执行.
       this.execStart = System.currentTimeMillis();
-      // 设置线程开始运行时的唯一ID
-      this.unique = UUID.randomUUID().toString();
     }
   }
 
@@ -152,8 +124,6 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
     if (null == this.context) {
       // 设置当前系统时间为0,代表线程执行完毕.
       this.execStart = 0;
-      // 设置线程结束运行时的唯一ID
-      this.unique = null;
     }
   }
 
@@ -191,16 +161,16 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
   /**
    * 当线程开始时,开始时间设置成当前系统的时间戳毫秒数.
    *
-   * @param uniqueParam .
+   * @param contextBeanParam .
    * @author admin
    */
-  private void executeStartV2(final String uniqueParam) {
+  private void executeStartV2(final Bean contextBeanParam) {
     // 如果当前上下文为空.
     if (null == this.context) {
       // 设置当前系统时间为开始时间,代表线程开始执行.
       this.execStart = System.currentTimeMillis();
-      // 设置线程开始运行时的唯一ID
-      this.unique = uniqueParam;
+      // 线程开始运行之前设置上下文Bean.
+      this.contextBean = contextBeanParam;
     }
   }
 
@@ -209,8 +179,8 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
     if (null == this.context) {
       // 设置当前系统时间为0,代表线程执行完毕.
       this.execStart = 0;
-      // 设置线程结束运行时的唯一ID
-      this.unique = null;
+      //  线程开始运行之后清空上下文Bean.
+      this.contextBean = null;
     }
   }
 
@@ -219,14 +189,14 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
    *
    * <p>代表线程正在运行着.
    *
-   * @param uniqueParam .
+   * @param contextBeanParam .
    * @param contextParam 上下文对象.
    * @author admin
    */
   @Override
-  public void beginEmissionV2(final String uniqueParam, final StudyContext contextParam) {
+  public void beginEmissionV2(final Bean contextBeanParam, final StudyContext contextParam) {
     // 设置执行开始时间.
-    this.executeStartV2(uniqueParam);
+    this.executeStartV2(contextBeanParam);
     // 设置上下文.
     this.context = contextParam;
   }
@@ -244,5 +214,15 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
     this.context = null;
     // 设置执行结束时间.
     this.executeEndV2();
+  }
+
+  @Override
+  public Bean getContextBean() {
+    return contextBean;
+  }
+
+  @Override
+  public void setContextBean(final Bean contextBean) {
+    this.contextBean = contextBean;
   }
 }

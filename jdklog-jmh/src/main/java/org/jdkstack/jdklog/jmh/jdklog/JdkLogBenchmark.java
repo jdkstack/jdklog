@@ -29,21 +29,43 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 5, time = 1)
+@Warmup(iterations = Constants.LOOP, time = 1)
+@Measurement(iterations = Constants.LOOP, time = 1)
 public class JdkLogBenchmark {
+  /** . */
   private static final Log LOGGER = LogFactory.getLog(JdkLogBenchmark.class);
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Setup(Level.Trial)
   public void setup() {
     //
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @TearDown(Level.Trial)
   public void down() {
     //
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -51,6 +73,13 @@ public class JdkLogBenchmark {
     LOGGER.info("BenchmarkMessageParams.TEST");
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -58,6 +87,13 @@ public class JdkLogBenchmark {
     LOGGER.info("p1={}", Constants.ONE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -65,6 +101,13 @@ public class JdkLogBenchmark {
     LOGGER.info("p1={}, p2={}", Constants.ONE, Constants.TWO);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -72,6 +115,13 @@ public class JdkLogBenchmark {
     LOGGER.info("p1={}, p2={}, p3={}", Constants.ONE, Constants.TWO, Constants.THREE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -84,6 +134,13 @@ public class JdkLogBenchmark {
         Constants.FOUR);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -97,6 +154,13 @@ public class JdkLogBenchmark {
         Constants.FIVE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -111,6 +175,13 @@ public class JdkLogBenchmark {
         Constants.SIX);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -126,6 +197,13 @@ public class JdkLogBenchmark {
         Constants.SEVEN);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -142,6 +220,13 @@ public class JdkLogBenchmark {
         Constants.EIGHT);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -159,6 +244,13 @@ public class JdkLogBenchmark {
         Constants.NINE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -177,6 +269,13 @@ public class JdkLogBenchmark {
         Constants.TEN);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -196,6 +295,14 @@ public class JdkLogBenchmark {
         Constants.ELEVEN);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param args args.
+   * @author admin
+   */
   public static void main(final String... args) {
     final Options opt =
         new OptionsBuilder()

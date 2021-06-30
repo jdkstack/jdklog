@@ -24,10 +24,18 @@ public final class Example5 {
    * @author admin
    */
   public static class Examples5 {
-
+    /** . */
     private static final Log LOG = LogFactory.getLog(Examples5.class);
 
-    public final void main(final int i) {
+    /**
+     * This is a method description.
+     *
+     * <p>Another description after blank line.
+     *
+     * @param i i.
+     * @author admin
+     */
+    public final void logMain(final int i) {
       LOG.error("Examples5>error>>>>我要去的日志文件是1study,当前的日志计数是:{}", String.valueOf(i));
       LOG.info("Examples5>info>>>>我要去的日志文件是1study,当前的日志计数是:{}", String.valueOf(i));
       LOG.warn("Examples5>warn>>>>我要去的日志文件是1study,当前的日志计数是:{}", String.valueOf(i));

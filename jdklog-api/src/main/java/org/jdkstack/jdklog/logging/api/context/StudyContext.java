@@ -56,23 +56,23 @@ public interface StudyContext {
    *
    * <p>Another description after blank line.
    *
-   * @param unique 传递唯一序列号.
+   * @param contextBean 线程上下文数据.
    * @param handler 处理器程序.
    * @param event 处理器事件.
    * @param <T> 处理器元素.
    * @author admin
    */
-  <T> void dispatchV2(String unique, T event, StudyWorker<T> handler);
+  <T> void dispatchV2(Bean contextBean, T event, StudyWorker<T> handler);
 
   /**
    * This is a method description.
    *
    * <p>Another description after blank line.
    *
-   * @param unique 唯一序列号.
+   * @param contextBean 线程上下文数据.
    * @author admin
    */
-  void beginDispatchV2(String unique);
+  void beginDispatchV2(Bean contextBean);
 
   /**
    * This is a method description.

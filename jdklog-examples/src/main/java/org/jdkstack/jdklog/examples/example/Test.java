@@ -11,10 +11,18 @@ import org.jdkstack.jdklog.logging.core.factory.LogFactory;
  * @author admin
  */
 public class Test {
-
+  /** . */
   private static final Log LOG = LogFactory.getLog(Test.class);
 
-  public final void main(final int i) {
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param i i.
+   * @author admin
+   */
+  public final void logMain(final int i) {
     LOG.error("Test>error>>>>我要去的日志文件是1study,当前的日志计数是:{}", String.valueOf(i));
     LOG.info("Test>info>>>>我要去的日志文件是1study,当前的日志计数是:{}", String.valueOf(i));
     LOG.warn("Test>warn>>>>我要去的日志文件是1study,当前的日志计数是:{}", String.valueOf(i));

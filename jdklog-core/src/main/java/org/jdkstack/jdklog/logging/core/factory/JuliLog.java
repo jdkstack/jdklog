@@ -1,7 +1,9 @@
 package org.jdkstack.jdklog.logging.core.factory;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
+import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
@@ -95,20 +97,28 @@ public class JuliLog implements Log {
       // 如果不是StudyThread,无法处理唯一日志消息ID.
       if (thread instanceof StudyThreadImpl) {
         final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
-        // 为每条日志设置一个唯一的ID.
-        final String uniqueStr = studyThread.getUnique();
-        lr.setUniqueId(uniqueStr);
+        // 处理线程上下文数据.
+        this.contextBean(lr, studyThread);
       }
     }
     // 为每条日志设置一个自增长的序列号.
     final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
     lr.setSerialNumber(globalCounter);
-    // 当前进程的ip和port.
-    final String host = LogManagerUtils.getProperty(".host", null);
-    lr.setHost(host);
-    final String port = LogManagerUtils.getProperty(".port", null);
-    lr.setPort(port);
     this.logger.logp(lr);
+  }
+
+  private void contextBean(final Record lr, final StudyThreadImpl studyThread) {
+    Bean contextBean = studyThread.getContextBean();
+    if (contextBean != null) {
+      lr.setSpanId0(contextBean.getSpanId0());
+      lr.setSpanId1(contextBean.getSpanId1());
+      lr.setTraceId(contextBean.getTraceId());
+      Map<String, String> customs = contextBean.getCustoms();
+      for (Map.Entry<String, String> entry : customs.entrySet()) {
+        lr.setCustom(entry.getKey(), entry.getValue());
+      }
+      // 反射得到方法,匹配方法配置.如果匹配则,追加到lr中.
+    }
   }
 
   /**

@@ -47,6 +47,30 @@ public class LogRecord implements Record {
   private String host;
   /** . */
   private String port;
+  /** . */
+  private String sourceHost;
+  /** . */
+  private String sourceIp;
+  /** . */
+  private String sourcePort;
+  /** . */
+  private String currentHost;
+  /** . */
+  private String currentIp;
+  /** . */
+  private String currentPort;
+  /** . */
+  private String destinationHost;
+  /** . */
+  private String destinationIp;
+  /** . */
+  private String destinationPort;
+  /** 开始->前一个结束. */
+  private String spanId0;
+  /** 结束->下一个开始. */
+  private String spanId1;
+  /** 整个链路一样. */
+  private String traceId;
 
   /**
    * This is a method description.
@@ -493,8 +517,328 @@ public class LogRecord implements Record {
     return this.logLevel.intValue();
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String 日志级别名.
+   * @author admin
+   */
   @Override
   public final String getLevelName() {
     return this.logLevel.getName();
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String sourceHost.
+   * @author admin
+   */
+  @Override
+  public String getSourceHost() {
+    return sourceHost;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param sourceHost sourceHost.
+   * @author admin
+   */
+  @Override
+  public void setSourceHost(final String sourceHost) {
+    this.sourceHost = sourceHost;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String sourceIp.
+   * @author admin
+   */
+  @Override
+  public String getSourceIp() {
+    return sourceIp;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param sourceIp sourceIp.
+   * @author admin
+   */
+  @Override
+  public void setSourceIp(final String sourceIp) {
+    this.sourceIp = sourceIp;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String sourcePort.
+   * @author admin
+   */
+  @Override
+  public String getSourcePort() {
+    return sourcePort;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param sourcePort sourcePort.
+   * @author admin
+   */
+  @Override
+  public void setSourcePort(final String sourcePort) {
+    this.sourcePort = sourcePort;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String currentHost.
+   * @author admin
+   */
+  @Override
+  public String getCurrentHost() {
+    return currentHost;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param currentHost currentHost.
+   * @author admin
+   */
+  @Override
+  public void setCurrentHost(final String currentHost) {
+    this.currentHost = currentHost;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String currentIp.
+   * @author admin
+   */
+  @Override
+  public String getCurrentIp() {
+    return currentIp;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param currentIp currentIp.
+   * @author admin
+   */
+  @Override
+  public void setCurrentIp(final String currentIp) {
+    this.currentIp = currentIp;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String currentPort.
+   * @author admin
+   */
+  @Override
+  public String getCurrentPort() {
+    return currentPort;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param currentPort currentPort.
+   * @author admin
+   */
+  @Override
+  public void setCurrentPort(final String currentPort) {
+    this.currentPort = currentPort;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String destinationHost.
+   * @author admin
+   */
+  @Override
+  public String getDestinationHost() {
+    return destinationHost;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param destinationHost destinationHost.
+   * @author admin
+   */
+  @Override
+  public void setDestinationHost(final String destinationHost) {
+    this.destinationHost = destinationHost;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String destinationIp.
+   * @author admin
+   */
+  @Override
+  public String getDestinationIp() {
+    return destinationIp;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param destinationIp destinationIp.
+   * @author admin
+   */
+  @Override
+  public void setDestinationIp(final String destinationIp) {
+    this.destinationIp = destinationIp;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String destinationPort.
+   * @author admin
+   */
+  @Override
+  public String getDestinationPort() {
+    return destinationPort;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param destinationPort destinationPort.
+   * @author admin
+   */
+  @Override
+  public void setDestinationPort(final String destinationPort) {
+    this.destinationPort = destinationPort;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String spanId0.
+   * @author admin
+   */
+  @Override
+  public String getSpanId0() {
+    return spanId0;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param spanId0 spanId0.
+   * @author admin
+   */
+  @Override
+  public void setSpanId0(final String spanId0) {
+    this.spanId0 = spanId0;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String spanId1.
+   * @author admin
+   */
+  @Override
+  public String getSpanId1() {
+    return spanId1;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param spanId1 spanId1.
+   * @author admin
+   */
+  @Override
+  public void setSpanId1(final String spanId1) {
+    this.spanId1 = spanId1;
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return String traceId.
+   * @author admin
+   */
+  @Override
+  public String getTraceId() {
+    return traceId;
+  }
+
+  /**
+   * .
+   *
+   * <p>.
+   *
+   * @param traceId traceId.
+   * @author admin
+   */
+  @Override
+  public void setTraceId(final String traceId) {
+    this.traceId = traceId;
   }
 }

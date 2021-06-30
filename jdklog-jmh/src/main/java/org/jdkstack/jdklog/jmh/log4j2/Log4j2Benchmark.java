@@ -30,21 +30,43 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 5, time = 1)
+@Warmup(iterations = Constants.LOOP, time = 1)
+@Measurement(iterations = Constants.LOOP, time = 1)
 public class Log4j2Benchmark {
+  /** . */
   private static final Logger LOGGER = LogManager.getLogger(Log4j2Benchmark.class);
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Setup(Level.Trial)
   public final void setup() {
     //
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @TearDown(Level.Trial)
   public final void down() {
     ((LifeCycle) LogManager.getContext(false)).stop();
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -52,6 +74,13 @@ public class Log4j2Benchmark {
     LOGGER.info("BenchmarkMessageParams.TEST");
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -59,6 +88,13 @@ public class Log4j2Benchmark {
     LOGGER.info("p1={}", Constants.ONE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -66,6 +102,13 @@ public class Log4j2Benchmark {
     LOGGER.info("p1={}, p2={}", Constants.ONE, Constants.TWO);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -73,6 +116,13 @@ public class Log4j2Benchmark {
     LOGGER.info("p1={}, p2={}, p3={}", Constants.ONE, Constants.TWO, Constants.THREE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -85,6 +135,13 @@ public class Log4j2Benchmark {
         Constants.FOUR);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -98,6 +155,13 @@ public class Log4j2Benchmark {
         Constants.FIVE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -112,6 +176,13 @@ public class Log4j2Benchmark {
         Constants.SIX);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -127,6 +198,13 @@ public class Log4j2Benchmark {
         Constants.SEVEN);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -143,6 +221,13 @@ public class Log4j2Benchmark {
         Constants.EIGHT);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -160,6 +245,13 @@ public class Log4j2Benchmark {
         Constants.NINE);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -178,6 +270,13 @@ public class Log4j2Benchmark {
         Constants.TEN);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
@@ -197,6 +296,14 @@ public class Log4j2Benchmark {
         Constants.ELEVEN);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param args args.
+   * @author admin
+   */
   public static void main(final String... args) {
     final Options opt =
         new OptionsBuilder()
