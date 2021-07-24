@@ -147,8 +147,9 @@
           <!-- 官方规范地址: https://checkstyle.org/ -->
           <!-- 使用google规范. -->
           <configLocation>style/checkstyle/google/google_checks.xml</configLocation>
-          <!-- 使用sun规范. -->
-          <!--<configLocation>checkstyle/sun/sun_checks.xml</configLocation>-->
+          <!--使用sun规范.
+            <configLocation>checkstyle/sun/sun_checks.xml</configLocation>
+          -->
           <encoding>UTF-8</encoding>
           <failOnViolation>true</failOnViolation>
           <!-- 是否对test目录中的代码进行检查-->
