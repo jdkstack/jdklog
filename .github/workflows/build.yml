@@ -3,8 +3,7 @@ on:
   push:
     branches: [ dev ]
   pull_request:
-    types: [opened, synchronize, reopened]
-    branches: [ master ]
+    branches: [ dev ]
 jobs:
   build:
     name: Build
