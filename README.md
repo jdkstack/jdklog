@@ -14,6 +14,7 @@
 ![annotation-rate](https://img.shields.io/badge/annotation-rate-red.svg)
 ![(api/core)-lib](https://img.shields.io/badge/(api/core)-lib-red.svg)
 
+[![codebeat badge](https://codebeat.co/badges/3ffde722-a124-4478-82cc-1f47c4a8d359)](https://codebeat.co/projects/github-com-jdkstack-jdklog-master)
 [![CodeFactor](https://www.codefactor.io/repository/github/jdkstack/jdklog/badge)](https://www.codefactor.io/repository/github/jdkstack/jdklog)
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
