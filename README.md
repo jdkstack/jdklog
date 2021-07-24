@@ -15,6 +15,7 @@
 ![(api/core)-lib](https://img.shields.io/badge/(api/core)-lib-red.svg)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/jdkstack/jdklog/badge)](https://www.codefactor.io/repository/github/jdkstack/jdklog)
+
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=bugs)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
