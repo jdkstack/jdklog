@@ -16,6 +16,17 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/jdkstack/jdklog/badge)](https://www.codefactor.io/repository/github/jdkstack/jdklog)
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=bugs)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=code_smells)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=ncloc)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=security_rating)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=org.jdkstack%3Ajdklog&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
 
 A lightweight, high performance, open source, application layer log service framework.
 Although the performance is lower than log4j2(It didn't use lock-free queue,such as ring buffer), but the advantage is  no dependency lib, only need openjdk.
