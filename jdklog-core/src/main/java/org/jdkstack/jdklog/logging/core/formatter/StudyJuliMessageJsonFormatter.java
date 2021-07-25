@@ -55,36 +55,25 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
     // 日期格式化.
     final String format = this.pattern.format(zdt);
-    final StringBuilder sb = new StringBuilder(50);
-    final String timestamp = inQuotes("timestamp");
-    final String formatStr = inQuotes(format);
-    sb.append('{').append(timestamp).append(": ").append(formatStr).append(',');
+    logRecord.setCustom("timestamp", format);
     // 日志级别.
-    final String level = inQuotes("level");
+    // final String level = inQuotes("level");
     final String levelName = logRecord.getLevelName();
-    final String levelNameStr = inQuotes(levelName);
-    sb.append(level).append(": ").append(levelNameStr).append(',');
+    logRecord.setCustom("level", levelName);
     // 线程名称.
-    final String threadKey = inQuotes("thread");
     final Thread thread = Thread.currentThread();
     final String name = thread.getName();
-    final String threadName = inQuotes(name);
-    sb.append(threadKey).append(": ").append(threadName).append(',');
+    logRecord.setCustom("thread", name);
     if (checkUnique()) {
       final Bean contextBean = logRecord.getContextBean();
-      final String traceIdKey = inQuotes("traceId");
       final String traceIdStr = contextBean.getTraceId();
-      final String traceIdValue = inQuotes(traceIdStr);
-      sb.append(traceIdKey).append(": ").append(traceIdValue).append(',');
-      final String spanId0Key = inQuotes("spanId0");
+      logRecord.setCustom("traceId", traceIdStr);
       final String spanId0Str = contextBean.getSpanId0();
-      final String spanId0Value = inQuotes(spanId0Str);
-      sb.append(spanId0Key).append(": ").append(spanId0Value).append(',');
-      final String spanId1Key = inQuotes("spanId1");
+      logRecord.setCustom("spanId0", spanId0Str);
       final String spanId1Str = contextBean.getSpanId1();
-      final String spanId1Value = inQuotes(spanId1Str);
-      sb.append(spanId1Key).append(": ").append(spanId1Value).append(',');
+      logRecord.setCustom("spanId1", spanId1Str);
     }
+    final StringBuilder sb = new StringBuilder(50);
     // 日志自定义字段.
     final Map<String, String> customs = logRecord.getCustoms();
     for (final Map.Entry<String, String> entry : customs.entrySet()) {

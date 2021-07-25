@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
-import org.jdkstack.jdklog.logging.core.manager.LogManagerUtils;
 
 /**
  * 日志文本行格式化,扩展JDK提供的简单格式化.
@@ -56,41 +55,32 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
     final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
     // 日期格式化.
     final String format = this.pattern.format(zdt);
-    // 组装完整的日志消息.100->16试试看.
-    final StringBuilder sb = new StringBuilder(16);
     // 拼接日期时间格式化.
-    sb.append(format);
-    sb.append(' ');
+    logRecord.setCustom("timestamp", format);
     // 日志级别.
     final String levelName = logRecord.getLevelName();
-    sb.append(levelName);
-    sb.append(' ');
-    sb.append('[');
+    logRecord.setCustom("levelName", levelName);
     // 当前执行的线程名.
     final Thread thread = Thread.currentThread();
     final String name = thread.getName();
-    sb.append(name);
-    sb.append(']');
-    sb.append(' ');
+    logRecord.setCustom("thread", name);
+    // 打印特殊字段.
+    if (checkUnique()) {
+      final Bean contextBean = logRecord.getContextBean();
+      final String traceId = contextBean.getTraceId();
+      logRecord.setCustom("traceId", traceId);
+      final String spanId0 = contextBean.getSpanId0();
+      logRecord.setCustom("spanId0", spanId0);
+      final String spanId1 = contextBean.getSpanId1();
+      logRecord.setCustom("spanId1", spanId1);
+    }
+    // 组装完整的日志消息.100->16试试看.
+    final StringBuilder sb = new StringBuilder(16);
     // 日志自定义字段.
     final Map<String, String> customs = logRecord.getCustoms();
     for (final Map.Entry<String, String> entry : customs.entrySet()) {
       final String value = entry.getValue();
       sb.append(value);
-      sb.append(' ');
-    }
-    // 打印特殊字段.
-    final String unique = LogManagerUtils.getProperty(Constants.UNIQUE, Constants.FALSE);
-    if (unique.equals(Constants.TRUE)) {
-      final Bean contextBean = logRecord.getContextBean();
-      final String traceId = contextBean.getTraceId();
-      sb.append(traceId);
-      sb.append(' ');
-      final String spanId0 = contextBean.getSpanId0();
-      sb.append(spanId0);
-      sb.append(' ');
-      final String spanId1 = contextBean.getSpanId1();
-      sb.append(spanId1);
       sb.append(' ');
     }
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
