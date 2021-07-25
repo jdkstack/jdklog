@@ -19,7 +19,7 @@ public class FileHandlerV4 extends AbstractFileHandler {
   /** . */
   private BufferedOutputStream bufferedOutputStreamWriter;
   /** . */
-  private FileOutputStream fileStream;
+  private FileOutputStream fileStream4;
 
   /**
    * This is a method description.
@@ -88,10 +88,10 @@ public class FileHandlerV4 extends AbstractFileHandler {
     this.writeLock.lock();
     try {
       // java:S2093 这个严重问题,暂时无法解决,先忽略sonar的警告.因为文件不能关闭,需要长时间打开.但是sonar检测,需要关闭IO资源.
-      this.fileStream = new FileOutputStream(this.logFilePath, true);
+      this.fileStream4 = new FileOutputStream(this.logFilePath, true);
       // 创建一个buffered流,缓存大小默认8192.
       this.bufferedOutputStreamWriter =
-          new BufferedOutputStream(this.fileStream, Constants.BATCH_BUF_SIZE);
+          new BufferedOutputStream(this.fileStream4, Constants.BATCH_BUF_SIZE);
       // 尝试写入一个空"".
       this.bufferedOutputStreamWriter.write("".getBytes(StandardCharsets.UTF_8));
     } catch (final Exception e) {
@@ -136,10 +136,10 @@ public class FileHandlerV4 extends AbstractFileHandler {
 
   private void fileStreamClose() {
     // 尝试关闭文件流.
-    if (null != this.fileStream) {
+    if (null != this.fileStream4) {
       try {
-        this.fileStream.flush();
-        this.fileStream.close();
+        this.fileStream4.flush();
+        this.fileStream4.close();
       } catch (final IOException e) {
         throw new StudyJuliRuntimeException(e);
       }
