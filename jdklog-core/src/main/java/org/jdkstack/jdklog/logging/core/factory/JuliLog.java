@@ -110,9 +110,7 @@ public class JuliLog implements Log {
   private void contextBean(final Record lr, final StudyThreadImpl studyThread) {
     Bean contextBean = studyThread.getContextBean();
     if (contextBean != null) {
-      lr.setSpanId0(contextBean.getSpanId0());
-      lr.setSpanId1(contextBean.getSpanId1());
-      lr.setTraceId(contextBean.getTraceId());
+      lr.setContextBean(contextBean);
       Map<String, String> customs = contextBean.getCustoms();
       for (Map.Entry<String, String> entry : customs.entrySet()) {
         lr.setCustom(entry.getKey(), entry.getValue());

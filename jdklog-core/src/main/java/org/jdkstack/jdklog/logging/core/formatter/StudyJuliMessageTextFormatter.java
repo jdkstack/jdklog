@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Objects;
+import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
 import org.jdkstack.jdklog.logging.core.manager.LogManagerUtils;
@@ -106,13 +107,14 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
     sb.append(' ');
     final String unique = LogManagerUtils.getProperty(Constants.UNIQUE, Constants.FALSE);
     if (unique.equals(Constants.TRUE)) {
-      final String traceId = logRecord.getTraceId();
+      final Bean contextBean = logRecord.getContextBean();
+      final String traceId = contextBean.getTraceId();
       sb.append(traceId);
       sb.append(' ');
-      final String spanId0 = logRecord.getSpanId0();
+      final String spanId0 = contextBean.getSpanId0();
       sb.append(spanId0);
       sb.append(' ');
-      final String spanId1 = logRecord.getSpanId1();
+      final String spanId1 = contextBean.getSpanId1();
       sb.append(spanId1);
       sb.append(' ');
     }

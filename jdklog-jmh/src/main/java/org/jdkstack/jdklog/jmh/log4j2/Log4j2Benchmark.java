@@ -34,7 +34,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Measurement(iterations = Constants.LOOP, time = 1)
 public class Log4j2Benchmark {
   /** . */
-  private static final Logger LOGGER = LogManager.getLogger(Log4j2Benchmark.class);
+  private static final Logger LOG4J2 = LogManager.getLogger(Log4j2Benchmark.class);
 
   /**
    * This is a method description.
@@ -71,7 +71,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughputSimple() {
-    LOGGER.info("BenchmarkMessageParams.TEST");
+    LOG4J2.info("BenchmarkMessageParams.TEST");
   }
 
   /**
@@ -85,7 +85,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput1Param() {
-    LOGGER.info("p1={}", Constants.ONE);
+    LOG4J2.info("p1={}", Constants.ONE);
   }
 
   /**
@@ -99,7 +99,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput2Params() {
-    LOGGER.info("p1={}, p2={}", Constants.ONE, Constants.TWO);
+    LOG4J2.info("p1={}, p2={}", Constants.ONE, Constants.TWO);
   }
 
   /**
@@ -113,7 +113,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput3Params() {
-    LOGGER.info("p1={}, p2={}, p3={}", Constants.ONE, Constants.TWO, Constants.THREE);
+    LOG4J2.info("p1={}, p2={}, p3={}", Constants.ONE, Constants.TWO, Constants.THREE);
   }
 
   /**
@@ -127,7 +127,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput4Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}",
         Constants.ONE,
         Constants.TWO,
@@ -146,7 +146,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput5Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}",
         Constants.ONE,
         Constants.TWO,
@@ -166,7 +166,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput6Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}",
         Constants.ONE,
         Constants.TWO,
@@ -187,7 +187,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput7Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}",
         Constants.ONE,
         Constants.TWO,
@@ -209,7 +209,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput8Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}",
         Constants.ONE,
         Constants.TWO,
@@ -232,7 +232,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput9Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}, p9={}",
         Constants.ONE,
         Constants.TWO,
@@ -256,7 +256,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput10Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}, p9={}, p10={}",
         Constants.ONE,
         Constants.TWO,
@@ -281,7 +281,7 @@ public class Log4j2Benchmark {
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public final void throughput11Params() {
-    LOGGER.info(
+    LOG4J2.info(
         "p1={}, p2={}, p3={}, p4={}, p5={}, p6={}, p7={}, p8={}, p9={}, p10={}, p11={}",
         Constants.ONE,
         Constants.TWO,

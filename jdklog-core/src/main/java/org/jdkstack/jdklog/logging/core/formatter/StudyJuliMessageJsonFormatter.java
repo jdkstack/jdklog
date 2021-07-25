@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Objects;
+import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
 
@@ -108,16 +109,17 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     final String lineNumberValue = inQuotes(lineNumberStr);
     sb.append(lineNumberKey).append(": ").append(lineNumberValue).append(',');
     if (checkUnique()) {
+      final Bean contextBean = logRecord.getContextBean();
       final String traceIdKey = inQuotes("traceId");
-      final String traceIdStr = logRecord.getTraceId();
+      final String traceIdStr = contextBean.getTraceId();
       final String traceIdValue = inQuotes(traceIdStr);
       sb.append(traceIdKey).append(": ").append(traceIdValue).append(',');
       final String spanId0Key = inQuotes("spanId0");
-      final String spanId0Str = logRecord.getSpanId0();
+      final String spanId0Str = contextBean.getSpanId0();
       final String spanId0Value = inQuotes(spanId0Str);
       sb.append(spanId0Key).append(": ").append(spanId0Value).append(',');
       final String spanId1Key = inQuotes("spanId1");
-      final String spanId1Str = logRecord.getSpanId1();
+      final String spanId1Str = contextBean.getSpanId1();
       final String spanId1Value = inQuotes(spanId1Str);
       sb.append(spanId1Key).append(": ").append(spanId1Value).append(',');
     }
