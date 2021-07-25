@@ -93,18 +93,14 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
     sb.append(name);
     sb.append(']');
     sb.append(' ');
-    // 日志由哪个类打印的.
-    final String sourceClassName = logRecord.getSourceClassName();
-    sb.append(sourceClassName);
-    sb.append(' ');
-    // 日志由哪个方法打印的.
-    final String sourceMethodName = logRecord.getSourceMethodName();
-    sb.append(sourceMethodName);
-    sb.append(' ');
-    // 日志方法行.
-    final int lineNumber = logRecord.getLineNumber();
-    sb.append(lineNumber);
-    sb.append(' ');
+    // 日志自定义字段.
+    final Map<String, String> customs = logRecord.getCustoms();
+    for (final Map.Entry<String, String> entry : customs.entrySet()) {
+      final String value = entry.getValue();
+      sb.append(value);
+      sb.append(' ');
+    }
+    // 打印特殊字段.
     final String unique = LogManagerUtils.getProperty(Constants.UNIQUE, Constants.FALSE);
     if (unique.equals(Constants.TRUE)) {
       final Bean contextBean = logRecord.getContextBean();
@@ -116,17 +112,6 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
       sb.append(' ');
       final String spanId1 = contextBean.getSpanId1();
       sb.append(spanId1);
-      sb.append(' ');
-    }
-    // 日志序列号.
-    final long serialNumber = logRecord.getSerialNumber();
-    sb.append(serialNumber);
-    sb.append(' ');
-    // 日志自定义字段.
-    final Map<String, String> customs = logRecord.getCustoms();
-    for (final Map.Entry<String, String> entry : customs.entrySet()) {
-      final String value = entry.getValue();
-      sb.append(value);
       sb.append(' ');
     }
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.

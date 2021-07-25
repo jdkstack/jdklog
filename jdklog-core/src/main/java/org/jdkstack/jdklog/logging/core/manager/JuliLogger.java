@@ -96,8 +96,8 @@ public class JuliLogger extends AbstractJuliLogger {
   public final void logp(
       final Level logLevel, final String sourceClass, final String sourceMethod, final String msg) {
     final Record lr = new LogRecord(logLevel, msg);
-    lr.setSourceClassName(sourceClass);
-    lr.setSourceMethodName(sourceMethod);
+    lr.setCustom("sourceClass", sourceClass);
+    lr.setCustom("sourceMethod", sourceMethod);
     this.doLog(lr);
   }
 
@@ -121,8 +121,8 @@ public class JuliLogger extends AbstractJuliLogger {
       final String msg,
       final Object param1) {
     final Record lr = new LogRecord(logLevel, msg);
-    lr.setSourceClassName(sourceClass);
-    lr.setSourceMethodName(sourceMethod);
+    lr.setCustom("sourceClass", sourceClass);
+    lr.setCustom("sourceMethod", sourceMethod);
     lr.setParameter(param1);
     lr.setUniqueId("-");
     this.doLog(lr);
@@ -148,8 +148,8 @@ public class JuliLogger extends AbstractJuliLogger {
       final String msg,
       final Object... params) {
     final Record lr = new LogRecord(logLevel, msg);
-    lr.setSourceClassName(sourceClass);
-    lr.setSourceMethodName(sourceMethod);
+    lr.setCustom("sourceClass", sourceClass);
+    lr.setCustom("sourceMethod", sourceMethod);
     for (final Object param : params) {
       lr.setParameter(param);
     }
@@ -190,8 +190,8 @@ public class JuliLogger extends AbstractJuliLogger {
       final String msg,
       final Throwable thrown) {
     final Record lr = new LogRecord(logLevel, msg);
-    lr.setSourceClassName(sourceClass);
-    lr.setSourceMethodName(sourceMethod);
+    lr.setCustom("sourceClass", sourceClass);
+    lr.setCustom("sourceMethod", sourceMethod);
     lr.setThrown(thrown);
     this.doLog(lr);
   }

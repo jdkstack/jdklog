@@ -18,12 +18,10 @@ import org.jdkstack.jdklog.logging.api.context.Bean;
 public class LogRecord implements Record {
   /** . */
   private final Map<String, String> customs = new LinkedHashMap<>(Constants.MAP_CAPACITY);
+  /** 0分配数组,需要优化. */
+  private final List<Object> parameters = new ArrayList<>(Constants.MAP_CAPACITY);
   /** . */
   private Level logLevel;
-  /** . */
-  private String sourceClassName;
-  /** . */
-  private String sourceMethodName;
   /** . */
   private String message;
   /** . */
@@ -36,14 +34,8 @@ public class LogRecord implements Record {
   private String loggerName;
   /** . */
   private Instant instant;
-  /** 0分配数组,需要优化. */
-  private final List<Object> parameters = new ArrayList<>(Constants.MAP_CAPACITY);
   /** . */
   private String uniqueId;
-  /** . */
-  private long serialNumber;
-  /** . */
-  private int lineNumber;
   /** 上下午数据. */
   private Bean contextBean;
 
@@ -164,58 +156,6 @@ public class LogRecord implements Record {
   @Override
   public final void setLoggerName(final String name) {
     this.loggerName = name;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  @Override
-  public final String getSourceClassName() {
-    return this.sourceClassName;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param sourceClassName .
-   * @author admin
-   */
-  @Override
-  public final void setSourceClassName(final String sourceClassName) {
-    this.sourceClassName = sourceClassName;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  @Override
-  public final String getSourceMethodName() {
-    return this.sourceMethodName;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param sourceMethodName .
-   * @author admin
-   */
-  @Override
-  public final void setSourceMethodName(final String sourceMethodName) {
-    this.sourceMethodName = sourceMethodName;
   }
 
   /**
@@ -353,32 +293,6 @@ public class LogRecord implements Record {
    *
    * <p>Another description after blank line.
    *
-   * @return long .
-   * @author admin
-   */
-  @Override
-  public final long getSerialNumber() {
-    return this.serialNumber;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param serialNumber .
-   * @author admin
-   */
-  @Override
-  public final void setSerialNumber(final long serialNumber) {
-    this.serialNumber = serialNumber;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @return Map .
    * @author admin
    */
@@ -399,32 +313,6 @@ public class LogRecord implements Record {
   @Override
   public final void setCustom(final String key, final String value) {
     this.customs.put(key, value);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return int .
-   * @author admin
-   */
-  @Override
-  public final int getLineNumber() {
-    return this.lineNumber;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param lineNumber .
-   * @author admin
-   */
-  @Override
-  public final void setLineNumber(final int lineNumber) {
-    this.lineNumber = lineNumber;
   }
 
   /**

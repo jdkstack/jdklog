@@ -4,18 +4,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
-import org.jdkstack.jdklog.logging.api.filter.Filter;
-import org.jdkstack.jdklog.logging.api.formatter.Formatter;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
-import org.jdkstack.jdklog.logging.api.metainfo.Level;
-import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
-import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
-import org.jdkstack.jdklog.logging.core.handler.AbstractHandler;
-import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
+import org.jdkstack.jdklog.logging.core.handler.AbstractFileHandler;
 
 /**
  * This is a class description.
@@ -24,13 +16,11 @@ import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
  *
  * @author admin
  */
-public class ConsoleHandler extends AbstractHandler {
+public class ConsoleHandler extends AbstractFileHandler {
   /** . */
   private PrintWriter writer;
   /** . */
   private OutputStreamWriter streamWriter;
-  /** . */
-  private String prefix;
 
   /**
    * .
@@ -40,8 +30,7 @@ public class ConsoleHandler extends AbstractHandler {
    * @author admin
    */
   public ConsoleHandler() {
-    // 读取日志配置文件,初始化配置.
-    this.config();
+    super("");
     // 开始创建文件流,用于日志写入.
     this.open();
   }
@@ -55,64 +44,45 @@ public class ConsoleHandler extends AbstractHandler {
    * @author admin
    */
   public ConsoleHandler(final String prefix) {
-    this.prefix = prefix;
-    // 读取日志配置文件,初始化配置.
-    this.config();
+    super(prefix);
     // 开始创建文件流,用于日志写入.
     this.open();
   }
 
   /**
-   * This is a method description.
+   * .
    *
    * <p>Another description after blank line.
    *
-   * @param logRecord .
+   * @param size .
    * @author admin
    */
   @Override
-  public final void publish(final Record logRecord) {
-    // 记录当前处理器最后一次处理日志的时间.
-    this.sys = System.currentTimeMillis();
-    GLOBAL_COUNTER.incrementAndGet();
-    this.counter.incrementAndGet();
-    // 处理器可以处理日志的级别.
-    final int levelValue = this.logLevel.intValue();
-    // 用户发送日志的级别.
-    final int recordLevel = logRecord.intValue();
-    // 如果日志的消息级别,比当前处理器的级别小则不处理日志. 如果当前处理器关闭日志级别,处理器也不处理日志.
-    final boolean intValue = recordLevel < levelValue;
-    final boolean offValue = levelValue == LogLevel.OFF.intValue();
-    if (intValue || offValue) {
-      return;
-    }
-    // 如果过滤器返回false,当前日志消息丢弃.
-    if (this.filter.isLoggable(logRecord)) {
-      return;
-    }
-    final String msg = this.formatter.format(logRecord);
-    this.writer.write(msg);
-    this.writer.flush();
-  }
-
-  @Override
-  public final void flush() {
-    //
-  }
-
-  @Override
-  public final int size() {
-    return 0;
-  }
-
-  @Override
   public final void process(final int size) {
-    //
-  }
-
-  @Override
-  public final StudyQueue<Record> getFileQueue() {
-    throw new UnsupportedOperationException("未实现.");
+    try {
+      boolean flag = false;
+      // 获取一批数据,写入磁盘.
+      for (int i = 0; i < size; i++) {
+        // 非阻塞方法获取队列元素.
+        final Record logRecord = this.fileQueue.poll();
+        // 如果数量不够,导致从队列获取空对象.
+        if (null != logRecord && null != this.writer) {
+          // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).
+          final String format = this.formatter.format(logRecord);
+          this.writer.write(format);
+          // 设置不为空的标志.
+          flag = true;
+        }
+      }
+      // 如果缓存中由数据,刷新一次.
+      if (flag) {
+        // 刷新一次IO磁盘.
+        this.writer.flush();
+      }
+    } catch (final Exception e) {
+      // ignore Exception.
+      throw new StudyJuliRuntimeException(e);
+    }
   }
 
   private void open() {
@@ -134,37 +104,14 @@ public class ConsoleHandler extends AbstractHandler {
     }
   }
 
-  private void config() {
-    try {
-      // 获取当前的类的全路径.
-      final Class<? extends AbstractHandler> aClass = this.getClass();
-      final String className = aClass.getName();
-      final String tempPrefix = this.prefix + className;
-      // 设置日志文件的编码.
-      final String encodingStr = this.getProperty(tempPrefix + ".encoding", "UTF-8");
-      this.setEncoding(encodingStr);
-      // 设置日志文件的级别.
-      final String logLevelName = LogLevel.ALL.getName();
-      final String levelStr = this.getProperty(tempPrefix + ".level", logLevelName);
-      final Level level = LogLevel.findLevel(levelStr);
-      this.setLevel(level);
-      // 设置日志文件的过滤器.
-      final String filterName = this.getProperty(tempPrefix + ".filter", Constants.FILTER);
-      // 设置过滤器.
-      final Constructor<?> filterConstructor = ClassLoadingUtils.constructor(filterName);
-      final Filter filterTemp = (Filter) ClassLoadingUtils.newInstance(filterConstructor);
-      this.setFilter(filterTemp);
-      // 获取日志格式化器.
-      final String formatterName = this.getProperty(tempPrefix + ".formatter", Constants.FORMATTER);
-      // 设置日志格式化器.
-      final Constructor<?> formatterConstructor = ClassLoadingUtils.constructor(formatterName);
-      final Formatter formatterTemp =
-          (Formatter) ClassLoadingUtils.newInstance(formatterConstructor);
-      // 设置日志格式化器.
-      this.setFormatter(formatterTemp);
-    } catch (final Exception e) {
-      throw new StudyJuliRuntimeException(e);
-    }
+  @Override
+  public void doOpen() {
+    this.open();
+  }
+
+  @Override
+  public void doClose() {
+    this.closeIo();
   }
 
   /**

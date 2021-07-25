@@ -102,46 +102,6 @@ public interface Record {
    * @return String .
    * @author admin
    */
-  String getSourceClassName();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param sourceClassName .
-   * @author admin
-   */
-  void setSourceClassName(String sourceClassName);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  String getSourceMethodName();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param sourceMethodName .
-   * @author admin
-   */
-  void setSourceMethodName(String sourceMethodName);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
   String getMessage();
 
   /**
@@ -239,26 +199,6 @@ public interface Record {
    *
    * <p>Another description after blank line.
    *
-   * @return long .
-   * @author admin
-   */
-  long getSerialNumber();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param serialNumber .
-   * @author admin
-   */
-  void setSerialNumber(long serialNumber);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @return Map .
    * @author admin
    */
@@ -274,26 +214,6 @@ public interface Record {
    * @author admin
    */
   void setCustom(String key, String value);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return int .
-   * @author admin
-   */
-  int getLineNumber();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param lineNumber .
-   * @author admin
-   */
-  void setLineNumber(int lineNumber);
 
   /**
    * This is a method description.

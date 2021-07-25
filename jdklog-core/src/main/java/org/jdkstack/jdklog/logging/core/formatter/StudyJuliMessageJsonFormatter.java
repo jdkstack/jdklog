@@ -87,27 +87,10 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     sb.append(level).append(": ").append(levelNameStr).append(',');
     // 线程名称.
     final String threadKey = inQuotes("thread");
-
     final Thread thread = Thread.currentThread();
     final String name = thread.getName();
     final String threadName = inQuotes(name);
     sb.append(threadKey).append(": ").append(threadName).append(',');
-    // 日志当前的类全限定名.
-    final String fullClassPath = inQuotes("fullClassPath");
-    final String sourceClassName = logRecord.getSourceClassName();
-    final String sourceClassNameStr = inQuotes(sourceClassName);
-    sb.append(fullClassPath).append(": ").append(sourceClassNameStr).append(',');
-    // 日志当前类的方法.
-    final String methodKey = inQuotes("method");
-    final String methodStr = logRecord.getSourceMethodName();
-    final String methodValue = inQuotes(methodStr);
-    sb.append(methodKey).append(": ").append(methodValue).append(',');
-    // 行号.
-    final String lineNumberKey = inQuotes("lineNumber");
-    final int lineNumber = logRecord.getLineNumber();
-    final String lineNumberStr = String.valueOf(lineNumber);
-    final String lineNumberValue = inQuotes(lineNumberStr);
-    sb.append(lineNumberKey).append(": ").append(lineNumberValue).append(',');
     if (checkUnique()) {
       final Bean contextBean = logRecord.getContextBean();
       final String traceIdKey = inQuotes("traceId");
@@ -123,9 +106,6 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
       final String spanId1Value = inQuotes(spanId1Str);
       sb.append(spanId1Key).append(": ").append(spanId1Value).append(',');
     }
-    final String serialNumberKey = inQuotes("serialNumber");
-    final long serialNumber = logRecord.getSerialNumber();
-    sb.append(serialNumberKey).append(": ").append(serialNumber).append(',');
     // 日志自定义字段.
     final Map<String, String> customs = logRecord.getCustoms();
     for (final Map.Entry<String, String> entry : customs.entrySet()) {

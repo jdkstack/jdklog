@@ -84,11 +84,11 @@ public class JuliLog implements Log {
     // 获取当前方法调用者的类方法.
     final String classMethod = this.stackTraceElement.getMethodName();
     // 设置日志调用的源类路径和方法.
-    lr.setSourceClassName(className);
-    lr.setSourceMethodName(classMethod);
+    lr.setCustom("className", className);
+    lr.setCustom("classMethod", classMethod);
     // 设置行号.
     final int lineNumber = this.stackTraceElement.getLineNumber();
-    lr.setLineNumber(lineNumber);
+    lr.setCustom("lineNumber", Integer.toString(lineNumber));
     // 查看是否使用唯一序列号ID.
     final String unique = LogManagerUtils.getProperty(Constants.UNIQUE, Constants.FALSE);
     if (Constants.TRUE.equals(unique)) {
@@ -103,7 +103,7 @@ public class JuliLog implements Log {
     }
     // 为每条日志设置一个自增长的序列号.
     final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
-    lr.setSerialNumber(globalCounter);
+    lr.setCustom("globalCounter", Long.toString(globalCounter));
     this.logger.logp(lr);
   }
 
