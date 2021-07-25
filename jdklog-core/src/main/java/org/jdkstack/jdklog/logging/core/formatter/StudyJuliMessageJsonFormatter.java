@@ -55,7 +55,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     // 日志自定义字段.
     handle(sb, logRecord.getCustoms());
     // 处理之后.
-    handle(sb, after(logRecord));
+    handle(sb, after());
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
     final String message = defaultFormat(logRecord);
     // json key.

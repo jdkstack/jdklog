@@ -1,10 +1,7 @@
 package org.jdkstack.jdklog.logging.core.factory;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
-import org.jdkstack.jdklog.logging.api.context.Bean;
-import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;

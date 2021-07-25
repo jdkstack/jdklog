@@ -151,25 +151,22 @@ public abstract class AbstractMessageFormatter implements Formatter {
    *
    * <p>.
    *
-   * @param logRecord .
    * @author admin
    */
-  protected Map<String, String> after(final Record logRecord) {
+  protected Map<String, String> after() {
     final Map<String, String> customs = new LinkedHashMap<>(16);
     final Thread thread = Thread.currentThread();
     // 打印特殊字段.
-    if (checkUnique()) {
+    if (checkUnique() && thread instanceof StudyThreadImpl) {
       // 如果不是StudyThread,无法处理唯一日志消息ID.
-      if (thread instanceof StudyThreadImpl) {
-        final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
-        Bean contextBean = studyThread.getContextBean();
-        final String traceId = contextBean.getTraceId();
-        customs.put("traceId", traceId);
-        final String spanId0 = contextBean.getSpanId0();
-        customs.put("spanId0", spanId0);
-        final String spanId1 = contextBean.getSpanId1();
-        customs.put("spanId1", spanId1);
-      }
+      final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
+      Bean contextBean = studyThread.getContextBean();
+      final String traceId = contextBean.getTraceId();
+      customs.put("traceId", traceId);
+      final String spanId0 = contextBean.getSpanId0();
+      customs.put("spanId0", spanId0);
+      final String spanId1 = contextBean.getSpanId1();
+      customs.put("spanId1", spanId1);
     }
     return customs;
   }
