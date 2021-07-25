@@ -19,7 +19,7 @@ import org.jdkstack.jdklog.logging.api.metainfo.Record;
  */
 public class FileHandler extends AbstractFileHandler {
   /** . */
-  private PrintWriter writer;
+  private PrintWriter printWriter;
   /** . */
   private FileOutputStream fileStream;
   /** . */
@@ -71,10 +71,10 @@ public class FileHandler extends AbstractFileHandler {
         // 非阻塞方法获取队列元素.
         final Record logRecord = this.fileQueue.poll();
         // 如果数量不够,导致从队列获取空对象.
-        if (null != logRecord && null != this.writer) {
+        if (null != logRecord && null != this.printWriter) {
           // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).
           final String format = this.formatter.format(logRecord);
-          this.writer.write(format);
+          this.printWriter.write(format);
           // 设置不为空的标志.
           flag = true;
         }
@@ -82,7 +82,7 @@ public class FileHandler extends AbstractFileHandler {
       // 如果缓存中由数据,刷新一次.
       if (flag) {
         // 刷新一次IO磁盘.
-        this.writer.flush();
+        this.printWriter.flush();
       }
     } catch (final Exception e) {
       // ignore Exception.
@@ -100,9 +100,9 @@ public class FileHandler extends AbstractFileHandler {
       // 创建一个输出流,使用UTF-8 编码.
       this.streamWriter = new OutputStreamWriter(this.bufferedStream, StandardCharsets.UTF_8);
       // 创建一个PrintWriter,启动自动刷新.
-      this.writer = new PrintWriter(this.streamWriter, true);
+      this.printWriter = new PrintWriter(this.streamWriter, true);
       // 尝试写入一个空"".
-      this.writer.write("");
+      this.printWriter.write("");
     } catch (final Exception e) {
       // 如何任何阶段发生了异常,主动关闭所有IO资源.
       this.closeIo();
@@ -133,11 +133,11 @@ public class FileHandler extends AbstractFileHandler {
 
   private void writerClose() {
     // 尝试关闭print writer流.
-    if (null != this.writer) {
-      this.writer.write("");
-      this.writer.flush();
-      this.writer.close();
-      this.writer = null;
+    if (null != this.printWriter) {
+      this.printWriter.write("");
+      this.printWriter.flush();
+      this.printWriter.close();
+      this.printWriter = null;
     }
   }
 

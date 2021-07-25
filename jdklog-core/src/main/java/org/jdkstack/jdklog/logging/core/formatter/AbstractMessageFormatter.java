@@ -1,7 +1,9 @@
 package org.jdkstack.jdklog.logging.core.formatter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.jdkstack.jdklog.logging.api.formatter.Formatter;
 import org.jdkstack.jdklog.logging.api.manager.LoaderLogInfo;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
@@ -15,9 +17,41 @@ import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
  * @author admin
  */
 public abstract class AbstractMessageFormatter implements Formatter {
+  /** . */
+  protected DateTimeFormatter pattern;
 
   protected AbstractMessageFormatter() {
-    //
+    // 获取运行时的类,并获取简单名.
+    String simpleName = this.getClass().getSimpleName();
+    // 根据简单名获取时间格式字符串.
+    String timeFormat =
+        AbstractLogManager.getProperty1(simpleName + Constants.DATETIME_FORMAT_NAME);
+    // 如果为空.
+    if (Objects.isNull(timeFormat)) {
+      // 使用默认的格式化.
+      timeFormat = Constants.DATETIME_FORMAT_VALUE;
+    }
+    // 创建一个日期时间格式化实例.
+    this.pattern = DateTimeFormatter.ofPattern(timeFormat);
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param timeFormat 日期格式化.
+   * @author admin
+   */
+  protected AbstractMessageFormatter(final String timeFormat) {
+    // 如果为空.
+    if (Objects.isNull(timeFormat)) {
+      // 使用默认的格式化.
+      this.pattern = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_VALUE);
+    } else {
+      // 使用自定义的格式化.
+      this.pattern = DateTimeFormatter.ofPattern(timeFormat);
+    }
   }
 
   /**

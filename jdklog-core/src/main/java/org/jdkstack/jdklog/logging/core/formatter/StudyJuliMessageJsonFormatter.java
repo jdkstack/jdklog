@@ -3,12 +3,9 @@ package org.jdkstack.jdklog.logging.core.formatter;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.Objects;
 import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
-import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
 
 /**
  * 日志文本行Json格式化,扩展JDK提供的简单格式化.
@@ -18,8 +15,6 @@ import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
  * @author admin
  */
 public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatter {
-  /** . */
-  private final DateTimeFormatter pattern;
 
   /**
    * This is a method description.
@@ -29,16 +24,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
    * @author admin
    */
   public StudyJuliMessageJsonFormatter() {
-    // 获取当前处理器配置的格式化.
-    final String name = StudyJuliMessageJsonFormatter.class.getName();
-    String timeFormat = AbstractLogManager.getProperty1(name + Constants.DATETIME_FORMAT_NAME);
-    // 如果为空.
-    if (Objects.isNull(timeFormat)) {
-      // 使用默认的格式化.
-      timeFormat = Constants.DATETIME_FORMAT_VALUE;
-    }
-    // 创建一个日期时间格式化实例.
-    this.pattern = DateTimeFormatter.ofPattern(timeFormat);
+    //
   }
 
   /**
@@ -50,14 +36,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
    * @author admin
    */
   public StudyJuliMessageJsonFormatter(final String timeFormat) {
-    // 如果为空.
-    if (Objects.isNull(timeFormat)) {
-      // 使用默认的格式化.
-      this.pattern = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_VALUE);
-    } else {
-      // 使用自定义的格式化.
-      this.pattern = DateTimeFormatter.ofPattern(timeFormat);
-    }
+    super(timeFormat);
   }
 
   /**

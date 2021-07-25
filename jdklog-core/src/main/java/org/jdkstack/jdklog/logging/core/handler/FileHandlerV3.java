@@ -19,7 +19,7 @@ import org.jdkstack.jdklog.logging.api.metainfo.Record;
  */
 public class FileHandlerV3 extends AbstractFileHandler {
   /** . */
-  private FileChannel writer;
+  private FileChannel fileChannelWriter;
 
   /**
    * This is a method description.
@@ -65,10 +65,10 @@ public class FileHandlerV3 extends AbstractFileHandler {
         // 非阻塞方法获取队列元素.
         final Record logRecord = this.fileQueue.poll();
         // 如果数量不够,导致从队列获取空对象.
-        if (null != logRecord && null != this.writer) {
+        if (null != logRecord && null != this.fileChannelWriter) {
           // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).
           final String format = this.formatter.format(logRecord);
-          this.writer.write(ByteBuffer.wrap(format.getBytes(StandardCharsets.UTF_8)));
+          this.fileChannelWriter.write(ByteBuffer.wrap(format.getBytes(StandardCharsets.UTF_8)));
           // 设置不为空的标志.
           flag = true;
         }
@@ -76,7 +76,7 @@ public class FileHandlerV3 extends AbstractFileHandler {
       // 如果缓存中由数据,刷新一次.
       if (flag) {
         // 刷新一次IO磁盘.
-        this.writer.force(true);
+        this.fileChannelWriter.force(true);
       }
     } catch (final Exception e) {
       // ignore Exception.
@@ -88,7 +88,7 @@ public class FileHandlerV3 extends AbstractFileHandler {
     this.writeLock.lock();
     try {
       final Path path = this.logFilePath.toPath();
-      this.writer =
+      this.fileChannelWriter =
           (FileChannel)
               Files.newByteChannel(
                   path,
@@ -96,7 +96,7 @@ public class FileHandlerV3 extends AbstractFileHandler {
                   StandardOpenOption.WRITE,
                   StandardOpenOption.APPEND);
       // 尝试写入一个空"".
-      this.writer.write(ByteBuffer.allocate(0));
+      this.fileChannelWriter.write(ByteBuffer.allocate(0));
     } catch (final Exception e) {
       // 如何任何阶段发生了异常,主动关闭所有IO资源.
       this.closeIo();
@@ -126,11 +126,11 @@ public class FileHandlerV3 extends AbstractFileHandler {
 
   private void writerClose() throws IOException {
     // 尝试关闭print writer流.
-    if (null != this.writer) {
-      this.writer.write(ByteBuffer.allocate(0));
-      this.writer.force(true);
-      this.writer.close();
-      this.writer = null;
+    if (null != this.fileChannelWriter) {
+      this.fileChannelWriter.write(ByteBuffer.allocate(0));
+      this.fileChannelWriter.force(true);
+      this.fileChannelWriter.close();
+      this.fileChannelWriter = null;
     }
   }
 
