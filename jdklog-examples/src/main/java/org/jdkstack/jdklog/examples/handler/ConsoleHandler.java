@@ -115,7 +115,6 @@ public class ConsoleHandler extends AbstractHandler {
     throw new UnsupportedOperationException("未实现.");
   }
 
-  @SuppressWarnings({"java:S2093", "java:S106"})
   private void open() {
     this.writeLock.lock();
     try {
