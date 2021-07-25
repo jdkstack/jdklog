@@ -1,10 +1,6 @@
 package org.jdkstack.jdklog.logging.core.formatter;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Map;
-import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 
 /**
@@ -50,45 +46,23 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
    */
   @Override
   public String format(final Record logRecord) {
-    // UTC时区获取当前系统的日期.
-    final Instant instant = logRecord.getInstant();
-    final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
-    // 日期格式化.
-    final String format = this.pattern.format(zdt);
-    logRecord.setCustom("timestamp", format);
-    // 日志级别.
-    // final String level = inQuotes("level");
-    final String levelName = logRecord.getLevelName();
-    logRecord.setCustom("level", levelName);
-    // 线程名称.
-    final Thread thread = Thread.currentThread();
-    final String name = thread.getName();
-    logRecord.setCustom("thread", name);
-    if (checkUnique()) {
-      final Bean contextBean = logRecord.getContextBean();
-      final String traceIdStr = contextBean.getTraceId();
-      logRecord.setCustom("traceId", traceIdStr);
-      final String spanId0Str = contextBean.getSpanId0();
-      logRecord.setCustom("spanId0", spanId0Str);
-      final String spanId1Str = contextBean.getSpanId1();
-      logRecord.setCustom("spanId1", spanId1Str);
-    }
+    // 最终的日志消息.
     final StringBuilder sb = new StringBuilder(50);
+    // json字符串开始.
+    sb.append("{");
+    // 处理之前.
+    handle(sb, before(logRecord));
     // 日志自定义字段.
-    final Map<String, String> customs = logRecord.getCustoms();
-    for (final Map.Entry<String, String> entry : customs.entrySet()) {
-      final String key = entry.getKey();
-      final String value = entry.getValue();
-      final String customKey = inQuotes(key);
-      sb.append(customKey).append(": ");
-      final String customValue = inQuotes(value);
-      sb.append(customValue);
-      sb.append(',');
-    }
+    handle(sb, logRecord.getCustoms());
+    // 处理之后.
+    handle(sb, after(logRecord));
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
     final String message = defaultFormat(logRecord);
+    // json key.
     final String messageKey = inQuotes("message");
+    // json value.
     final String messageValue = inQuotes(message);
+    // 已经格式化后的日志消息.
     sb.append(messageKey).append(": ").append(messageValue);
     // 如果有异常堆栈信息,则打印出来.
     final Throwable thrown = logRecord.getThrown();
@@ -109,8 +83,22 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     }
     // 增加一个换行符号(按照平台获取)
     final String lineSeparator = System.lineSeparator();
+    // json字符串结束.
     sb.append('}').append(lineSeparator);
     return sb.toString();
+  }
+
+  private void handle(StringBuilder sb, Map<String, String> customs) {
+    // 循环处理自定义字段.
+    for (final Map.Entry<String, String> entry : customs.entrySet()) {
+      final String key = entry.getKey();
+      final String value = entry.getValue();
+      final String customKey = inQuotes(key);
+      sb.append(customKey).append(": ");
+      final String customValue = inQuotes(value);
+      sb.append(customValue);
+      sb.append(',');
+    }
   }
 
   /**

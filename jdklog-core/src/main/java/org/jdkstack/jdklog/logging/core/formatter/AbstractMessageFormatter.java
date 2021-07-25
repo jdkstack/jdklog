@@ -1,9 +1,15 @@
 package org.jdkstack.jdklog.logging.core.formatter;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import org.jdkstack.jdklog.logging.api.context.Bean;
+import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.formatter.Formatter;
 import org.jdkstack.jdklog.logging.api.manager.LoaderLogInfo;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
@@ -65,7 +71,7 @@ public abstract class AbstractMessageFormatter implements Formatter {
    * @return String.
    * @author admin
    */
-  protected static String defaultFormat(final Record logRecord) {
+  protected String defaultFormat(final Record logRecord) {
     // 得到日志消息.
     final String message = logRecord.getMessage();
     // 默认是一个空数组,不是空对象.
@@ -107,5 +113,64 @@ public abstract class AbstractMessageFormatter implements Formatter {
     final LoaderLogInfo classLoaderLogInfo = classLoaderLoggers.get(classLoader);
     final String unique = classLoaderLogInfo.getProperty(Constants.UNIQUE, Constants.FALSE);
     return Boolean.parseBoolean(unique);
+  }
+
+  /**
+   * 自定义字段填充.
+   *
+   * <p>.
+   *
+   * <p>.
+   *
+   * @param logRecord .
+   * @author admin
+   */
+  protected Map<String, String> before(final Record logRecord) {
+    final Map<String, String> customs = new LinkedHashMap<>(16);
+    // UTC时区获取当前系统的日期.
+    final Instant instant = logRecord.getInstant();
+    final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
+    // 日期格式化.
+    final String format = this.pattern.format(zdt);
+    // 拼接日期时间格式化.
+    customs.put("timestamp", format);
+    // 日志级别.
+    final String levelName = logRecord.getLevelName();
+    customs.put("levelName", levelName);
+    // 当前执行的线程名.
+    final Thread thread = Thread.currentThread();
+    final String name = thread.getName();
+    customs.put("thread", name);
+    return customs;
+  }
+
+  /**
+   * 自定义字段填充.
+   *
+   * <p>.
+   *
+   * <p>.
+   *
+   * @param logRecord .
+   * @author admin
+   */
+  protected Map<String, String> after(final Record logRecord) {
+    final Map<String, String> customs = new LinkedHashMap<>(16);
+    final Thread thread = Thread.currentThread();
+    // 打印特殊字段.
+    if (checkUnique()) {
+      // 如果不是StudyThread,无法处理唯一日志消息ID.
+      if (thread instanceof StudyThreadImpl) {
+        final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
+        Bean contextBean = studyThread.getContextBean();
+        final String traceId = contextBean.getTraceId();
+        customs.put("traceId", traceId);
+        final String spanId0 = contextBean.getSpanId0();
+        customs.put("spanId0", spanId0);
+        final String spanId1 = contextBean.getSpanId1();
+        customs.put("spanId1", spanId1);
+      }
+    }
+    return customs;
   }
 }

@@ -15,7 +15,6 @@ import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.spi.Log;
 import org.jdkstack.jdklog.logging.core.formatter.StudyJuliMessageFormat;
 import org.jdkstack.jdklog.logging.core.manager.JuliLogger;
-import org.jdkstack.jdklog.logging.core.manager.LogManagerUtils;
 
 /**
  * Juli日志的核心API,提供所有日志级别的方法,由LogFactory动态创建.
@@ -89,34 +88,10 @@ public class JuliLog implements Log {
     // 设置行号.
     final int lineNumber = this.stackTraceElement.getLineNumber();
     lr.setCustom("lineNumber", Integer.toString(lineNumber));
-    // 查看是否使用唯一序列号ID.
-    final String unique = LogManagerUtils.getProperty(Constants.UNIQUE, Constants.FALSE);
-    if (Constants.TRUE.equals(unique)) {
-      // 获取当前线程.
-      final Thread thread = Thread.currentThread();
-      // 如果不是StudyThread,无法处理唯一日志消息ID.
-      if (thread instanceof StudyThreadImpl) {
-        final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
-        // 处理线程上下文数据.
-        this.contextBean(lr, studyThread);
-      }
-    }
     // 为每条日志设置一个自增长的序列号.
     final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
     lr.setCustom("globalCounter", Long.toString(globalCounter));
     this.logger.logp(lr);
-  }
-
-  private void contextBean(final Record lr, final StudyThreadImpl studyThread) {
-    Bean contextBean = studyThread.getContextBean();
-    if (contextBean != null) {
-      lr.setContextBean(contextBean);
-      Map<String, String> customs = contextBean.getCustoms();
-      for (Map.Entry<String, String> entry : customs.entrySet()) {
-        lr.setCustom(entry.getKey(), entry.getValue());
-      }
-      // 反射得到方法,匹配方法配置.如果匹配则,追加到lr中.
-    }
   }
 
   /**

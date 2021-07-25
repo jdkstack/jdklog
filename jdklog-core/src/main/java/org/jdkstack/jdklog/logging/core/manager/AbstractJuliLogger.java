@@ -184,7 +184,6 @@ public abstract class AbstractJuliLogger implements Logger {
    * @author admin
    */
   protected final void doLog(final Record lr) {
-    lr.setLoggerName(this.name);
     this.log(lr);
   }
 

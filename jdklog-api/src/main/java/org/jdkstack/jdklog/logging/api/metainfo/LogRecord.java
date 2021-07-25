@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.jdkstack.jdklog.logging.api.context.Bean;
 
 /**
  * This is a class description.
@@ -25,19 +24,9 @@ public class LogRecord implements Record {
   /** . */
   private String message;
   /** . */
-  private int threadId;
-  /** . */
-  private String threadName;
-  /** . */
   private Throwable thrown;
   /** . */
-  private String loggerName;
-  /** . */
   private Instant instant;
-  /** . */
-  private String uniqueId;
-  /** 上下午数据. */
-  private Bean contextBean;
 
   /**
    * This is a method description.
@@ -52,110 +41,6 @@ public class LogRecord implements Record {
     this.logLevel = logLevel;
     this.message = msg;
     this.instant = Instant.now();
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return int .
-   * @author admin
-   */
-  @Override
-  public final int getThreadId() {
-    return this.threadId;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param threadId .
-   * @author admin
-   */
-  @Override
-  public final void setThreadId(final int threadId) {
-    this.threadId = threadId;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  @Override
-  public final String getThreadName() {
-    return this.threadName;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param threadName .
-   * @author admin
-   */
-  @Override
-  public final void setThreadName(final String threadName) {
-    this.threadName = threadName;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  @Override
-  public final String getUniqueId() {
-    return this.uniqueId;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param uniqueId .
-   * @author admin
-   */
-  @Override
-  public final void setUniqueId(final String uniqueId) {
-    this.uniqueId = uniqueId;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  @Override
-  public final String getLoggerName() {
-    return this.loggerName;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param name .
-   * @author admin
-   */
-  @Override
-  public final void setLoggerName(final String name) {
-    this.loggerName = name;
   }
 
   /**
@@ -339,15 +224,5 @@ public class LogRecord implements Record {
   @Override
   public final String getLevelName() {
     return this.logLevel.getName();
-  }
-
-  @Override
-  public Bean getContextBean() {
-    return contextBean;
-  }
-
-  @Override
-  public void setContextBean(Bean contextBean) {
-    this.contextBean = contextBean;
   }
 }

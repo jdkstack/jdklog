@@ -1,10 +1,6 @@
 package org.jdkstack.jdklog.logging.core.formatter;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Map;
-import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 
 /**
@@ -50,39 +46,14 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
    */
   @Override
   public String format(final Record logRecord) {
-    // UTC时区获取当前系统的日期.
-    final Instant instant = logRecord.getInstant();
-    final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
-    // 日期格式化.
-    final String format = this.pattern.format(zdt);
-    // 拼接日期时间格式化.
-    logRecord.setCustom("timestamp", format);
-    // 日志级别.
-    final String levelName = logRecord.getLevelName();
-    logRecord.setCustom("levelName", levelName);
-    // 当前执行的线程名.
-    final Thread thread = Thread.currentThread();
-    final String name = thread.getName();
-    logRecord.setCustom("thread", name);
-    // 打印特殊字段.
-    if (checkUnique()) {
-      final Bean contextBean = logRecord.getContextBean();
-      final String traceId = contextBean.getTraceId();
-      logRecord.setCustom("traceId", traceId);
-      final String spanId0 = contextBean.getSpanId0();
-      logRecord.setCustom("spanId0", spanId0);
-      final String spanId1 = contextBean.getSpanId1();
-      logRecord.setCustom("spanId1", spanId1);
-    }
-    // 组装完整的日志消息.100->16试试看.
-    final StringBuilder sb = new StringBuilder(16);
+    // 最终的日志消息.
+    final StringBuilder sb = new StringBuilder(50);
+    // 处理之前.
+    handle(sb, before(logRecord));
     // 日志自定义字段.
-    final Map<String, String> customs = logRecord.getCustoms();
-    for (final Map.Entry<String, String> entry : customs.entrySet()) {
-      final String value = entry.getValue();
-      sb.append(value);
-      sb.append(' ');
-    }
+    handle(sb, logRecord.getCustoms());
+    // 处理之后.
+    handle(sb, after(logRecord));
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
     final String message = defaultFormat(logRecord);
     // 已经格式化后的日志消息.
@@ -107,5 +78,14 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
     final String lineSeparator = System.lineSeparator();
     sb.append(lineSeparator);
     return sb.toString();
+  }
+
+  private void handle(StringBuilder sb, Map<String, String> customs) {
+    // 循环处理自定义字段.
+    for (final Map.Entry<String, String> entry : customs.entrySet()) {
+      final String value = entry.getValue();
+      sb.append(value);
+      sb.append(' ');
+    }
   }
 }

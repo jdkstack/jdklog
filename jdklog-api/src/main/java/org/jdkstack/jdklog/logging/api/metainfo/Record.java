@@ -3,7 +3,6 @@ package org.jdkstack.jdklog.logging.api.metainfo;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import org.jdkstack.jdklog.logging.api.context.Bean;
 
 /**
  * This is a class description.
@@ -13,86 +12,6 @@ import org.jdkstack.jdklog.logging.api.context.Bean;
  * @author admin
  */
 public interface Record {
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return int .
-   * @author admin
-   */
-  int getThreadId();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param threadId .
-   * @author admin
-   */
-  void setThreadId(int threadId);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  String getThreadName();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param threadName .
-   * @author admin
-   */
-  void setThreadName(String threadName);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  String getUniqueId();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param uniqueId .
-   * @author admin
-   */
-  void setUniqueId(String uniqueId);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String .
-   * @author admin
-   */
-  String getLoggerName();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param name .
-   * @author admin
-   */
-  void setLoggerName(String name);
 
   /**
    * This is a method description.
@@ -234,24 +153,4 @@ public interface Record {
    * @author admin
    */
   String getLevelName();
-
-  /**
-   * .
-   *
-   * <p>.
-   *
-   * @return Bean Bean.
-   * @author admin
-   */
-  Bean getContextBean();
-
-  /**
-   * .
-   *
-   * <p>.
-   *
-   * @param contextBean contextBean.
-   * @author admin
-   */
-  void setContextBean(Bean contextBean);
 }

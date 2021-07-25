@@ -124,7 +124,6 @@ public class JuliLogger extends AbstractJuliLogger {
     lr.setCustom(Constants.SOURCE_CLASS, sourceClass);
     lr.setCustom(Constants.SOURCE_METHOD, sourceMethod);
     lr.setParameter(param1);
-    lr.setUniqueId("-");
     this.doLog(lr);
   }
 
@@ -153,7 +152,6 @@ public class JuliLogger extends AbstractJuliLogger {
     for (final Object param : params) {
       lr.setParameter(param);
     }
-    lr.setUniqueId("-");
     this.doLog(lr);
   }
 
