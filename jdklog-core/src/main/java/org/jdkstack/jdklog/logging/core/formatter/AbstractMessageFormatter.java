@@ -161,12 +161,7 @@ public abstract class AbstractMessageFormatter implements Formatter {
       // 如果不是StudyThread,无法处理唯一日志消息ID.
       final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
       Bean contextBean = studyThread.getContextBean();
-      final String traceId = contextBean.getTraceId();
-      customs.put("traceId", traceId);
-      final String spanId0 = contextBean.getSpanId0();
-      customs.put("spanId0", spanId0);
-      final String spanId1 = contextBean.getSpanId1();
-      customs.put("spanId1", spanId1);
+      customs.putAll(contextBean.getCustoms());
     }
     return customs;
   }
