@@ -1,8 +1,6 @@
 package org.jdkstack.jdklog.logging.core.manager;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.ConfigurationDataImpl;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
@@ -33,22 +31,6 @@ public abstract class AbstractJuliLogger implements Logger {
   protected final ConfigurationDataImpl config;
   /** . */
   protected final String name;
-  /** . */
-  protected Logger parent;
-  /** . */
-  protected Logger next;
-  /** . */
-  protected Logger previous;
-  /** . */
-  protected int levelName;
-  /** . */
-  protected int levelValue1;
-  /** 当前Logger配置的处理器. */
-  protected final List<Handler> handlers1 = new ArrayList<>(16);
-  /** 当前Logger配置的过滤器. */
-  protected final List<Filter> filters1 = new ArrayList<>(16);
-  /** 继承父Logger(包). */
-  protected boolean isInherit;
 
   /**
    * .

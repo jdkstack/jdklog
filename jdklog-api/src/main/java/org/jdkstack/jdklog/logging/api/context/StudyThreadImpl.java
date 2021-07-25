@@ -119,14 +119,4 @@ public interface StudyThreadImpl {
    * @author admin
    */
   Bean getContextBean();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param contextBean contextBean.
-   * @author admin
-   */
-  void setContextBean(Bean contextBean);
 }

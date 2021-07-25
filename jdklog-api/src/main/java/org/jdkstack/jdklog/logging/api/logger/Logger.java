@@ -220,46 +220,6 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @return Handler[] .
-   * @author admin
-   */
-  Handler[] accessCheckedHandlers();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return boolean .
-   * @author admin
-   */
-  boolean hasUseParentHandlers();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Logger .
-   * @author admin
-   */
-  Logger getParent();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param parent .
-   * @author admin
-   */
-  void setParent(Logger parent);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @param msg msg.
    * @author admin
    */

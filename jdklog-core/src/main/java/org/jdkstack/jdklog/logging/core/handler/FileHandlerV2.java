@@ -59,12 +59,14 @@ public class FileHandlerV2 extends AbstractFileHandler {
       boolean flag = false;
       // 获取一批数据,写入磁盘.
       for (int i = 0; i < size; i++) {
-        // 10, TimeUnit.MILLISECONDS,不等待.
+        // 非阻塞方法获取队列元素.
         final Record logRecord = this.fileQueue.poll();
         // 如果数量不够,导致从队列获取空对象.
         if (null != logRecord && null != this.bufferedWriter) {
+          // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).
           final String format = this.formatter.format(logRecord);
           this.bufferedWriter.write(format);
+          // 设置不为空的标志.
           flag = true;
         }
       }

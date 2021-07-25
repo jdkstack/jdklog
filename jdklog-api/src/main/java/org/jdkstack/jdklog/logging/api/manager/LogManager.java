@@ -33,17 +33,6 @@ public interface LogManager {
    * <p>Another description after blank line.
    *
    * @param name 属性名.
-   * @return JuliLogger.
-   * @author admin
-   */
-  Logger getLogger(String name);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param name 属性名.
    * @return String.
    * @author admin
    */
@@ -139,17 +128,6 @@ public interface LogManager {
    * @author admin
    */
   void checkPermission();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param name name.
-   * @return Logger Logger.
-   * @author admin
-   */
-  Logger demandLogger(String name);
 
   /**
    * This is a method description.

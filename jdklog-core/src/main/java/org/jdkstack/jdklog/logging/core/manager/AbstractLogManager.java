@@ -104,20 +104,6 @@ public abstract class AbstractLogManager implements LogManager {
     //
   }
 
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param name .
-   * @return JuliLogger
-   * @author admin
-   */
-  @Override
-  public final Logger demandLogger(final String name) {
-    return this.getLogger(name);
-  }
-
   @Override
   public final Map<ClassLoader, LoaderLogInfo> getClassLoaderLoggers() {
     return Collections.unmodifiableMap(CLASSLOADERLOGGERS);
@@ -142,9 +128,7 @@ public abstract class AbstractLogManager implements LogManager {
 
   @Override
   public final void put(final String loggerName, final Logger logger) {
-    final Thread thread = Thread.currentThread();
-    final ClassLoader classLoader = thread.getContextClassLoader();
-    final LoaderLogInfo temp = CLASSLOADERLOGGERS.get(classLoader);
+    final LoaderLogInfo temp = getLoaderLogInfo();
     temp.put(loggerName, logger);
   }
 
@@ -155,25 +139,25 @@ public abstract class AbstractLogManager implements LogManager {
 
   @Override
   public final Logger getRootLogger() {
-    final Thread thread = Thread.currentThread();
-    final ClassLoader classLoader = thread.getContextClassLoader();
-    final LoaderLogInfo temp = CLASSLOADERLOGGERS.get(classLoader);
+    final LoaderLogInfo temp = getLoaderLogInfo();
     return temp.getRootLogger();
   }
 
   @Override
   public final Logger getLogger1(final String name) {
+    final LoaderLogInfo temp = getLoaderLogInfo();
+    return temp.get(name);
+  }
+
+  private LoaderLogInfo getLoaderLogInfo() {
     final Thread thread = Thread.currentThread();
     final ClassLoader classLoader = thread.getContextClassLoader();
-    final LoaderLogInfo temp = CLASSLOADERLOGGERS.get(classLoader);
-    return temp.get(name);
+    return CLASSLOADERLOGGERS.get(classLoader);
   }
 
   @Override
   public final boolean containsKey(final String loggerName) {
-    final Thread thread = Thread.currentThread();
-    final ClassLoader classLoader = thread.getContextClassLoader();
-    final LoaderLogInfo temp = CLASSLOADERLOGGERS.get(classLoader);
+    final LoaderLogInfo temp = getLoaderLogInfo();
     return temp.containsKey(loggerName);
   }
 
@@ -200,9 +184,7 @@ public abstract class AbstractLogManager implements LogManager {
    */
   @Override
   public final String findProperty(final String name) {
-    final Thread thread = Thread.currentThread();
-    final ClassLoader classLoader = thread.getContextClassLoader();
-    final LoaderLogInfo temp = CLASSLOADERLOGGERS.get(classLoader);
+    final LoaderLogInfo temp = getLoaderLogInfo();
     return temp.getProperty(name);
   }
 

@@ -220,9 +220,4 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
   public Bean getContextBean() {
     return contextBean;
   }
-
-  @Override
-  public void setContextBean(final Bean contextBean) {
-    this.contextBean = contextBean;
-  }
 }

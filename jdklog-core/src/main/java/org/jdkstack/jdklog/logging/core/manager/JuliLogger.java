@@ -40,16 +40,12 @@ public class JuliLogger extends AbstractJuliLogger {
    * @author admin
    */
   public static Logger getLogger(final String name) {
-    Logger result = MANAGER.demandLogger(name);
-    // 吐过没有获取到,热创建一个新的.
-    if (null == result) {
+    Logger result = MANAGER.getLogger1(name);
+    if (result == null) {
       final Logger newLogger = new JuliLogger(name);
-      do {
-        if (MANAGER.addLogger(newLogger)) {
-          return newLogger;
-        }
-        result = MANAGER.getLogger(name);
-      } while (null == result);
+      if (MANAGER.addLogger(newLogger)) {
+        result = newLogger;
+      }
     }
     return result;
   }
@@ -285,19 +281,6 @@ public class JuliLogger extends AbstractJuliLogger {
    */
   @Override
   public final Handler[] getHandlers() {
-    return this.accessCheckedHandlers();
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Handler .
-   * @author admin
-   */
-  @Override
-  public final Handler[] accessCheckedHandlers() {
     final List<Handler> handlers = this.config.getHandlers();
     return handlers.toArray(EMPTY_HANDLERS);
   }
@@ -313,56 +296,5 @@ public class JuliLogger extends AbstractJuliLogger {
   @Override
   public final void setUseParentHandlers(final boolean useParentHandlers) {
     this.config.setUseParentHandlers(useParentHandlers);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @return boolean .
-   * @author admin
-   */
-  @Override
-  public final boolean hasUseParentHandlers() {
-    return this.config.isUseParentHandlers();
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @return JuliLogger .
-   * @author admin
-   */
-  @Override
-  public final Logger getParent() {
-    return this.parent;
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param parent .
-   * @author admin
-   */
-  @Override
-  public final void setParent(final Logger parent) {
-    this.doSetParent(parent);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param newParent .
-   * @author admin
-   */
-  private void doSetParent(final Logger newParent) {
-    this.parent = newParent;
   }
 }
