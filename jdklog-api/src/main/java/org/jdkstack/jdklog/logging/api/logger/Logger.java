@@ -89,42 +89,6 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param logLevel 日志级别.
-   * @param msg 日志消息.
-   * @param thrown 日志异常.
-   * @author admin
-   */
-  void log(Level logLevel, String msg, Throwable thrown);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel 日志级别.
-   * @param msg 日志消息.
-   * @param param1 日志异常.
-   * @author admin
-   */
-  void log(Level logLevel, String msg, Object param1);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel 日志级别.
-   * @param msg 日志消息.
-   * @param params 日志异常.
-   * @author admin
-   */
-  void log(Level logLevel, String msg, Object... params);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @return Filter Filter.
    * @author admin
    */
@@ -145,88 +109,8 @@ public interface Logger {
    *
    * <p>Another description after blank line.
    *
-   * @return boolean .
-   * @author admin
-   */
-  boolean isLevelInitialized();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @param handler handler.
    * @author admin
    */
   void removeHandler(Handler handler);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg msg.
-   * @author admin
-   */
-  void severe(String msg);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg msg.
-   * @author admin
-   */
-  void warning(String msg);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg msg.
-   * @author admin
-   */
-  void info(String msg);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg msg.
-   * @author admin
-   */
-  void config(String msg);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg msg.
-   * @author admin
-   */
-  void fine(String msg);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg msg.
-   * @author admin
-   */
-  void finer(String msg);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg msg.
-   * @author admin
-   */
-  void finest(String msg);
 }

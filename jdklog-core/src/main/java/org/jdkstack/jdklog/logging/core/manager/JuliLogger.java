@@ -94,19 +94,6 @@ public class JuliLogger extends AbstractJuliLogger {
    *
    * <p>Another description after blank line.
    *
-   * @return boolean .
-   * @author admin
-   */
-  @Override
-  public final boolean isLevelInitialized() {
-    return null != this.config.getLevelObject();
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
    * @return Level .
    * @author admin
    */

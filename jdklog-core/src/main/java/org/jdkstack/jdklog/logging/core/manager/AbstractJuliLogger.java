@@ -7,7 +7,6 @@ import org.jdkstack.jdklog.logging.api.logger.Logger;
 import org.jdkstack.jdklog.logging.api.manager.LogManager;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
-import org.jdkstack.jdklog.logging.api.metainfo.LogRecord;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.core.logger.ConfigurationData;
 
@@ -67,20 +66,6 @@ public abstract class AbstractJuliLogger implements Logger {
    *
    * <p>Another description after blank line.
    *
-   * @param logLevel .
-   * @param msg .
-   * @author admin
-   */
-  private void log(final Level logLevel, final String msg) {
-    final Record lr = new LogRecord(logLevel, msg);
-    this.doLog(lr);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
    * @param logRecord .
    * @author admin
    */
@@ -102,59 +87,6 @@ public abstract class AbstractJuliLogger implements Logger {
     }
     // 如果日志级别正常.打印日志.
     this.sendLog(logRecord);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel .
-   * @param msg .
-   * @param param1 .
-   * @author admin
-   */
-  @Override
-  public final void log(final Level logLevel, final String msg, final Object param1) {
-    final Record lr = new LogRecord(logLevel, msg);
-    lr.setParameter(param1);
-    this.doLog(lr);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel .
-   * @param msg .
-   * @param params .
-   * @author admin
-   */
-  @Override
-  public final void log(final Level logLevel, final String msg, final Object... params) {
-    final Record lr = new LogRecord(logLevel, msg);
-    for (final Object param : params) {
-      lr.setParameter(param);
-    }
-    this.doLog(lr);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel .
-   * @param msg .
-   * @param thrown .
-   * @author admin
-   */
-  @Override
-  public final void log(final Level logLevel, final String msg, final Throwable thrown) {
-    final Record lr = new LogRecord(logLevel, msg);
-    lr.setThrown(thrown);
-    this.doLog(lr);
   }
 
   /**
@@ -186,96 +118,5 @@ public abstract class AbstractJuliLogger implements Logger {
     final boolean isLevelValue = levelValue != OFF_VALUE;
     // 只要有一个不是真,则表示日志会过滤掉.
     return isIntValue && isLevelValue;
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void severe(final String msg) {
-    this.log(LogLevel.SEVERE, msg);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void warning(final String msg) {
-    this.log(LogLevel.WARNING, msg);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void info(final String msg) {
-    this.log(LogLevel.INFO, msg);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void config(final String msg) {
-    this.log(LogLevel.CONFIG, msg);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void fine(final String msg) {
-    this.log(LogLevel.FINE, msg);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void finer(final String msg) {
-    this.log(LogLevel.FINER, msg);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void finest(final String msg) {
-    this.log(LogLevel.FINEST, msg);
   }
 }
