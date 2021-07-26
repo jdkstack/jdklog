@@ -38,8 +38,8 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   /** 线程池. */
   private static final ExecutorService LOG_PRODUCER =
       new ThreadPoolExecutor(
-          1,
-          1,
+          2,
+          2,
           0,
           TimeUnit.MILLISECONDS,
           new LinkedBlockingQueue<>(5000),
@@ -49,8 +49,8 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   /** 线程池. */
   private static final ExecutorService LOG_GUARDIAN_CONSUMER =
       new ThreadPoolExecutor(
-          1,
-          1,
+          2,
+          2,
           0,
           TimeUnit.MILLISECONDS,
           new LinkedBlockingQueue<>(5000),
@@ -60,8 +60,8 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   /** 线程池. CallerRunsPolicy 拒绝策略不丢数据,因为在主线程上执行. */
   private static final ExecutorService LOG_CONSUMER =
       new ThreadPoolExecutor(
-          1,
-          1,
+          2,
+          2,
           0,
           TimeUnit.MILLISECONDS,
           new LinkedBlockingQueue<>(5000),
@@ -79,21 +79,6 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   /** 工作任务上下文. */
   private static final WorkerContext LOG_GUARDIAN_CONSUMER_CONTEXT =
       new WorkerStudyContextImpl(LOG_GUARDIAN_CONSUMER, SCHEDULED_EXECUTOR_SERVICE);
-  /** 线程池. */
-  private static final ExecutorService LOG_PRODUCER_NOTICE_CONSUMER =
-      new ThreadPoolExecutor(
-          1,
-          1,
-          0,
-          TimeUnit.MILLISECONDS,
-          new LinkedBlockingQueue<>(5000),
-          new StudyThreadFactory("log-producer-notice-consumer", CHECKER),
-          new StudyRejectedPolicy());
-  /** 工作任务上下文. */
-  protected static final WorkerContext LOG_PRODUCER_NOTICE_CONSUMER_CONTEXT =
-      new WorkerStudyContextImpl(LOG_PRODUCER_NOTICE_CONSUMER, SCHEDULED_EXECUTOR_SERVICE);
-  /** 是否开启处理器级别的日志处理. */
-  private static final int OFF_VALUE = LogLevel.OFF.intValue();
 
   static {
     // 线程监控任务.

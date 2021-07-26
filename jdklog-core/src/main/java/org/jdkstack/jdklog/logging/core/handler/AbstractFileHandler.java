@@ -6,7 +6,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
-import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
@@ -23,8 +22,6 @@ import org.jdkstack.jdklog.logging.core.queue.ProducerWorker;
  * @author admin
  */
 public abstract class AbstractFileHandler extends AbstractHandler {
-  /** 生产通知消费处理器.为Handler自己的队列创建一个生产者通知消费者处理程序. */
-  protected final StudyWorker<Handler> producerNoticeConsumerWorker;
   /** . */
   protected final Runnable consumerRunnable;
   /** . */
@@ -39,7 +36,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
   protected AbstractFileHandler() {
     super("");
     this.fileQueue = new FileQueue(this.prefix);
-    this.producerNoticeConsumerWorker = new ProducerNoticeConsumerWorker();
     this.producerWorker = new ProducerWorker(this.fileQueue);
     this.consumerRunnable = new ConsumerRunnable(this.fileQueue, this);
   }
@@ -58,7 +54,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     this.config();
     // 动态配置队列属性.
     this.fileQueue = new FileQueue(this.prefix);
-    this.producerNoticeConsumerWorker = new ProducerNoticeConsumerWorker();
     this.producerWorker = new ProducerWorker(this.fileQueue);
     this.consumerRunnable = new ConsumerRunnable(this.fileQueue, this);
   }
@@ -176,8 +171,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     // 当前处理器的队列中日志消息达到100条,处理一次.
     if (Constants.BATCH_SIZE <= size) {
       // 提交一个任务,用于通知消费者线程去消费队列数据.
-      LOG_PRODUCER_NOTICE_CONSUMER_CONTEXT.executeInExecutorService(
-          this, this.producerNoticeConsumerWorker);
+      this.flush();
     }
   }
 
