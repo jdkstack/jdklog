@@ -54,11 +54,24 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
     handle(sb, logRecord.getCustoms());
     // 处理之后.
     handle(sb, after());
+    // 处理消息.
+    handlerMessage(logRecord, sb);
+    // 如果有异常堆栈信息,则打印出来.
+    handlerThrowable(logRecord, sb);
+    // 系统换行符.
+    final String lineSeparator = System.lineSeparator();
+    sb.append(lineSeparator);
+    return sb.toString();
+  }
+
+  private void handlerMessage(Record logRecord, StringBuilder sb) {
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
     final String message = defaultFormat(logRecord);
     // 已经格式化后的日志消息.
     sb.append(message);
-    // 如果有异常堆栈信息,则打印出来.
+  }
+
+  private void handlerThrowable(Record logRecord, StringBuilder sb) {
     final Throwable thrown = logRecord.getThrown();
     if (null != thrown) {
       sb.append(' ');
@@ -74,10 +87,6 @@ public final class StudyJuliMessageTextFormatter extends AbstractMessageFormatte
       }
       sb.append(']');
     }
-    // 系统换行符.
-    final String lineSeparator = System.lineSeparator();
-    sb.append(lineSeparator);
-    return sb.toString();
   }
 
   private void handle(final StringBuilder sb, final Map<String, String> customs) {

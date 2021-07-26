@@ -56,6 +56,18 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     handle(sb, logRecord.getCustoms());
     // 处理之后.
     handle(sb, after());
+    // 处理消息.
+    handlerMessage(logRecord, sb);
+    // 如果有异常堆栈信息,则打印出来.
+    handlerThrowable(logRecord, sb);
+    // 增加一个换行符号(按照平台获取)
+    final String lineSeparator = System.lineSeparator();
+    // json字符串结束.
+    sb.append('}').append(lineSeparator);
+    return sb.toString();
+  }
+
+  private void handlerMessage(Record logRecord, StringBuilder sb) {
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
     final String message = defaultFormat(logRecord);
     // json key.
@@ -64,7 +76,9 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     final String messageValue = inQuotes(message);
     // 已经格式化后的日志消息.
     sb.append(messageKey).append(": ").append(messageValue);
-    // 如果有异常堆栈信息,则打印出来.
+  }
+
+  private void handlerThrowable(Record logRecord, StringBuilder sb) {
     final Throwable thrown = logRecord.getThrown();
     if (null != thrown) {
       final String stacktrace = inQuotes("stacktrace");
@@ -81,11 +95,6 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
       }
       sb.append(']');
     }
-    // 增加一个换行符号(按照平台获取)
-    final String lineSeparator = System.lineSeparator();
-    // json字符串结束.
-    sb.append('}').append(lineSeparator);
-    return sb.toString();
   }
 
   private void handle(final StringBuilder sb, final Map<String, String> customs) {
