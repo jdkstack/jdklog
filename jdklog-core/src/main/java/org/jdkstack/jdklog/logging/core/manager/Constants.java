@@ -28,6 +28,10 @@ public final class Constants {
       "org.jdkstack.jdklog.logging.core.manager.StudyJuliLogManager";
   /** . */
   public static final String UNSUPPORTED_OPERATION_MESSAGE = "Method is not implemented.";
+  /** . */
+  public static final String SOURCE_CLASS = "sourceClass";
+  /** . */
+  public static final String SOURCE_METHOD = "sourceMethod";
 
   private Constants() {
     //

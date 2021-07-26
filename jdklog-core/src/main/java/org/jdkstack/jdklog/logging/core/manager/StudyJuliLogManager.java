@@ -190,20 +190,6 @@ public final class StudyJuliLogManager extends AbstractLogManager {
   }
 
   /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param name .
-   * @return Logger
-   * @author admin
-   */
-  @Override
-  public Logger getLogger(final String name) {
-    return this.getLogger1(name);
-  }
-
-  /**
    * 读取日志的配置文件,日志管理器必须和日志文件一起配置.
    *
    * <p>Another description after blank line.

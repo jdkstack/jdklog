@@ -26,16 +26,6 @@ public interface StudyThreadImpl {
    *
    * <p>Another description after blank line.
    *
-   * @return int int.
-   * @author admin
-   */
-  int threadType();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @return long long.
    * @author admin
    */
@@ -119,14 +109,4 @@ public interface StudyThreadImpl {
    * @author admin
    */
   Bean getContextBean();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param contextBean contextBean.
-   * @author admin
-   */
-  void setContextBean(Bean contextBean);
 }

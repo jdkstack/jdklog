@@ -69,13 +69,13 @@ public final class Examples {
       // 给线程传递上下文数据.
       Bean bean = new ContextBean();
       // 全链路ID.
-      bean.setTraceId(uuid);
+      bean.setCustom("traceId", uuid);
       // 设置当前的spandId. 要么是0,要么是上游spanId1传来.
-      bean.setSpanId0(cu);
+      bean.setCustom("spanId0", cu);
       // 当前spanId0(如果上游spanId1没传就是0) =上游spanId1.
-      cu = SpanId.nextSpanId(cu);
+      cu = Integer.toString(i);
       // 当前spanId1(当前spanId0动态生成) =下游spanId0.
-      bean.setSpanId1(cu);
+      bean.setCustom("spanId1", cu);
       // 全局自定义标签.
       bean.setCustom("host", "127.0.0.1");
       bean.setCustom("port", "1000");

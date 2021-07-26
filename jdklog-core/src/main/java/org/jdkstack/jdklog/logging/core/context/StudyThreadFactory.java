@@ -20,8 +20,6 @@ public class StudyThreadFactory implements ThreadFactory {
   private final AtomicInteger threadCount = new AtomicInteger(0);
   /** 线程监听检查对象. */
   private final Monitor checker;
-  /** 线程的类型0和1. */
-  private final int threadType;
   /** 线程运行的最大执行时间. */
   private final long maxExecTime;
   /** 线程运行的最大执行时间单位. */
@@ -41,8 +39,6 @@ public class StudyThreadFactory implements ThreadFactory {
     this.prefix = prefixParam;
     // 线程检查对象,线程会注册到上面.
     this.checker = checkerParam;
-    // 线程类型默认是0,工作现场.
-    this.threadType = 0;
     // 线程允许的最大执行时间是10秒.
     this.maxExecTime = Constants.MAX_EXEC_TIME;
     // 线程允许的最大执行时间单位是毫秒.
@@ -56,7 +52,6 @@ public class StudyThreadFactory implements ThreadFactory {
    *
    * @param prefixParam 线程名前缀.
    * @param checkerParam 线程监听检查对象.
-   * @param threadTypeParam .
    * @param maxExecTimeParam .
    * @param maxExecTimeUnitParam .
    * @author admin
@@ -64,12 +59,10 @@ public class StudyThreadFactory implements ThreadFactory {
   public StudyThreadFactory(
       final String prefixParam,
       final Monitor checkerParam,
-      final int threadTypeParam,
       final long maxExecTimeParam,
       final TimeUnit maxExecTimeUnitParam) {
     this.prefix = prefixParam;
     this.checker = checkerParam;
-    this.threadType = threadTypeParam;
     this.maxExecTime = maxExecTimeParam;
     this.maxExecTimeUnit = maxExecTimeUnitParam;
   }
@@ -89,11 +82,7 @@ public class StudyThreadFactory implements ThreadFactory {
     final int andIncrement = this.threadCount.getAndIncrement();
     final Thread studyThread =
         new StudyThread(
-            runnable,
-            this.prefix + andIncrement,
-            this.threadType,
-            this.maxExecTime,
-            this.maxExecTimeUnit);
+            runnable, this.prefix + andIncrement, this.maxExecTime, this.maxExecTimeUnit);
     // 如果线程检查对象不为空.
     if (null != this.checker) {
       // 注册线程.

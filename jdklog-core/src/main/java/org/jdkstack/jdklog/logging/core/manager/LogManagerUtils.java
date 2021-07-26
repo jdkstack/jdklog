@@ -35,7 +35,8 @@ public final class LogManagerUtils {
    */
   public static String getProperty(final String key, final String value) {
     // 获取日志管理器存储的所有ClassLoader.
-    final Map<ClassLoader, LoaderLogInfo> classLoaderLoggers =  AbstractLogManager.getClassLoaderLoggers1();
+    final Map<ClassLoader, LoaderLogInfo> classLoaderLoggers =
+        AbstractLogManager.getClassLoaderLoggers1();
     // 获取当前的系统类加载器.
     final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     // 获取当前系统类加载器的日志信息.

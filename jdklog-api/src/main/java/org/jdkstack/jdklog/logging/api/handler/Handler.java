@@ -1,11 +1,9 @@
 package org.jdkstack.jdklog.logging.api.handler;
 
-import java.util.concurrent.atomic.AtomicLong;
 import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.formatter.Formatter;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
-import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 
 /**
  * This is a class description.
@@ -60,17 +58,6 @@ public interface Handler {
    *
    * <p>Another description after blank line.
    *
-   * @param encoding .
-   * @throws SecurityException .
-   * @author admin
-   */
-  void setEncoding(String encoding);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @param newFilter .
    * @throws SecurityException .
    * @author admin
@@ -87,17 +74,6 @@ public interface Handler {
    * @author admin
    */
   void setLevel(Level newLogLevel);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logRecord 日志对象.
-   * @return b.
-   * @author admin
-   */
-  boolean isLoggable(Record logRecord);
 
   /**
    * This is a method description.
@@ -140,64 +116,4 @@ public interface Handler {
    * @author admin
    */
   String getProperty(String name, String defaultValue);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Formatter Formatter.
-   * @author admin
-   */
-  Formatter getFormatter();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return String String.
-   * @author admin
-   */
-  String getEncoding();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Filter Filter.
-   * @author admin
-   */
-  Filter getFilter();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Level Level.
-   * @author admin
-   */
-  Level getLevel();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return AtomicLong AtomicLong.
-   * @author admin
-   */
-  AtomicLong getCounter();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return StudyQueue StudyQueue
-   * @author admin
-   */
-  StudyQueue<Record> getFileQueue();
 }

@@ -1,13 +1,7 @@
 package org.jdkstack.jdklog.logging.core.formatter;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.Objects;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
-import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
 
 /**
  * 日志文本行Json格式化,扩展JDK提供的简单格式化.
@@ -17,8 +11,6 @@ import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
  * @author admin
  */
 public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatter {
-  /** . */
-  private final DateTimeFormatter pattern;
 
   /**
    * This is a method description.
@@ -28,16 +20,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
    * @author admin
    */
   public StudyJuliMessageJsonFormatter() {
-    // 获取当前处理器配置的格式化.
-    final String name = StudyJuliMessageJsonFormatter.class.getName();
-    String timeFormat = AbstractLogManager.getProperty1(name + Constants.DATETIME_FORMAT_NAME);
-    // 如果为空.
-    if (Objects.isNull(timeFormat)) {
-      // 使用默认的格式化.
-      timeFormat = Constants.DATETIME_FORMAT_VALUE;
-    }
-    // 创建一个日期时间格式化实例.
-    this.pattern = DateTimeFormatter.ofPattern(timeFormat);
+    //
   }
 
   /**
@@ -49,14 +32,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
    * @author admin
    */
   public StudyJuliMessageJsonFormatter(final String timeFormat) {
-    // 如果为空.
-    if (Objects.isNull(timeFormat)) {
-      // 使用默认的格式化.
-      this.pattern = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_VALUE);
-    } else {
-      // 使用自定义的格式化.
-      this.pattern = DateTimeFormatter.ofPattern(timeFormat);
-    }
+    super(timeFormat);
   }
 
   /**
@@ -70,77 +46,39 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
    */
   @Override
   public String format(final Record logRecord) {
-    // UTC时区获取当前系统的日期.
-    final Instant instant = logRecord.getInstant();
-    final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
-    // 日期格式化.
-    final String format = this.pattern.format(zdt);
+    // 最终的日志消息.
     final StringBuilder sb = new StringBuilder(50);
-    final String timestamp = inQuotes("timestamp");
-    final String formatStr = inQuotes(format);
-    sb.append('{').append(timestamp).append(": ").append(formatStr).append(',');
-    // 日志级别.
-    final String level = inQuotes("level");
-    final String levelName = logRecord.getLevelName();
-    final String levelNameStr = inQuotes(levelName);
-    sb.append(level).append(": ").append(levelNameStr).append(',');
-    // 线程名称.
-    final String threadKey = inQuotes("thread");
-
-    final Thread thread = Thread.currentThread();
-    final String name = thread.getName();
-    final String threadName = inQuotes(name);
-    sb.append(threadKey).append(": ").append(threadName).append(',');
-    // 日志当前的类全限定名.
-    final String fullClassPath = inQuotes("fullClassPath");
-    final String sourceClassName = logRecord.getSourceClassName();
-    final String sourceClassNameStr = inQuotes(sourceClassName);
-    sb.append(fullClassPath).append(": ").append(sourceClassNameStr).append(',');
-    // 日志当前类的方法.
-    final String methodKey = inQuotes("method");
-    final String methodStr = logRecord.getSourceMethodName();
-    final String methodValue = inQuotes(methodStr);
-    sb.append(methodKey).append(": ").append(methodValue).append(',');
-    // 行号.
-    final String lineNumberKey = inQuotes("lineNumber");
-    final int lineNumber = logRecord.getLineNumber();
-    final String lineNumberStr = String.valueOf(lineNumber);
-    final String lineNumberValue = inQuotes(lineNumberStr);
-    sb.append(lineNumberKey).append(": ").append(lineNumberValue).append(',');
-    if (checkUnique()) {
-      final String traceIdKey = inQuotes("traceId");
-      final String traceIdStr = logRecord.getTraceId();
-      final String traceIdValue = inQuotes(traceIdStr);
-      sb.append(traceIdKey).append(": ").append(traceIdValue).append(',');
-      final String spanId0Key = inQuotes("spanId0");
-      final String spanId0Str = logRecord.getSpanId0();
-      final String spanId0Value = inQuotes(spanId0Str);
-      sb.append(spanId0Key).append(": ").append(spanId0Value).append(',');
-      final String spanId1Key = inQuotes("spanId1");
-      final String spanId1Str = logRecord.getSpanId1();
-      final String spanId1Value = inQuotes(spanId1Str);
-      sb.append(spanId1Key).append(": ").append(spanId1Value).append(',');
-    }
-    final String serialNumberKey = inQuotes("serialNumber");
-    final long serialNumber = logRecord.getSerialNumber();
-    sb.append(serialNumberKey).append(": ").append(serialNumber).append(',');
+    // json字符串开始.
+    sb.append("{");
+    // 处理之前.
+    handle(sb, before(logRecord));
     // 日志自定义字段.
-    final Map<String, String> customs = logRecord.getCustoms();
-    for (final Map.Entry<String, String> entry : customs.entrySet()) {
-      final String key = entry.getKey();
-      final String value = entry.getValue();
-      final String customKey = inQuotes(key);
-      sb.append(customKey).append(": ");
-      final String customValue = inQuotes(value);
-      sb.append(customValue);
-      sb.append(',');
-    }
+    handle(sb, logRecord.getCustoms());
+    // 处理之后.
+    handle(sb, after());
+    // 处理消息.
+    handlerMessage(logRecord, sb);
+    // 如果有异常堆栈信息,则打印出来.
+    handlerThrowable(logRecord, sb);
+    // 增加一个换行符号(按照平台获取)
+    final String lineSeparator = System.lineSeparator();
+    // json字符串结束.
+    sb.append('}').append(lineSeparator);
+    return sb.toString();
+  }
+
+  private void handlerMessage(Record logRecord, StringBuilder sb) {
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
     final String message = defaultFormat(logRecord);
+    // json key.
     final String messageKey = inQuotes("message");
+    // json value.
     final String messageValue = inQuotes(message);
+    // 已经格式化后的日志消息.
     sb.append(messageKey).append(": ").append(messageValue);
-    // 如果有异常堆栈信息,则打印出来.
+  }
+
+  private void handlerThrowable(Record logRecord, StringBuilder sb) {
     final Throwable thrown = logRecord.getThrown();
     if (null != thrown) {
       final String stacktrace = inQuotes("stacktrace");
@@ -157,10 +95,19 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
       }
       sb.append(']');
     }
-    // 增加一个换行符号(按照平台获取)
-    final String lineSeparator = System.lineSeparator();
-    sb.append('}').append(lineSeparator);
-    return sb.toString();
+  }
+
+  private void handle(final StringBuilder sb, final Map<String, String> customs) {
+    // 循环处理自定义字段.
+    for (final Map.Entry<String, String> entry : customs.entrySet()) {
+      final String key = entry.getKey();
+      final String value = entry.getValue();
+      final String customKey = inQuotes(key);
+      sb.append(customKey).append(": ");
+      final String customValue = inQuotes(value);
+      sb.append(customValue);
+      sb.append(',');
+    }
   }
 
   /**

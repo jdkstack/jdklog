@@ -1,10 +1,7 @@
 package org.jdkstack.jdklog.logging.core.factory;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
-import org.jdkstack.jdklog.logging.api.context.Bean;
-import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;
@@ -15,7 +12,6 @@ import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.spi.Log;
 import org.jdkstack.jdklog.logging.core.formatter.StudyJuliMessageFormat;
 import org.jdkstack.jdklog.logging.core.manager.JuliLogger;
-import org.jdkstack.jdklog.logging.core.manager.LogManagerUtils;
 
 /**
  * Juli日志的核心API,提供所有日志级别的方法,由LogFactory动态创建.
@@ -25,8 +21,10 @@ import org.jdkstack.jdklog.logging.core.manager.LogManagerUtils;
  * @author admin
  */
 public class JuliLog implements Log {
-  /** 全局日志计数. */
+  /** 全局Logger日志计数. */
   private static final AtomicLong GLOBAL_COUNTER = new AtomicLong(0L);
+  /** 单个Logger日志计数. */
+  protected final AtomicLong counter = new AtomicLong(0L);
   /** 一个Logger对象对应一个Logging对象. */
   private final Logger logger;
   /** 方法的当前堆栈元素,采用全局变量的原因是同一个对象,方法调用栈都是相同的,不用每次方法都调用一次(否则性能下降很多). */
@@ -84,54 +82,18 @@ public class JuliLog implements Log {
     // 获取当前方法调用者的类方法.
     final String classMethod = this.stackTraceElement.getMethodName();
     // 设置日志调用的源类路径和方法.
-    lr.setSourceClassName(className);
-    lr.setSourceMethodName(classMethod);
+    lr.setCustom("className", className);
+    lr.setCustom("classMethod", classMethod);
     // 设置行号.
     final int lineNumber = this.stackTraceElement.getLineNumber();
-    lr.setLineNumber(lineNumber);
-    // 查看是否使用唯一序列号ID.
-    final String unique = LogManagerUtils.getProperty(Constants.UNIQUE, Constants.FALSE);
-    if (Constants.TRUE.equals(unique)) {
-      // 获取当前线程.
-      final Thread thread = Thread.currentThread();
-      // 如果不是StudyThread,无法处理唯一日志消息ID.
-      if (thread instanceof StudyThreadImpl) {
-        final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
-        // 处理线程上下文数据.
-        this.contextBean(lr, studyThread);
-      }
-    }
-    // 为每条日志设置一个自增长的序列号.
+    lr.setCustom("lineNumber", Integer.toString(lineNumber));
+    // 全局logger处理的日志数量.
     final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
-    lr.setSerialNumber(globalCounter);
+    lr.setCustom("globalLoggerCounter", Long.toString(globalCounter));
+    // 单个logger处理的日志数量.
+    final long singleCounter = counter.incrementAndGet();
+    lr.setCustom("singleLoggerCounter", Long.toString(singleCounter));
     this.logger.logp(lr);
-  }
-
-  private void contextBean(final Record lr, final StudyThreadImpl studyThread) {
-    Bean contextBean = studyThread.getContextBean();
-    if (contextBean != null) {
-      lr.setSpanId0(contextBean.getSpanId0());
-      lr.setSpanId1(contextBean.getSpanId1());
-      lr.setTraceId(contextBean.getTraceId());
-      Map<String, String> customs = contextBean.getCustoms();
-      for (Map.Entry<String, String> entry : customs.entrySet()) {
-        lr.setCustom(entry.getKey(), entry.getValue());
-      }
-      // 反射得到方法,匹配方法配置.如果匹配则,追加到lr中.
-    }
-  }
-
-  /**
-   * 所有日志级别对象的方法首先调用logCore方法.
-   *
-   * <p>这样的目的是保证方法调用栈的正确性,直接调用log方法会导致调用栈异常.
-   *
-   * @param logLevel 日志打印级别.
-   * @param message 日志消息.
-   * @author admin
-   */
-  private void logCore(final Level logLevel, final String message) {
-    this.log(logLevel, message, null);
   }
 
   /**
@@ -215,20 +177,6 @@ public class JuliLog implements Log {
    * <p>Another description after blank line.
    *
    * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void info(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.OFF, message);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
    * @param args 日志传递进来的参数.
    * @author admin
    */
@@ -236,20 +184,6 @@ public class JuliLog implements Log {
   public final void debug(final String message, final Object... args) {
     // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
     this.logCore(LogLevel.FINE, message, args);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void debug(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.OFF, message);
   }
 
   /**
@@ -273,20 +207,6 @@ public class JuliLog implements Log {
    * <p>Another description after blank line.
    *
    * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void trace(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.OFF, message);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
    * @param args 日志传递进来的参数.
    * @author admin
    */
@@ -294,20 +214,6 @@ public class JuliLog implements Log {
   public final void warn(final String message, final Object... args) {
     // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
     this.logCore(LogLevel.WARNING, message, args);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void warn(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.OFF, message);
   }
 
   /**
@@ -326,20 +232,6 @@ public class JuliLog implements Log {
   }
 
   /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void error(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.OFF, message);
-  }
-
-  /**
    * fatal日志消息,代表致命错误,优先级最高的日志级别.
    *
    * <p>.
@@ -352,34 +244,6 @@ public class JuliLog implements Log {
   public final void fatal(final String message, final Object... args) {
     // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
     this.logCore(LogLevel.SEVERE, message, args);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void fatal(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.OFF, message);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void config(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.CONFIG, message);
   }
 
   /**
@@ -403,20 +267,6 @@ public class JuliLog implements Log {
    * <p>Another description after blank line.
    *
    * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void all(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-    this.logCore(LogLevel.ALL, message);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
    * @param args 日志传递进来的参数.
    * @author admin
    */
@@ -424,21 +274,6 @@ public class JuliLog implements Log {
   public final void all(final String message, final Object... args) {
     // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
     this.logCore(LogLevel.ALL, message, args);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  @Override
-  public final void off(final String message) {
-    // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-
-    this.logCore(LogLevel.OFF, message);
   }
 
   /**

@@ -1,7 +1,15 @@
 package org.jdkstack.jdklog.logging.core.formatter;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import org.jdkstack.jdklog.logging.api.context.Bean;
+import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.formatter.Formatter;
 import org.jdkstack.jdklog.logging.api.manager.LoaderLogInfo;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
@@ -15,9 +23,41 @@ import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
  * @author admin
  */
 public abstract class AbstractMessageFormatter implements Formatter {
+  /** . */
+  protected DateTimeFormatter pattern;
 
   protected AbstractMessageFormatter() {
-    //
+    // 获取运行时的类,并获取简单名.
+    String simpleName = this.getClass().getSimpleName();
+    // 根据简单名获取时间格式字符串.
+    String timeFormat =
+        AbstractLogManager.getProperty1(simpleName + Constants.DATETIME_FORMAT_NAME);
+    // 如果为空.
+    if (Objects.isNull(timeFormat)) {
+      // 使用默认的格式化.
+      timeFormat = Constants.DATETIME_FORMAT_VALUE;
+    }
+    // 创建一个日期时间格式化实例.
+    this.pattern = DateTimeFormatter.ofPattern(timeFormat);
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param timeFormat 日期格式化.
+   * @author admin
+   */
+  protected AbstractMessageFormatter(final String timeFormat) {
+    // 如果为空.
+    if (Objects.isNull(timeFormat)) {
+      // 使用默认的格式化.
+      this.pattern = DateTimeFormatter.ofPattern(Constants.DATETIME_FORMAT_VALUE);
+    } else {
+      // 使用自定义的格式化.
+      this.pattern = DateTimeFormatter.ofPattern(timeFormat);
+    }
   }
 
   /**
@@ -31,7 +71,7 @@ public abstract class AbstractMessageFormatter implements Formatter {
    * @return String.
    * @author admin
    */
-  protected static String defaultFormat(final Record logRecord) {
+  protected String defaultFormat(final Record logRecord) {
     // 得到日志消息.
     final String message = logRecord.getMessage();
     // 默认是一个空数组,不是空对象.
@@ -73,5 +113,58 @@ public abstract class AbstractMessageFormatter implements Formatter {
     final LoaderLogInfo classLoaderLogInfo = classLoaderLoggers.get(classLoader);
     final String unique = classLoaderLogInfo.getProperty(Constants.UNIQUE, Constants.FALSE);
     return Boolean.parseBoolean(unique);
+  }
+
+  /**
+   * 自定义字段填充.
+   *
+   * <p>.
+   *
+   * <p>.
+   *
+   * @param logRecord .
+   * @return Map .
+   * @author admin
+   */
+  protected Map<String, String> before(final Record logRecord) {
+    final Map<String, String> customs = new LinkedHashMap<>(16);
+    // UTC时区获取当前系统的日期.
+    final Instant instant = Instant.now();
+    final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
+    // 日期格式化.
+    final String format = this.pattern.format(zdt);
+    // 拼接日期时间格式化.
+    customs.put("timestamp", format);
+    // 日志级别.
+    final String levelName = logRecord.getLevelName();
+    customs.put("levelName", levelName);
+    // 当前执行的线程名.
+    final Thread thread = Thread.currentThread();
+    final String name = thread.getName();
+    customs.put("thread", name);
+    return customs;
+  }
+
+  /**
+   * 自定义字段填充.
+   *
+   * <p>.
+   *
+   * <p>.
+   *
+   * @return Map .
+   * @author admin
+   */
+  protected Map<String, String> after() {
+    final Map<String, String> customs = new LinkedHashMap<>(16);
+    final Thread thread = Thread.currentThread();
+    // 打印特殊字段.
+    if (checkUnique() && thread instanceof StudyThreadImpl) {
+      // 如果不是StudyThread,无法处理唯一日志消息ID.
+      final StudyThreadImpl studyThread = (StudyThreadImpl) thread;
+      Bean contextBean = studyThread.getContextBean();
+      customs.putAll(contextBean.getCustoms());
+    }
+    return customs;
   }
 }
