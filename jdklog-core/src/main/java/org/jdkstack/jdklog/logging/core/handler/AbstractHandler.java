@@ -1,6 +1,5 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -9,9 +8,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.jdkstack.jdklog.logging.api.context.WorkerContext;
 import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.formatter.Formatter;
@@ -20,7 +16,6 @@ import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.monitor.Monitor;
-import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 import org.jdkstack.jdklog.logging.core.context.StudyThreadFactory;
 import org.jdkstack.jdklog.logging.core.context.WorkerStudyContextImpl;
 import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
@@ -32,7 +27,7 @@ import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
  *
  * @author admin
  */
-public abstract class AbstractHandler implements Handler {
+public abstract class AbstractHandler extends AbstractMetric implements Handler {
   /** 线程阻塞的最大时间时10秒.如果不超过15秒,打印warn.如果超过15秒打印异常堆栈. */
   private static final Monitor CHECKER = new ThreadMonitor(15000L);
   /** 线程池. */
@@ -108,27 +103,6 @@ public abstract class AbstractHandler implements Handler {
     GUARDIAN.monitor(LOG_GUARDIAN_CONSUMER_CONTEXT);
   }
 
-  /** 单个handler日志计数. */
-  protected final AtomicLong counter = new AtomicLong(0L);
-  /** 生产通知消费处理器.为Handler自己的队列创建一个生产者通知消费者处理程序. */
-  protected final StudyWorker<Handler> producerNoticeConsumerWorker =
-      new ProducerNoticeConsumerWorker();
-  /** 一个非公平锁,fair=false. */
-  private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock(false);
-  /** 非公平读锁. */
-  protected final Lock readLock = this.readWriteLock.readLock();
-  /** 非公平写锁. */
-  protected final Lock writeLock = this.readWriteLock.writeLock();
-  /** 代表当前处理器接收到最后一条日志的时间,0L表示从来没接收到. */
-  protected long sys;
-  /** 按照文件名翻转日志文件. */
-  protected long initialization;
-  /** 间隔. */
-  protected int interval;
-  /** 间隔格式化. */
-  protected DateTimeFormatter intervalFormatter;
-  /** . */
-  protected boolean rotatable = true;
   /** 处理器级别的日志过滤器. */
   protected Filter filter;
   /** . */
@@ -137,6 +111,8 @@ public abstract class AbstractHandler implements Handler {
   protected Level logLevel = LogLevel.ALL;
   /** . */
   private String encoding;
+  /** 代表当前处理器接收到最后一条日志的时间,0L表示从来没接收到. */
+  protected long sys;
 
   /**
    * 关闭资源方法,一般处理优雅关闭应用程序时调用.
