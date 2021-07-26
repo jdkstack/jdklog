@@ -1,9 +1,6 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
 import java.lang.reflect.Constructor;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -12,7 +9,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 import org.jdkstack.jdklog.logging.api.context.WorkerContext;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
 import org.jdkstack.jdklog.logging.api.filter.Filter;
@@ -21,7 +17,6 @@ import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
-import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.monitor.Monitor;
 import org.jdkstack.jdklog.logging.core.context.StudyThreadFactory;
 import org.jdkstack.jdklog.logging.core.context.WorkerStudyContextImpl;
@@ -119,8 +114,18 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   protected Formatter formatter;
   /** 处理器级别的日志级别. */
   protected Level logLevel = LogLevel.ALL;
-  /** . */
-  private String encoding;
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param prefix prefix.
+   * @author admin
+   */
+  protected AbstractHandler(final String prefix) {
+    this.prefix = prefix;
+  }
 
   /**
    * 关闭资源方法,一般处理优雅关闭应用程序时调用.
@@ -206,32 +211,6 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
    *
    * <p>Another description after blank line.
    *
-   * @return String
-   * @author admin
-   */
-  @Override
-  public final String getEncoding() {
-    return this.encoding;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param encoding .
-   * @author admin
-   */
-  @Override
-  public final void setEncoding(final String encoding) {
-    this.encoding = encoding;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @return Filter
    * @author admin
    */
@@ -280,40 +259,6 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   }
 
   /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   */
-  @Override
-  public final boolean isLoggable(final Record logRecord) {
-    final int levelValue = this.logLevel.intValue();
-    final boolean intValue = logRecord.intValue() < levelValue;
-    final boolean offValue = levelValue == OFF_VALUE;
-    if (intValue || offValue) {
-      return false;
-    }
-    // 如果过滤器是空的,或者过滤器返回真.
-    final boolean isFilter = null == this.filter;
-    final boolean isLoggable = !isFilter && this.filter.isLoggable(logRecord);
-    return isFilter || isLoggable;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return AtomicLong .
-   * @author admin
-   */
-  @Override
-  public final AtomicLong getCounter() {
-    return this.counter;
-  }
-
-  /**
    * 配置方法.
    *
    * <p>Another description after blank line.
@@ -322,9 +267,6 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
    */
   public void configHandler() {
     try {
-      // 设置日志文件的编码.
-      final String encodingStr = this.getValue("encoding", "UTF-8");
-      this.setEncoding(encodingStr);
       // 设置日志文件的级别.
       final String logLevelName = LogLevel.ALL.getName();
       final String levelStr = this.getValue("level", logLevelName);

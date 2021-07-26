@@ -21,8 +21,10 @@ import org.jdkstack.jdklog.logging.core.manager.JuliLogger;
  * @author admin
  */
 public class JuliLog implements Log {
-  /** 全局日志计数. */
+  /** 全局Logger日志计数. */
   private static final AtomicLong GLOBAL_COUNTER = new AtomicLong(0L);
+  /** 单个Logger日志计数. */
+  protected final AtomicLong counter = new AtomicLong(0L);
   /** 一个Logger对象对应一个Logging对象. */
   private final Logger logger;
   /** 方法的当前堆栈元素,采用全局变量的原因是同一个对象,方法调用栈都是相同的,不用每次方法都调用一次(否则性能下降很多). */
@@ -85,9 +87,12 @@ public class JuliLog implements Log {
     // 设置行号.
     final int lineNumber = this.stackTraceElement.getLineNumber();
     lr.setCustom("lineNumber", Integer.toString(lineNumber));
-    // 为每条日志设置一个自增长的序列号.
+    // 全局logger处理的日志数量.
     final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
-    lr.setCustom("globalCounter", Long.toString(globalCounter));
+    lr.setCustom("globalLoggerCounter", Long.toString(globalCounter));
+    // 单个logger处理的日志数量.
+    final long singleCounter = counter.incrementAndGet();
+    lr.setCustom("singleLoggerCounter", Long.toString(singleCounter));
     this.logger.logp(lr);
   }
 

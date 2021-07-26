@@ -37,6 +37,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
   protected long initialization;
 
   protected AbstractFileHandler() {
+    super("");
     this.fileQueue = new FileQueue(this.prefix);
     this.producerNoticeConsumerWorker = new ProducerNoticeConsumerWorker();
     this.producerWorker = new ProducerWorker(this.fileQueue);
@@ -52,7 +53,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
    * @author admin
    */
   protected AbstractFileHandler(final String prefix) {
-    this.prefix = prefix;
+    super(prefix);
     // 读取日志配置文件,初始化配置.
     this.config();
     // 动态配置队列属性.
@@ -93,7 +94,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
   @Override
   public final void publish(final Record logRecord) {
     // 每次发布日志消息是,先进行计算.
-    metris();
+    metris(logRecord);
     // 处理器可以处理日志的级别.
     final int levelValue = this.logLevel.intValue();
     // 用户发送日志的级别.
@@ -147,29 +148,20 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     }
   }
 
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @return FileQueue .
-   * @author admin
-   */
-  @Override
-  public final StudyQueue<Record> getFileQueue() {
-    return this.fileQueue;
-  }
-
   @Override
   public final int size() {
     return this.fileQueue.size();
   }
 
-  private void metris() {
+  private void metris(final Record lr) {
     // 记录当前处理器最后一次处理日志的时间.
     this.sys = System.currentTimeMillis();
-    GLOBAL_COUNTER.incrementAndGet();
-    this.counter.incrementAndGet();
+    // 全局Handler处理的日志数量.
+    final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
+    lr.setCustom("globalHandlerCounter", Long.toString(globalCounter));
+    // 单个Handler处理的日志数量.
+    final long singleCounter = counter.incrementAndGet();
+    lr.setCustom("singleHandlerCounter", Long.toString(singleCounter));
   }
 
   private void ignoreHandle(final Record logRecord) {
@@ -198,15 +190,8 @@ public abstract class AbstractFileHandler extends AbstractHandler {
    */
   private void config() {
     try {
-      // 设置日志文件翻转间隔格式化.
-      final String intervalFormatterStr = this.getValue("intervalFormatter", "yyyyMMdd");
-      this.intervalFormatter = DateTimeFormatter.ofPattern(intervalFormatterStr);
-      // UTC时区获取当前系统的日期.
-      final Instant now = Instant.now();
-      final ZonedDateTime zdt = ZonedDateTime.ofInstant(now, ZoneOffset.UTC);
-      // 设置处理器创建时当前的系统时间.
-      final String format = this.intervalFormatter.format(zdt);
-      this.initialization = Long.parseLong(format);
+      // 初始化File配置.
+      configFileHandler();
       // 委托初始化配置.
       configHandler();
       // 日志的文件对象.
@@ -214,6 +199,18 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     } catch (final Exception e) {
       throw new StudyJuliRuntimeException(e);
     }
+  }
+
+  private void configFileHandler() {
+    // 设置日志文件翻转间隔格式化.
+    final String intervalFormatterStr = this.getValue("intervalFormatter", "yyyyMMdd");
+    this.intervalFormatter = DateTimeFormatter.ofPattern(intervalFormatterStr);
+    // UTC时区获取当前系统的日期.
+    final Instant now = Instant.now();
+    final ZonedDateTime zdt = ZonedDateTime.ofInstant(now, ZoneOffset.UTC);
+    // 设置处理器创建时当前的系统时间.
+    final String format = this.intervalFormatter.format(zdt);
+    this.initialization = Long.parseLong(format);
   }
 
   public File getFile() {
