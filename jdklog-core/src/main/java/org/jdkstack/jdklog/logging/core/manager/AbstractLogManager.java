@@ -1,12 +1,9 @@
 package org.jdkstack.jdklog.logging.core.manager;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
 import org.jdkstack.jdklog.logging.api.manager.LoaderLogInfo;
@@ -48,38 +45,6 @@ public abstract class AbstractLogManager implements LogManager {
     return LOGMANAGER;
   }
 
-  @Override
-  public final void readConfiguration(final InputStream ins) {
-    //
-    throw new UnsupportedOperationException(Constants.UNSUPPORTED_OPERATION_MESSAGE);
-  }
-
-  @Override
-  public final void reset() {
-    //
-    throw new UnsupportedOperationException(Constants.UNSUPPORTED_OPERATION_MESSAGE);
-  }
-
-  @Override
-  public final void updateConfiguration(
-      final Function<String, BiFunction<String, String, String>> mapper) {
-    //
-    throw new UnsupportedOperationException(Constants.UNSUPPORTED_OPERATION_MESSAGE);
-  }
-
-  @Override
-  public final void updateConfiguration(
-      final InputStream ins, final Function<String, BiFunction<String, String, String>> mapper) {
-    //
-    throw new UnsupportedOperationException(Constants.UNSUPPORTED_OPERATION_MESSAGE);
-  }
-
-  @Override
-  public final void checkAccess() {
-    //
-    throw new UnsupportedOperationException(Constants.UNSUPPORTED_OPERATION_MESSAGE);
-  }
-
   /**
    * .
    *
@@ -97,16 +62,6 @@ public abstract class AbstractLogManager implements LogManager {
   public final void removeConfigurationListener(final Runnable listener) {
     //
     throw new UnsupportedOperationException(Constants.UNSUPPORTED_OPERATION_MESSAGE);
-  }
-
-  @Override
-  public final void checkPermission() {
-    //
-  }
-
-  @Override
-  public final Map<ClassLoader, LoaderLogInfo> getClassLoaderLoggers() {
-    return Collections.unmodifiableMap(CLASSLOADERLOGGERS);
   }
 
   /**

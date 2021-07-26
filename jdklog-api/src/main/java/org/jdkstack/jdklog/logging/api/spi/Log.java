@@ -49,16 +49,6 @@ public interface Log {
   void info(String message, Object... args);
 
   /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void info(String message);
-
-  /**
    * 详细日志.
    *
    * <p>Another description after blank line.
@@ -68,16 +58,6 @@ public interface Log {
    * @author admin
    */
   void debug(String message, Object... args);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void debug(String message);
 
   /**
    * 较详细日志.
@@ -91,16 +71,6 @@ public interface Log {
   void trace(String message, Object... args);
 
   /**
-   * 较详细日志.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void trace(String message);
-
-  /**
    * 警告日志.
    *
    * <p>Another description after blank line.
@@ -110,16 +80,6 @@ public interface Log {
    * @author admin
    */
   void warn(String message, Object... args);
-
-  /**
-   * 较详细日志.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void warn(String message);
 
   /**
    * 严重日志.
@@ -133,16 +93,6 @@ public interface Log {
   void error(String message, Object... args);
 
   /**
-   * 较详细日志.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void error(String message);
-
-  /**
    * 致命错误日志.
    *
    * <p>Another description after blank line.
@@ -152,16 +102,6 @@ public interface Log {
    * @author admin
    */
   void fatal(String message, Object... args);
-
-  /**
-   * 致命错误日志.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void fatal(String message);
 
   /**
    * This is a method description.
@@ -179,16 +119,6 @@ public interface Log {
    *
    * <p>Another description after blank line.
    *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void off(String message);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @param args 日志传递进来的参数.
    * @param message 日志消息.
    * @author admin
@@ -200,29 +130,9 @@ public interface Log {
    *
    * <p>Another description after blank line.
    *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void all(String message);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @param args 日志传递进来的参数.
    * @param message 日志消息.
    * @author admin
    */
   void config(String message, Object... args);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param message 日志消息.
-   * @author admin
-   */
-  void config(String message);
 }

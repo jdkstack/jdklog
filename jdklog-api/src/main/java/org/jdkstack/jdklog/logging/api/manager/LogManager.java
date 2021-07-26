@@ -1,9 +1,5 @@
 package org.jdkstack.jdklog.logging.api.manager;
 
-import java.io.InputStream;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
 
@@ -43,62 +39,10 @@ public interface LogManager {
    *
    * <p>Another description after blank line.
    *
-   * @param ins 文件流.
-   * @author admin
-   */
-  void readConfiguration(InputStream ins);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @throws SecurityException 安全异常检查.
    * @author admin
    */
   void readConfiguration();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @throws SecurityException 安全异常检查.
-   * @author admin
-   */
-  void reset();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param mapper 属性更新策略.
-   * @author admin
-   */
-  void updateConfiguration(Function<String, BiFunction<String, String, String>> mapper);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param ins 文件流.
-   * @param mapper 属性更新策略.
-   * @author admin
-   */
-  void updateConfiguration(
-      InputStream ins, Function<String, BiFunction<String, String, String>> mapper);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @throws SecurityException 安全异常检查.
-   * @author admin
-   */
-  void checkAccess();
 
   /**
    * This is a method description.
@@ -119,25 +63,6 @@ public interface LogManager {
    * @author admin
    */
   void removeConfigurationListener(Runnable listener);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   */
-  void checkPermission();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Map Map.
-   * @author admin
-   */
-  Map<ClassLoader, LoaderLogInfo> getClassLoaderLoggers();
 
   /**
    * This is a method description.
