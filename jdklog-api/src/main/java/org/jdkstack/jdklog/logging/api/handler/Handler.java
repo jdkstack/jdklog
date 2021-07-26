@@ -116,34 +116,4 @@ public interface Handler {
    * @author admin
    */
   String getProperty(String name, String defaultValue);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Formatter Formatter.
-   * @author admin
-   */
-  Formatter getFormatter();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Filter Filter.
-   * @author admin
-   */
-  Filter getFilter();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Level Level.
-   * @author admin
-   */
-  Level getLevel();
 }

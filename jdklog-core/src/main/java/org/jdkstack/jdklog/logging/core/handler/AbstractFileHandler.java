@@ -33,13 +33,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
   /** 按照文件名翻转日志文件. */
   protected long initialization;
 
-  protected AbstractFileHandler() {
-    super("");
-    this.fileQueue = new FileQueue(this.prefix);
-    this.producerWorker = new ProducerWorker(this.fileQueue);
-    this.consumerRunnable = new ConsumerRunnable(this.fileQueue, this);
-  }
-
   /**
    * This is a method description.
    *
@@ -56,27 +49,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     this.fileQueue = new FileQueue(this.prefix);
     this.producerWorker = new ProducerWorker(this.fileQueue);
     this.consumerRunnable = new ConsumerRunnable(this.fileQueue, this);
-  }
-
-  /**
-   * 读写锁状态检查,日志文件按照日期进行切换的条件.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param current .
-   * @return boolean .
-   * @author admin
-   */
-  protected boolean checkState(final long current) {
-    // 日志文件翻转开关.
-    final String rotatableStr = this.getValue(this.prefix + "rotatable", "true");
-    final boolean rotatable = Boolean.parseBoolean(rotatableStr);
-    // 文件翻转开关打开并且当前系统时间减去初始化的时间大于间隔时间,即可进行翻转日志文件.
-    final long intervalTemp = current - this.initialization;
-    final String intervalStr = this.getValue(this.prefix + "interval", "1");
-    int interval = Integer.parseInt(intervalStr);
-    final boolean isInterval = intervalTemp >= interval;
-    return rotatable && isInterval;
   }
 
   /**
@@ -148,17 +120,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     return this.fileQueue.size();
   }
 
-  private void metris(final Record lr) {
-    // 记录当前处理器最后一次处理日志的时间.
-    this.sys = System.currentTimeMillis();
-    // 全局Handler处理的日志数量.
-    final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
-    lr.setCustom("globalHandlerCounter", Long.toString(globalCounter));
-    // 单个Handler处理的日志数量.
-    final long singleCounter = counter.incrementAndGet();
-    lr.setCustom("singleHandlerCounter", Long.toString(singleCounter));
-  }
-
   private void ignoreHandle(final Record logRecord) {
     // 写到异常日志文件中.
   }
@@ -208,13 +169,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
   }
 
   public File getFile() {
-    final File path = getPath();
-    final String logFileName = getLogFileName();
-    // 得到日志的完整路径部分+日志文件名完整部分.
-    return new File(path, logFileName);
-  }
-
-  private File getPath() {
     // 设置日志文件翻转开关.
     final String directory = this.getValue("directory", "logs");
     // 日志完整目录部分(日志子目录).
@@ -223,7 +177,9 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     if (!path.exists() && !path.mkdirs()) {
       throw new StudyJuliRuntimeException("目录创建异常.");
     }
-    return path;
+    final String logFileName = getLogFileName();
+    // 得到日志的完整路径部分+日志文件名完整部分.
+    return new File(path, logFileName);
   }
 
   private String getLogFileName() {
@@ -239,6 +195,27 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     final String suffix = this.getValue("suffix", ".log");
     // 日志文件名的完整部分.
     return this.prefix + logName + suffix;
+  }
+
+  /**
+   * 读写锁状态检查,日志文件按照日期进行切换的条件.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param current .
+   * @return boolean .
+   * @author admin
+   */
+  protected boolean checkState(final long current) {
+    // 日志文件翻转开关.
+    final String rotatableStr = this.getValue(this.prefix + "rotatable", "true");
+    final boolean rotatable = Boolean.parseBoolean(rotatableStr);
+    // 文件翻转开关打开并且当前系统时间减去初始化的时间大于间隔时间,即可进行翻转日志文件.
+    final long intervalTemp = current - this.initialization;
+    final String intervalStr = this.getValue(this.prefix + "interval", "1");
+    int interval = Integer.parseInt(intervalStr);
+    final boolean isInterval = intervalTemp >= interval;
+    return rotatable && isInterval;
   }
 
   private void firstCheck(long currentLong) {

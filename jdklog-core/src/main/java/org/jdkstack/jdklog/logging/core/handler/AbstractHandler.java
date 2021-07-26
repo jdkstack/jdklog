@@ -169,19 +169,6 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
    *
    * <p>Another description after blank line.
    *
-   * @return Formatter
-   * @author admin
-   */
-  @Override
-  public final Formatter getFormatter() {
-    return this.formatter;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @param newFormatter .
    * @throws SecurityException .
    * @author admin
@@ -196,38 +183,12 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
    *
    * <p>Another description after blank line.
    *
-   * @return Filter
-   * @author admin
-   */
-  @Override
-  public final Filter getFilter() {
-    return this.filter;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @throws SecurityException .
    * @author admin
    */
   @Override
   public final void setFilter(final Filter newFilter) {
     this.filter = newFilter;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Level .
-   * @author admin
-   */
-  @Override
-  public final Level getLevel() {
-    return this.logLevel;
   }
 
   /**
