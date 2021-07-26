@@ -128,7 +128,7 @@ public abstract class AbstractMessageFormatter implements Formatter {
   protected Map<String, String> before(final Record logRecord) {
     final Map<String, String> customs = new LinkedHashMap<>(16);
     // UTC时区获取当前系统的日期.
-    final Instant instant = logRecord.getInstant();
+    final Instant instant = Instant.now();
     final ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
     // 日期格式化.
     final String format = this.pattern.format(zdt);

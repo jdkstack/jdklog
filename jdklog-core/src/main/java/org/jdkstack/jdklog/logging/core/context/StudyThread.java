@@ -15,8 +15,6 @@ import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
  * @author admin
  */
 public final class StudyThread extends Thread implements StudyThreadImpl {
-  /** 线程类型. */
-  private final int threadType;
   /** 线程最大的执行时间. */
   private final long maxExecTime;
   /** 线程最大的执行单位. */
@@ -35,7 +33,6 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
    *
    * @param targetParam 线程任务.
    * @param nameParam 线程名.
-   * @param threadTypeParam 线程类型.
    * @param maxExecTimeParam 线程最大执行时间.
    * @param maxExecTimeUnitParam 线程最大执行时间单位.
    * @author admin
@@ -43,11 +40,9 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
   public StudyThread(
       final Runnable targetParam,
       final String nameParam,
-      final int threadTypeParam,
       final long maxExecTimeParam,
       final TimeUnit maxExecTimeUnitParam) {
     super(targetParam, nameParam);
-    this.threadType = threadTypeParam;
     this.maxExecTime = maxExecTimeParam;
     this.maxExecTimeUnit = maxExecTimeUnitParam;
   }
@@ -61,17 +56,6 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
   @Override
   public TimeUnit maxExecTimeUnit() {
     return this.maxExecTimeUnit;
-  }
-
-  /**
-   * 返回线程的类型.
-   *
-   * @return 返回线程的类型.
-   * @author admin
-   */
-  @Override
-  public int threadType() {
-    return this.threadType;
   }
 
   /**

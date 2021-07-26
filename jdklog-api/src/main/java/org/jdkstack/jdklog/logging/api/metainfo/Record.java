@@ -58,26 +58,6 @@ public interface Record {
    *
    * <p>Another description after blank line.
    *
-   * @return Instant .
-   * @author admin
-   */
-  Instant getInstant();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param instant .
-   * @author admin
-   */
-  void setInstant(Instant instant);
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @return Throwable .
    * @author admin
    */

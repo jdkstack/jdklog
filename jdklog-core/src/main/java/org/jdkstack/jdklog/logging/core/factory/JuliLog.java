@@ -407,7 +407,6 @@ public class JuliLog implements Log {
   @Override
   public final void off(final String message) {
     // Logger的日志级别优先过滤不合法的日志,之后用处理器handler的日志级别过滤不合法的日志,最后才是Filter自定义过滤.
-
     this.logCore(LogLevel.OFF, message);
   }
 

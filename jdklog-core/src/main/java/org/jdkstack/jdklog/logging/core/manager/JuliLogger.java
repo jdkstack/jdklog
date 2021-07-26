@@ -6,7 +6,6 @@ import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.Logger;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
-import org.jdkstack.jdklog.logging.api.metainfo.LogRecord;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 
 /**
@@ -82,111 +81,11 @@ public class JuliLogger extends AbstractJuliLogger {
    *
    * <p>Another description after blank line.
    *
-   * @param logLevel .
-   * @param sourceClass .
-   * @param sourceMethod .
-   * @param msg .
-   * @author admin
-   */
-  @Override
-  public final void logp(
-      final Level logLevel, final String sourceClass, final String sourceMethod, final String msg) {
-    final Record lr = new LogRecord(logLevel, msg);
-    lr.setCustom(Constants.SOURCE_CLASS, sourceClass);
-    lr.setCustom(Constants.SOURCE_METHOD, sourceMethod);
-    this.doLog(lr);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel .
-   * @param sourceClass .
-   * @param sourceMethod .
-   * @param msg .
-   * @param param1 .
-   * @author admin
-   */
-  @Override
-  public final void logp(
-      final Level logLevel,
-      final String sourceClass,
-      final String sourceMethod,
-      final String msg,
-      final Object param1) {
-    final Record lr = new LogRecord(logLevel, msg);
-    lr.setCustom(Constants.SOURCE_CLASS, sourceClass);
-    lr.setCustom(Constants.SOURCE_METHOD, sourceMethod);
-    lr.setParameter(param1);
-    this.doLog(lr);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel .
-   * @param sourceClass .
-   * @param sourceMethod .
-   * @param msg .
-   * @param params .
-   * @author admin
-   */
-  @Override
-  public final void logp(
-      final Level logLevel,
-      final String sourceClass,
-      final String sourceMethod,
-      final String msg,
-      final Object... params) {
-    final Record lr = new LogRecord(logLevel, msg);
-    lr.setCustom(Constants.SOURCE_CLASS, sourceClass);
-    lr.setCustom(Constants.SOURCE_METHOD, sourceMethod);
-    for (final Object param : params) {
-      lr.setParameter(param);
-    }
-    this.doLog(lr);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
    * @param lr .
    * @author admin
    */
   @Override
   public final void logp(final Record lr) {
-    this.doLog(lr);
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @param logLevel .
-   * @param sourceClass .
-   * @param sourceMethod .
-   * @param msg .
-   * @param thrown .
-   * @author admin
-   */
-  @Override
-  public final void logp(
-      final Level logLevel,
-      final String sourceClass,
-      final String sourceMethod,
-      final String msg,
-      final Throwable thrown) {
-    final Record lr = new LogRecord(logLevel, msg);
-    lr.setCustom(Constants.SOURCE_CLASS, sourceClass);
-    lr.setCustom(Constants.SOURCE_METHOD, sourceMethod);
-    lr.setThrown(thrown);
     this.doLog(lr);
   }
 

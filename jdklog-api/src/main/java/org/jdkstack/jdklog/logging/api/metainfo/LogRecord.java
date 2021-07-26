@@ -1,6 +1,5 @@
 package org.jdkstack.jdklog.logging.api.metainfo;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -25,8 +24,6 @@ public class LogRecord implements Record {
   private String message;
   /** . */
   private Throwable thrown;
-  /** . */
-  private Instant instant;
 
   /**
    * This is a method description.
@@ -40,7 +37,6 @@ public class LogRecord implements Record {
   public LogRecord(final Level logLevel, final String msg) {
     this.logLevel = logLevel;
     this.message = msg;
-    this.instant = Instant.now();
   }
 
   /**
@@ -93,32 +89,6 @@ public class LogRecord implements Record {
   @Override
   public final void setParameter(final Object parameter) {
     this.parameters.add(parameter);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return Instant .
-   * @author admin
-   */
-  @Override
-  public final Instant getInstant() {
-    return this.instant;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param instant .
-   * @author admin
-   */
-  @Override
-  public final void setInstant(final Instant instant) {
-    this.instant = instant;
   }
 
   /**
