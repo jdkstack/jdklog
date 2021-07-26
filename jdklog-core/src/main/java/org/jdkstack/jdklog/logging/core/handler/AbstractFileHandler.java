@@ -1,24 +1,19 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
-import org.jdkstack.jdklog.logging.api.filter.Filter;
-import org.jdkstack.jdklog.logging.api.formatter.Formatter;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;
-import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 import org.jdkstack.jdklog.logging.core.queue.FileQueue;
 import org.jdkstack.jdklog.logging.core.queue.ProducerWorker;
-import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
 
 /**
  * This is a method description.
@@ -37,11 +32,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
   /** 生产日志处理器. */
   protected final StudyWorker<Record> producerWorker;
   /** . */
-  protected String prefix;
-  /** . */
   protected File logFilePath;
-  /** 间隔格式化. */
-  protected DateTimeFormatter intervalFormatter;
   /** 按照文件名翻转日志文件. */
   protected long initialization;
 
@@ -101,10 +92,8 @@ public abstract class AbstractFileHandler extends AbstractHandler {
    */
   @Override
   public final void publish(final Record logRecord) {
-    // 记录当前处理器最后一次处理日志的时间.
-    this.sys = System.currentTimeMillis();
-    GLOBAL_COUNTER.incrementAndGet();
-    this.counter.incrementAndGet();
+    // 每次发布日志消息是,先进行计算.
+    metris();
     // 处理器可以处理日志的级别.
     final int levelValue = this.logLevel.intValue();
     // 用户发送日志的级别.
@@ -124,142 +113,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
       batchHandle(logRecord);
     }
   }
-
-  private void ignoreHandle(Record logRecord) {
-    //
-  }
-
-  private void batchHandle(Record logRecord) {
-    // 启动一个线程,开始生产日志.(考虑将LogRecord预先格式化成字符串消息,LogRecord对象生命周期结束.)
-    LOG_PRODUCER_CONTEXT.executeInExecutorService(logRecord, this.producerWorker);
-    // 如果队列容量大于等于100,通知消费者消费.如果此时生产者不再生产数据,则队列中会有<100条数据永久存在,因此需要启动一个守护者线程GUARDIAN处理.
-    final int size = this.fileQueue.size();
-    // 当前处理器的队列中日志消息达到100条,处理一次.
-    if (Constants.BATCH_SIZE <= size) {
-      // 提交一个任务,用于通知消费者线程去消费队列数据.
-      LOG_PRODUCER_NOTICE_CONSUMER_CONTEXT.executeInExecutorService(
-          this, this.producerNoticeConsumerWorker);
-    }
-  }
-
-  /**
-   * .
-   *
-   * <p>Another description after blank line.
-   *
-   * @return FileQueue .
-   * @author admin
-   */
-  @Override
-  public final StudyQueue<Record> getFileQueue() {
-    return this.fileQueue;
-  }
-
-  @Override
-  public final int size() {
-    return this.fileQueue.size();
-  }
-
-  /**
-   * 配置方法.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   */
-  private void config() {
-    try {
-      // 设置日志文件翻转间隔格式化.
-      final String intervalFormatterStr = this.getValue("intervalFormatter", "yyyyMMdd");
-      this.intervalFormatter = DateTimeFormatter.ofPattern(intervalFormatterStr);
-      // UTC时区获取当前系统的日期.
-      final Instant now = Instant.now();
-      final ZonedDateTime zdt = ZonedDateTime.ofInstant(now, ZoneOffset.UTC);
-      // 设置处理器创建时当前的系统时间.
-      final String format = this.intervalFormatter.format(zdt);
-      this.initialization = Long.parseLong(format);
-      // 设置处理器创建时当前的系统时间.
-      // 设置日志文件的编码.
-      final String encodingStr = this.getValue("encoding", "UTF-8");
-      this.setEncoding(encodingStr);
-      // 设置日志文件的级别.
-      final String logLevelName = LogLevel.ALL.getName();
-      final String levelStr = this.getValue("level", logLevelName);
-      final Level level = LogLevel.findLevel(levelStr);
-      this.setLevel(level);
-      // 设置日志文件的过滤器.
-      final String filterName = this.getValue("filter", Constants.FILTER);
-      // 设置过滤器.
-      final Constructor<?> filterConstructor = ClassLoadingUtils.constructor(filterName);
-      final Filter filterTemp = (Filter) ClassLoadingUtils.newInstance(filterConstructor);
-      this.setFilter(filterTemp);
-      // 获取日志格式化器.
-      final String formatterName = this.getValue("formatter", Constants.FORMATTER);
-      // 设置日志格式化器.
-      final Constructor<?> formatterConstructor = ClassLoadingUtils.constructor(formatterName);
-      final Formatter formatterTemp =
-          (Formatter) ClassLoadingUtils.newInstance(formatterConstructor);
-      // 设置日志格式化器.
-      this.setFormatter(formatterTemp);
-      // 日志的文件对象.
-      this.logFilePath = this.getFile();
-    } catch (final Exception e) {
-      throw new StudyJuliRuntimeException(e);
-    }
-  }
-
-  private String getTempPrefix() {
-    // 获取当前的类的全路径.
-    final Class<? extends AbstractHandler> aClass = this.getClass();
-    final String className = aClass.getName();
-    return this.prefix + className;
-  }
-
-  public String getValue(String key, String defaultValue) {
-    // 获取当前的类的全路径.
-    String tempPrefix = getTempPrefix();
-    // 设置日志文件翻转开关.
-    return this.getProperty(tempPrefix + "." + key, defaultValue);
-  }
-
-  public File getFile() {
-    // 设置日志文件翻转开关.
-    final String directory = this.getValue("directory", "logs");
-    // 日志完整目录部分(日志子目录).
-    final File path = new File(directory + File.separator + this.prefix);
-    // 不存在,创建目录和子目录.
-    if (!path.exists() && !path.mkdirs()) {
-      throw new StudyJuliRuntimeException("目录创建异常.");
-    }
-    // 日志文件翻转开关.
-    final String rotatableStr = this.getValue("rotatable", "true");
-    final boolean rotatable = Boolean.parseBoolean(rotatableStr);
-    // 日志文件名.
-    String logName = "";
-    // 文件切割打开.
-    if (rotatable) {
-      logName = Long.toString(this.initialization);
-    }
-    final String suffix = this.getValue("suffix", ".log");
-    // 日志文件名的完整部分.
-    final String logFileName = this.prefix + logName + suffix;
-    // 得到日志的完整路径部分+日志文件名完整部分.
-    return new File(path, logFileName);
-  }
-
-  /**
-   * 打开流.
-   *
-   * @author admin
-   */
-  public abstract void doOpen();
-
-  /**
-   * 关闭流.
-   *
-   * @author admin
-   */
-  public abstract void doClose();
 
   /**
    * 每向队列中产生一条日志,会触发flush这个方法.
@@ -294,6 +147,109 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     }
   }
 
+  /**
+   * .
+   *
+   * <p>Another description after blank line.
+   *
+   * @return FileQueue .
+   * @author admin
+   */
+  @Override
+  public final StudyQueue<Record> getFileQueue() {
+    return this.fileQueue;
+  }
+
+  @Override
+  public final int size() {
+    return this.fileQueue.size();
+  }
+
+  private void metris() {
+    // 记录当前处理器最后一次处理日志的时间.
+    this.sys = System.currentTimeMillis();
+    GLOBAL_COUNTER.incrementAndGet();
+    this.counter.incrementAndGet();
+  }
+
+  private void ignoreHandle(final Record logRecord) {
+    // 写到异常日志文件中.
+  }
+
+  private void batchHandle(final Record logRecord) {
+    // 启动一个线程,开始生产日志.(考虑将LogRecord预先格式化成字符串消息,LogRecord对象生命周期结束.)
+    LOG_PRODUCER_CONTEXT.executeInExecutorService(logRecord, this.producerWorker);
+    // 如果队列容量大于等于100,通知消费者消费.如果此时生产者不再生产数据,则队列中会有<100条数据永久存在,因此需要启动一个守护者线程GUARDIAN处理.
+    final int size = this.fileQueue.size();
+    // 当前处理器的队列中日志消息达到100条,处理一次.
+    if (Constants.BATCH_SIZE <= size) {
+      // 提交一个任务,用于通知消费者线程去消费队列数据.
+      LOG_PRODUCER_NOTICE_CONSUMER_CONTEXT.executeInExecutorService(
+          this, this.producerNoticeConsumerWorker);
+    }
+  }
+
+  /**
+   * 配置方法.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
+  private void config() {
+    try {
+      // 设置日志文件翻转间隔格式化.
+      final String intervalFormatterStr = this.getValue("intervalFormatter", "yyyyMMdd");
+      this.intervalFormatter = DateTimeFormatter.ofPattern(intervalFormatterStr);
+      // UTC时区获取当前系统的日期.
+      final Instant now = Instant.now();
+      final ZonedDateTime zdt = ZonedDateTime.ofInstant(now, ZoneOffset.UTC);
+      // 设置处理器创建时当前的系统时间.
+      final String format = this.intervalFormatter.format(zdt);
+      this.initialization = Long.parseLong(format);
+      // 委托初始化配置.
+      configHandler();
+      // 日志的文件对象.
+      this.logFilePath = this.getFile();
+    } catch (final Exception e) {
+      throw new StudyJuliRuntimeException(e);
+    }
+  }
+
+  public File getFile() {
+    final File path = getPath();
+    final String logFileName = getLogFileName();
+    // 得到日志的完整路径部分+日志文件名完整部分.
+    return new File(path, logFileName);
+  }
+
+  private File getPath() {
+    // 设置日志文件翻转开关.
+    final String directory = this.getValue("directory", "logs");
+    // 日志完整目录部分(日志子目录).
+    final File path = new File(directory + File.separator + this.prefix);
+    // 不存在,创建目录和子目录.
+    if (!path.exists() && !path.mkdirs()) {
+      throw new StudyJuliRuntimeException("目录创建异常.");
+    }
+    return path;
+  }
+
+  private String getLogFileName() {
+    // 日志文件翻转开关.
+    final String rotatableStr = this.getValue("rotatable", "true");
+    final boolean rotatable = Boolean.parseBoolean(rotatableStr);
+    // 日志文件名.
+    String logName = "";
+    // 文件切割打开.
+    if (rotatable) {
+      logName = Long.toString(this.initialization);
+    }
+    final String suffix = this.getValue("suffix", ".log");
+    // 日志文件名的完整部分.
+    return this.prefix + logName + suffix;
+  }
+
   private void firstCheck(long currentLong) {
     if (this.checkState(currentLong)) {
       // 释放读锁.
@@ -326,4 +282,18 @@ public abstract class AbstractFileHandler extends AbstractHandler {
       this.doOpen();
     }
   }
+
+  /**
+   * 打开流.
+   *
+   * @author admin
+   */
+  public abstract void doOpen();
+
+  /**
+   * 关闭流.
+   *
+   * @author admin
+   */
+  public abstract void doClose();
 }

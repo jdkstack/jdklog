@@ -1,5 +1,10 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
+import java.lang.reflect.Constructor;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -9,9 +14,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import org.jdkstack.jdklog.logging.api.context.WorkerContext;
+import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
 import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.formatter.Formatter;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
+import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
@@ -19,6 +26,7 @@ import org.jdkstack.jdklog.logging.api.monitor.Monitor;
 import org.jdkstack.jdklog.logging.core.context.StudyThreadFactory;
 import org.jdkstack.jdklog.logging.core.context.WorkerStudyContextImpl;
 import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
+import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
 
 /**
  * This is a class description.
@@ -91,8 +99,6 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
       new WorkerStudyContextImpl(LOG_PRODUCER_NOTICE_CONSUMER, SCHEDULED_EXECUTOR_SERVICE);
   /** 是否开启处理器级别的日志处理. */
   private static final int OFF_VALUE = LogLevel.OFF.intValue();
-  /** 全局handler日志计数. */
-  protected static final AtomicLong GLOBAL_COUNTER = new AtomicLong(0L);
 
   static {
     // 线程监控任务.
@@ -103,6 +109,10 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
     GUARDIAN.monitor(LOG_GUARDIAN_CONSUMER_CONTEXT);
   }
 
+  /** 间隔格式化. */
+  protected DateTimeFormatter intervalFormatter;
+  /** . */
+  protected String prefix;
   /** 处理器级别的日志过滤器. */
   protected Filter filter;
   /** . */
@@ -111,8 +121,6 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   protected Level logLevel = LogLevel.ALL;
   /** . */
   private String encoding;
-  /** 代表当前处理器接收到最后一条日志的时间,0L表示从来没接收到. */
-  protected long sys;
 
   /**
    * 关闭资源方法,一般处理优雅关闭应用程序时调用.
@@ -303,5 +311,55 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
   @Override
   public final AtomicLong getCounter() {
     return this.counter;
+  }
+
+  /**
+   * 配置方法.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
+  public void configHandler() {
+    try {
+      // 设置日志文件的编码.
+      final String encodingStr = this.getValue("encoding", "UTF-8");
+      this.setEncoding(encodingStr);
+      // 设置日志文件的级别.
+      final String logLevelName = LogLevel.ALL.getName();
+      final String levelStr = this.getValue("level", logLevelName);
+      final Level level = LogLevel.findLevel(levelStr);
+      this.setLevel(level);
+      // 设置日志文件的过滤器.
+      final String filterName = this.getValue("filter", Constants.FILTER);
+      // 设置过滤器.
+      final Constructor<?> filterConstructor = ClassLoadingUtils.constructor(filterName);
+      final Filter filterTemp = (Filter) ClassLoadingUtils.newInstance(filterConstructor);
+      this.setFilter(filterTemp);
+      // 获取日志格式化器.
+      final String formatterName = this.getValue("formatter", Constants.FORMATTER);
+      // 设置日志格式化器.
+      final Constructor<?> formatterConstructor = ClassLoadingUtils.constructor(formatterName);
+      final Formatter formatterTemp =
+          (Formatter) ClassLoadingUtils.newInstance(formatterConstructor);
+      // 设置日志格式化器.
+      this.setFormatter(formatterTemp);
+    } catch (final Exception e) {
+      throw new StudyJuliRuntimeException(e);
+    }
+  }
+
+  private String getTempPrefix() {
+    // 获取当前的类的全路径.
+    final Class<? extends AbstractHandler> aClass = this.getClass();
+    final String className = aClass.getName();
+    return this.prefix + className;
+  }
+
+  public String getValue(String key, String defaultValue) {
+    // 获取当前的类的全路径.
+    String tempPrefix = getTempPrefix();
+    // 设置日志文件翻转开关.
+    return this.getProperty(tempPrefix + "." + key, defaultValue);
   }
 }
