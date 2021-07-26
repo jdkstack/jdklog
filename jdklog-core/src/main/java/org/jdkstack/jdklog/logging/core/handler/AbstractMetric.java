@@ -6,6 +6,13 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 
+/**
+ * .
+ *
+ * <p>.
+ *
+ * @author admin
+ */
 public abstract class AbstractMetric implements Metric {
   /** 全局handler日志计数. */
   protected static final AtomicLong GLOBAL_COUNTER = new AtomicLong(0L);
@@ -20,6 +27,14 @@ public abstract class AbstractMetric implements Metric {
   /** 代表当前处理器接收到最后一条日志的时间,0L表示从来没接收到. */
   protected long sys;
 
+  /**
+   * .
+   *
+   * <p>Another description after blank line.
+   *
+   * @param lr lr.
+   * @author admin
+   */
   protected void metris(final Record lr) {
     // 记录当前处理器最后一次处理日志的时间.
     this.sys = System.currentTimeMillis();

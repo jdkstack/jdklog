@@ -123,6 +123,7 @@ public abstract class AbstractMessageFormatter implements Formatter {
    * <p>.
    *
    * @param logRecord .
+   * @return Map .
    * @author admin
    */
   protected Map<String, String> before(final Record logRecord) {
@@ -151,6 +152,7 @@ public abstract class AbstractMessageFormatter implements Formatter {
    *
    * <p>.
    *
+   * @return Map .
    * @author admin
    */
   protected Map<String, String> after() {

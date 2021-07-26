@@ -104,7 +104,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     this.initialization = Long.parseLong(format);
   }
 
-  public File getFile() {
+  private File getFile() {
     // 设置日志文件翻转开关.
     final String directory = this.getValue("directory", "logs");
     // 日志完整目录部分(日志子目录).
@@ -154,7 +154,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     return rotatable && isInterval;
   }
 
-  private void firstCheck(long currentLong) {
+  private void firstCheck(final long currentLong) {
     if (this.checkState(currentLong)) {
       // 释放读锁.
       this.readLock.unlock();
@@ -171,7 +171,7 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     }
   }
 
-  private void secondCheck(long currentLong) {
+  private void secondCheck(final long currentLong) {
     // 重新检查状态.
     if (this.checkState(currentLong)) {
       // 关闭流之前,消费掉队列里面的全部数据.

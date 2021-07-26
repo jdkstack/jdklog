@@ -107,6 +107,7 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
    * <p>Another description after blank line.
    *
    * @param prefix prefix.
+   * @param queue queue.
    * @author admin
    */
   protected AbstractHandler(final String prefix, final StudyQueue<Record> queue) {
@@ -299,7 +300,17 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
     return this.prefix + className;
   }
 
-  public String getValue(String key, String defaultValue) {
+  /**
+   * .
+   *
+   * <p>Another description after blank line.
+   *
+   * @param key key.
+   * @param defaultValue defaultValue.
+   * @return String value.
+   * @author admin
+   */
+  public String getValue(final String key, final String defaultValue) {
     // 获取当前的类的全路径.
     String tempPrefix = getTempPrefix();
     // 设置日志文件翻转开关.

@@ -88,7 +88,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     return sb.toString();
   }
 
-  private void handle(StringBuilder sb, Map<String, String> customs) {
+  private void handle(final StringBuilder sb, final Map<String, String> customs) {
     // 循环处理自定义字段.
     for (final Map.Entry<String, String> entry : customs.entrySet()) {
       final String key = entry.getKey();

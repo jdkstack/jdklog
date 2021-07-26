@@ -177,11 +177,25 @@ public class FileHandler extends AbstractFileHandler {
     }
   }
 
+  /**
+   * .
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Override
   public void doOpen() {
     this.open();
   }
 
+  /**
+   * .
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Override
   public void doClose() {
     this.closeIo();
