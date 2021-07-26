@@ -7,12 +7,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;
-import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
-import org.jdkstack.jdklog.logging.api.metainfo.Record;
-import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
-import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 import org.jdkstack.jdklog.logging.core.queue.FileQueue;
-import org.jdkstack.jdklog.logging.core.queue.ProducerWorker;
 
 /**
  * This is a method description.
@@ -23,15 +18,11 @@ import org.jdkstack.jdklog.logging.core.queue.ProducerWorker;
  */
 public abstract class AbstractFileHandler extends AbstractHandler {
   /** . */
-  protected final Runnable consumerRunnable;
-  /** . */
-  protected final StudyQueue<Record> fileQueue;
-  /** 生产日志处理器. */
-  protected final StudyWorker<Record> producerWorker;
-  /** . */
   protected File logFilePath;
   /** 按照文件名翻转日志文件. */
   protected long initialization;
+  /** 间隔格式化. */
+  protected DateTimeFormatter intervalFormatter;
 
   /**
    * This is a method description.
@@ -42,44 +33,10 @@ public abstract class AbstractFileHandler extends AbstractHandler {
    * @author admin
    */
   protected AbstractFileHandler(final String prefix) {
-    super(prefix);
+    // 动态配置队列属性.
+    super(prefix, new FileQueue(prefix));
     // 读取日志配置文件,初始化配置.
     this.config();
-    // 动态配置队列属性.
-    this.fileQueue = new FileQueue(this.prefix);
-    this.producerWorker = new ProducerWorker(this.fileQueue);
-    this.consumerRunnable = new ConsumerRunnable(this.fileQueue, this);
-  }
-
-  /**
-   * 调用日志log方法时,最后会调用此方法,将日志发送到队列中.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   */
-  @Override
-  public final void publish(final Record logRecord) {
-    // 每次发布日志消息是,先进行计算.
-    metris(logRecord);
-    // 处理器可以处理日志的级别.
-    final int levelValue = this.logLevel.intValue();
-    // 用户发送日志的级别.
-    final int recordLevel = logRecord.intValue();
-    // 如果日志的消息级别,比当前处理器的级别小则不处理日志.
-    final boolean intValue = recordLevel < levelValue;
-    // 如果当前处理器关闭日志级别,处理器也不处理日志.
-    final boolean offValue = levelValue == LogLevel.OFF.intValue();
-    // 如果过滤器返回true,当前日志消息丢弃.
-    boolean loggable = this.filter.isLoggable(logRecord);
-    // 只要有一个条件为true,则日志不处理.
-    if (intValue || offValue || loggable) {
-      // 忽略处理.
-      ignoreHandle(logRecord);
-    } else {
-      // 批量处理.
-      batchHandle(logRecord);
-    }
   }
 
   /**
@@ -112,27 +69,6 @@ public abstract class AbstractFileHandler extends AbstractHandler {
     } finally {
       // 释放读锁.
       this.readLock.unlock();
-    }
-  }
-
-  @Override
-  public final int size() {
-    return this.fileQueue.size();
-  }
-
-  private void ignoreHandle(final Record logRecord) {
-    // 写到异常日志文件中.
-  }
-
-  private void batchHandle(final Record logRecord) {
-    // 启动一个线程,开始生产日志.(考虑将LogRecord预先格式化成字符串消息,LogRecord对象生命周期结束.)
-    LOG_PRODUCER_CONTEXT.executeInExecutorService(logRecord, this.producerWorker);
-    // 如果队列容量大于等于100,通知消费者消费.如果此时生产者不再生产数据,则队列中会有<100条数据永久存在,因此需要启动一个守护者线程GUARDIAN处理.
-    final int size = this.fileQueue.size();
-    // 当前处理器的队列中日志消息达到100条,处理一次.
-    if (Constants.BATCH_SIZE <= size) {
-      // 提交一个任务,用于通知消费者线程去消费队列数据.
-      this.flush();
     }
   }
 

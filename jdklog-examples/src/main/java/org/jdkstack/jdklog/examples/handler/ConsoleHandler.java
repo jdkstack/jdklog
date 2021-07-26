@@ -64,7 +64,7 @@ public class ConsoleHandler extends AbstractFileHandler {
       // 获取一批数据,写入磁盘.
       for (int i = 0; i < size; i++) {
         // 非阻塞方法获取队列元素.
-        final Record logRecord = this.fileQueue.poll();
+        final Record logRecord = this.queue.poll();
         // 如果数量不够,导致从队列获取空对象.
         if (null != logRecord && null != this.consoleWriter) {
           // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).

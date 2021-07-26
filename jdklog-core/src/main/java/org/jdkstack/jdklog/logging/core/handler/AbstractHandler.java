@@ -1,7 +1,6 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
 import java.lang.reflect.Constructor;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,7 +16,9 @@ import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
+import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.monitor.Monitor;
+import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 import org.jdkstack.jdklog.logging.core.context.StudyThreadFactory;
 import org.jdkstack.jdklog.logging.core.context.WorkerStudyContextImpl;
 import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
@@ -30,7 +31,7 @@ import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
  *
  * @author admin
  */
-public abstract class AbstractHandler extends AbstractMetric implements Handler {
+public abstract class AbstractHandler extends AbstractExecute implements Handler {
   /** 线程阻塞的最大时间时10秒.如果不超过15秒,打印warn.如果超过15秒打印异常堆栈. */
   private static final Monitor CHECKER = new ThreadMonitor(15000L);
   /** 线程池. */
@@ -89,8 +90,8 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
     GUARDIAN.monitor(LOG_GUARDIAN_CONSUMER_CONTEXT);
   }
 
-  /** 间隔格式化. */
-  protected DateTimeFormatter intervalFormatter;
+  /** . */
+  protected final Runnable consumerRunnable;
   /** . */
   protected String prefix;
   /** 处理器级别的日志过滤器. */
@@ -108,8 +109,10 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
    * @param prefix prefix.
    * @author admin
    */
-  protected AbstractHandler(final String prefix) {
+  protected AbstractHandler(final String prefix, final StudyQueue<Record> queue) {
+    super(queue);
     this.prefix = prefix;
+    this.consumerRunnable = new ConsumerRunnable(this.queue, this);
   }
 
   /**
@@ -125,6 +128,58 @@ public abstract class AbstractHandler extends AbstractMetric implements Handler 
     // 每个子类也要关闭响应的资源,暂时未处理.
     LOG_CONSUMER.shutdown();
     LOG_PRODUCER.shutdown();
+  }
+
+  /**
+   * 调用日志log方法时,最后会调用此方法,将日志发送到队列中.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
+  @Override
+  public final void publish(final Record logRecord) {
+    // 每次发布日志消息是,先进行计算.
+    metris(logRecord);
+    // 处理器可以处理日志的级别.
+    final int levelValue = this.logLevel.intValue();
+    // 用户发送日志的级别.
+    final int recordLevel = logRecord.intValue();
+    // 如果日志的消息级别,比当前处理器的级别小则不处理日志.
+    final boolean intValue = recordLevel < levelValue;
+    // 如果当前处理器关闭日志级别,处理器也不处理日志.
+    final boolean offValue = levelValue == LogLevel.OFF.intValue();
+    // 如果过滤器返回true,当前日志消息丢弃.
+    boolean loggable = this.filter.isLoggable(logRecord);
+    // 只要有一个条件为true,则日志不处理.
+    if (intValue || offValue || loggable) {
+      // 忽略处理.
+      ignoreHandle(logRecord);
+    } else {
+      // 批量处理.
+      batchHandle(logRecord);
+    }
+  }
+
+  private void ignoreHandle(final Record logRecord) {
+    // 写到异常日志文件中.
+  }
+
+  private void batchHandle(final Record logRecord) {
+    // 启动一个线程,开始生产日志.(考虑将LogRecord预先格式化成字符串消息,LogRecord对象生命周期结束.)
+    LOG_PRODUCER_CONTEXT.executeInExecutorService(logRecord, this.producerWorker);
+    // 如果队列容量大于等于100,通知消费者消费.如果此时生产者不再生产数据,则队列中会有<100条数据永久存在,因此需要启动一个守护者线程GUARDIAN处理.
+    final int size = this.queue.size();
+    // 当前处理器的队列中日志消息达到100条,处理一次.
+    if (Constants.BATCH_SIZE <= size) {
+      // 提交一个任务,用于通知消费者线程去消费队列数据.
+      this.flush();
+    }
+  }
+
+  @Override
+  public final int size() {
+    return this.queue.size();
   }
 
   /**
