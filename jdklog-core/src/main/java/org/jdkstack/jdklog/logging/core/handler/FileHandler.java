@@ -7,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 
 /**
@@ -65,20 +64,7 @@ public class FileHandler extends AbstractFileHandler {
   @Override
   public final void process(final int size) {
     try {
-      boolean flag = false;
-      // 获取一批数据,写入磁盘.
-      for (int i = 0; i < size; i++) {
-        // 非阻塞方法获取队列元素.
-        final Record logRecord = this.queue.poll();
-        // 如果数量不够,导致从队列获取空对象.
-        if (null != logRecord && null != this.printWriter) {
-          // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).
-          final String format = this.formatter.format(logRecord);
-          this.printWriter.write(format);
-          // 设置不为空的标志.
-          flag = true;
-        }
-      }
+      boolean flag = batch(size);
       // 如果缓存中由数据,刷新一次.
       if (flag) {
         // 刷新一次IO磁盘.
@@ -88,6 +74,24 @@ public class FileHandler extends AbstractFileHandler {
       // ignore Exception.
       throw new StudyJuliRuntimeException(e);
     }
+  }
+
+  private boolean batch(final int size) {
+    boolean flag = false;
+    // 获取一批数据,写入磁盘.
+    for (int i = 0; i < size; i++) {
+      // 非阻塞方法获取队列元素.
+      final Record logRecord = this.queue.poll();
+      // 如果数量不够,导致从队列获取空对象.
+      if (null != logRecord && null != this.printWriter) {
+        // 写入缓存(如果在publish方法中先格式化,则性能下降30%,消费端瓶颈取决于磁盘IO,生产端速度达不到最大,并发不够).
+        final String format = this.formatter.format(logRecord);
+        this.printWriter.write(format);
+        // 设置不为空的标志.
+        flag = true;
+      }
+    }
+    return flag;
   }
 
   private void open() {
@@ -119,7 +123,7 @@ public class FileHandler extends AbstractFileHandler {
    *
    * @author admin
    */
-  private void closeIo() {
+  public void closeIo() {
     this.writeLock.lock();
     try {
       this.fileStreamClose();

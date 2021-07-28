@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.strategy.Strategy;
 import org.jdkstack.jdklog.logging.core.strategy.DeleteStrategy;
 import org.jdkstack.jdklog.logging.core.strategy.GzipCompressStrategy;

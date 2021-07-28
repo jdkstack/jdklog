@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliConfigException;
 import org.jdkstack.jdklog.logging.api.factory.Factory;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.spi.Log;
 
 /**
@@ -74,17 +73,19 @@ public final class LogFactory implements Factory {
     final ServiceLoader<Log> logLoader = ServiceLoader.load(Log.class);
     // 是否读取到了SPI配置项.
     final Iterator<Log> iterator = logLoader.iterator();
+    // 如果存在一个SPI配置.
     if (iterator.hasNext()) {
       // 得到对象的Class对象.获取第一条配置项,如果为空则创建一个Logging对象.
       final Optional<Log> first = logLoader.findFirst();
+      // 如果不为空.
       if (first.isPresent()) {
-        final Log log = first.get();
-        final Class<? extends Log> logClass = log.getClass();
+        // 得到第一个元素.
+        final Class<? extends Log> logClass = first.get().getClass();
         // 创建构造函数对象.
         this.spiConstructor = logClass.getConstructor(String.class);
       }
     } else {
-      // 如果没有发现配置项. 则创建一个默认的Logging对象.
+      // 如果没有发现SPI配置项. 则创建一个默认的Logging对象.
       this.spiConstructor = JuliLog.class.getConstructor(String.class);
       // 构造内部的配置异常消息.
       final Exception exception =

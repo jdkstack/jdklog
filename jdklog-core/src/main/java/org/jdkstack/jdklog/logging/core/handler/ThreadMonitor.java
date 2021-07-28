@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
 import org.jdkstack.jdklog.logging.api.context.WorkerContext;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.monitor.Monitor;
+import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 
 /**
  * 定时检查线程的运行时间.
@@ -26,21 +26,20 @@ public class ThreadMonitor implements Monitor {
   private static final Logger LOGGER = Logger.getLogger(ThreadMonitor.class.toString());
   /** 保存所有的线程,key是线程名字,value是线程. */
   private final Map<String, Thread> threads = new ConcurrentHashMap<>(32);
-  /** 最大阻塞时间. */
-  private final long blockTime;
+  /** . */
+  private final StudyWorker<StudyThreadImpl> threadMonitorWorker = new ThreadMonitorWorker();
   /** 调用任务,优雅关闭时,调用对象shutdown方法. */
   private ScheduledFuture<?> scheduledFuture;
 
   /**
-   * 参数需要加final修饰,避免被修改.
+   * This is a method description.
    *
-   * <p>并且参数名和类的变量名不能是一样的,避免歧义.
+   * <p>Another description after blank line.
    *
-   * @param blockTimeParam 线程最大运行的阻塞时间.
    * @author admin
    */
-  public ThreadMonitor(final long blockTimeParam) {
-    this.blockTime = blockTimeParam;
+  public ThreadMonitor() {
+    //
   }
 
   /**
@@ -74,7 +73,7 @@ public class ThreadMonitor implements Monitor {
         () -> {
           try {
             // 执行业务方法.
-            this.execute();
+            this.execute(context);
           } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "定时线程运行异常?堆栈信息:", e);
           }
@@ -90,41 +89,16 @@ public class ThreadMonitor implements Monitor {
    *
    * <p>Another description after blank line.
    *
+   * @param context c.
    * @author admin
    */
-  private void execute() {
-    // 获取线程的名字.
-    final String name = ThreadMonitor.class.getName();
-    // 当前系统时间毫秒数.
-    final long currentTimeMillis = System.currentTimeMillis();
+  private void execute(final WorkerContext context) {
     // 原打算使用异步的方式,但是感觉不太合理.
     for (final Map.Entry<String, Thread> entry : this.threads.entrySet()) {
       // 要检查的线程(注册线程时必须是StudyThread).
       final StudyThreadImpl studyThread = (StudyThreadImpl) entry.getValue();
-      // 线程开始执行时间的毫秒数.
-      final long execStart = studyThread.startTime();
-      // 线程执行的时间.
-      final long duration = currentTimeMillis - execStart;
-      // 线程允许的最大执行时间.
-      final long maxExecTime = studyThread.maxExecTime();
-      // 线程开始时间不为0,表示线程运行. 如果大于线程最大执行时间.
-      final boolean isExecStart = 0 == execStart;
-      final boolean isMaxExecTime = duration < maxExecTime;
-      if (isExecStart || isMaxExecTime) {
-        return;
-      }
-      if (duration <= this.blockTime) {
-        // 如果小于等于阻塞时间,打印线程异常warn信息.
-        LOGGER.logp(Level.SEVERE, name, "execute1", "线程{0}", studyThread);
-        LOGGER.logp(Level.SEVERE, name, "execute2", "锁定{0}毫秒", duration);
-        LOGGER.logp(Level.SEVERE, name, "execute3", "限制{0}毫秒", maxExecTime);
-      } else {
-        // 如果大于阻塞时间,打印线程可能的异常信息.
-        final StackTraceElement[] stackTraces = studyThread.getStackTrace();
-        for (final StackTraceElement stackTrace : stackTraces) {
-          LOGGER.logp(Level.SEVERE, name, "execute4", "线程运行异常?堆栈信息:{0}", stackTrace);
-        }
-      }
+      // 将处理器提交给线程池.
+      context.executeInExecutorService(studyThread, this.threadMonitorWorker);
     }
   }
 

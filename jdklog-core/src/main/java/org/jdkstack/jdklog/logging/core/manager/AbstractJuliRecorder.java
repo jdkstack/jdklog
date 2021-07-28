@@ -3,7 +3,7 @@ package org.jdkstack.jdklog.logging.core.manager;
 import java.util.List;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
 import org.jdkstack.jdklog.logging.api.logger.ConfigurationDataImpl;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
+import org.jdkstack.jdklog.logging.api.logger.Recorder;
 import org.jdkstack.jdklog.logging.api.manager.LogManager;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
@@ -17,7 +17,7 @@ import org.jdkstack.jdklog.logging.core.logger.ConfigurationData;
  *
  * @author admin
  */
-public abstract class AbstractJuliLogger implements Logger {
+public abstract class AbstractJuliRecorder implements Recorder {
   /** 是否开启Logger级别日志处理. */
   private static final int OFF_VALUE = LogLevel.OFF.intValue();
   /** . */
@@ -39,7 +39,7 @@ public abstract class AbstractJuliLogger implements Logger {
    * @param name name.
    * @author admin
    */
-  protected AbstractJuliLogger(final String name) {
+  protected AbstractJuliRecorder(final String name) {
     this.config = new ConfigurationData();
     this.name = name;
   }
@@ -57,7 +57,13 @@ public abstract class AbstractJuliLogger implements Logger {
     final List<Handler> handlers = this.config.getHandlers();
     // 同步发送和异步发送需要考虑,当初有异步发送的实现,后来去掉了. 后续需要继续看,是否应该实现.
     for (final Handler handler : handlers) {
-      handler.publish(logRecord);
+      // 当前的handler状态.
+      int state = handler.state();
+      // 状态为0,表示正常.
+      if (state == 0) {
+        handler.publish(logRecord);
+      }
+      // 获取额外的handler,进行数据的处理,需要一个策略,日志丢弃?日期存储到其他地方?.
     }
   }
 

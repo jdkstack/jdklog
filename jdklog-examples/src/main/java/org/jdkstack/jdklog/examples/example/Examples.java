@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.context.WorkerContext;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.monitor.Monitor;
 import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 import org.jdkstack.jdklog.logging.core.context.ContextBean;
@@ -28,7 +27,7 @@ import org.jdkstack.jdklog.logging.core.handler.ThreadMonitor;
  */
 public final class Examples {
   /** 线程阻塞的最大时间时10秒.如果不超过15秒,打印warn.如果超过15秒打印异常堆栈. */
-  private static final Monitor CHECKER = new ThreadMonitor(15000L);
+  private static final Monitor CHECKER = new ThreadMonitor();
   /** 线程池. CallerRunsPolicy 策略是一种背压机制.会使用主线程运行任务,但是使用这个策略,会导致主线程状态改变. */
   private static final ExecutorService LOG_BUSINESS =
       new ThreadPoolExecutor(

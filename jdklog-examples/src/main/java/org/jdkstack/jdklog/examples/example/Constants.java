@@ -1,4 +1,4 @@
-package org.jdkstack.jdklog.logging.api.metainfo;
+package org.jdkstack.jdklog.examples.example;
 
 /**
  * This is a class description.
@@ -42,8 +42,8 @@ public final class Constants {
   /** . */
   public static final String STUDY_JULI_LOG_MANAGER =
       "org.jdkstack.jdklog.logging.core.manager.StudyJuliLogManager";
-  /** . */
-  public static final int STACK_TRACE_ELEMENT = 3;
+  /** 调用栈的元素号,需要跟方法的调用栈的号码一致,如果方法嵌套改变,这个号码需要增加或者减少. */
+  public static final int STACK_TRACE_ELEMENT = 4;
   /** . */
   public static final int LOOP_COUNT = 5;
   /** . */
@@ -75,9 +75,12 @@ public final class Constants {
   public static final int CAPACITY = 5000;
   /** . */
   public static final int MAP_CAPACITY = 16;
-
   /** . */
   public static final int GZIP_ONE = 1;
+  /** 线程执行时间低水位. */
+  public static final int LOW = 10;
+  /** 线程执行时间高水位. */
+  public static final int HIGH = 15;
 
   private Constants() {
     //

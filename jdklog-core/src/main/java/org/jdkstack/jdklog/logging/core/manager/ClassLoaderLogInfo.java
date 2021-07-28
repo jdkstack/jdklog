@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
+import org.jdkstack.jdklog.logging.api.logger.Recorder;
 import org.jdkstack.jdklog.logging.api.manager.LoaderLogInfo;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
@@ -21,9 +21,9 @@ import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
  */
 public class ClassLoaderLogInfo implements LoaderLogInfo {
   /** 这个rootLogger是为了给系统初始化时的类使用的. */
-  private final Logger rootLogger = new JuliLogger("RootLogger");
+  private final Recorder rootLogger = new JuliRecorder("RootLogger");
   /** 保存系统加载时所有的Logger. */
-  private final Map<String, Logger> loggers = new ConcurrentHashMap<>(1000);
+  private final Map<String, Recorder> loggers = new ConcurrentHashMap<>(1000);
   /** 保存系统加载时所有的Handler,包括公用的以及自定义的. */
   private final Map<String, Handler> handlers = new ConcurrentHashMap<>(32);
   /** 保存系统加载时配置信息. */
@@ -60,7 +60,7 @@ public class ClassLoaderLogInfo implements LoaderLogInfo {
   }
 
   @Override
-  public final Logger getRootLogger() {
+  public final Recorder getRootLogger() {
     return this.rootLogger;
   }
 
@@ -100,12 +100,12 @@ public class ClassLoaderLogInfo implements LoaderLogInfo {
   }
 
   @Override
-  public final Logger get(final String name) {
+  public final Recorder get(final String name) {
     return this.loggers.get(name);
   }
 
   @Override
-  public final void put(final String name, final Logger logger) {
+  public final void put(final String name, final Recorder logger) {
     this.loggers.put(name, logger);
   }
 

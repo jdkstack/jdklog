@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
+import org.jdkstack.jdklog.logging.api.logger.Recorder;
 
 /**
  * This is a class description.
@@ -23,7 +23,7 @@ public interface LoaderLogInfo {
    * @return Logger .
    * @author admin
    */
-  Logger getRootLogger();
+  Recorder getRootLogger();
 
   /**
    * .
@@ -87,7 +87,7 @@ public interface LoaderLogInfo {
    * @return Logger Logger.
    * @author admin
    */
-  Logger get(String name);
+  Recorder get(String name);
 
   /**
    * This is a method description.
@@ -98,7 +98,7 @@ public interface LoaderLogInfo {
    * @param logger logger.
    * @author admin
    */
-  void put(String name, Logger logger);
+  void put(String name, Recorder logger);
 
   /**
    * This is a method description.

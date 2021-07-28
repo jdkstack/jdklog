@@ -6,7 +6,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.core.queue.FileQueue;
 
 /**
