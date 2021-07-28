@@ -18,6 +18,8 @@ public abstract class AbstractExecute extends AbstractMetric implements Execute 
   protected final StudyQueue<Record> queue;
   /** 生产日志处理器. */
   protected final StudyWorker<Record> producerWorker;
+  /** lock. */
+  private final Object lock = new Object();
   /** 代表当前处理器接收到最后一条日志的时间,0L表示从来没接收到. */
   protected long sys;
   /** 代表当前处理器状态. */
@@ -98,8 +100,10 @@ public abstract class AbstractExecute extends AbstractMetric implements Execute 
    * @return int int.
    * @author admin
    */
-  public synchronized int state() {
-    return this.state;
+  public int state() {
+    synchronized (lock) {
+      return this.state;
+    }
   }
 
   /**
@@ -110,7 +114,9 @@ public abstract class AbstractExecute extends AbstractMetric implements Execute 
    * @param state state.
    * @author admin
    */
-  public synchronized void setState(final int state) {
-    this.state = state;
+  public void setState(final int state) {
+    synchronized (lock) {
+      this.state = state;
+    }
   }
 }
