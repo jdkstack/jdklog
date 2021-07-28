@@ -1,7 +1,6 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.worker.StudyWorker;
 
 /**
@@ -36,6 +35,7 @@ public class GuardianConsumerWorker implements StudyWorker<Handler> {
         // 一次处理100条.
         handler.process(size);
       }
+      // 检查状态,调用handler级别的关闭资源方法,怎么关闭? 立即关闭? 等待30秒关闭?.
     }
   }
 }

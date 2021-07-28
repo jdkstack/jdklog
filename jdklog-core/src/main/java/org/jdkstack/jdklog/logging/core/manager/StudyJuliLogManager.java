@@ -11,7 +11,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
+import org.jdkstack.jdklog.logging.api.logger.Recorder;
 import org.jdkstack.jdklog.logging.api.manager.LoaderLogInfo;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
@@ -39,7 +39,7 @@ public final class StudyJuliLogManager extends AbstractLogManager {
    * @author admin
    */
   @Override
-  public boolean addLogger(final Logger logger) {
+  public boolean addLogger(final Recorder logger) {
     // 得到类全路径,org.jdkstack.jdklog.example.Examples .
     final String loggerName = logger.getName();
     // 得到类包路径,org.jdkstack.jdklog.example .
@@ -84,9 +84,9 @@ public final class StudyJuliLogManager extends AbstractLogManager {
     return true;
   }
 
-  private void extracted(final Logger logger, final String loggerName, final String packageName) {
+  private void extracted(final Recorder logger, final String loggerName, final String packageName) {
     // 如果包加载过.
-    final Logger packageNameLogger = this.getLogger1(packageName);
+    final Recorder packageNameLogger = this.getLogger1(packageName);
     // 获取到这个包下的所有处理器.
     final Handler[] handlers = packageNameLogger.getHandlers();
     // 循环每个处理器.
@@ -101,9 +101,9 @@ public final class StudyJuliLogManager extends AbstractLogManager {
     this.put(loggerName, logger);
   }
 
-  private void extracted(final Logger logger, final String loggerName) {
+  private void extracted(final Recorder logger, final String loggerName) {
     // 5.如果包没配置,使用默认的全局的.获取全局的Logger.
-    final Logger rootLogger = this.getLogger1("");
+    final Recorder rootLogger = this.getLogger1("");
     // 看看rootLogger是否存在.
     if (null != rootLogger) {
       // 如果存在,获取rootLogger的所有处理器.
@@ -118,7 +118,7 @@ public final class StudyJuliLogManager extends AbstractLogManager {
       logger.setLevel(level);
     } else {
       // 当前类加载器对象的日志信息. 如果存在,获取rootLogger的所有处理器.
-      final Logger rootLogger1 = this.getRootLogger();
+      final Recorder rootLogger1 = this.getRootLogger();
       final Handler[] rootHandlers = rootLogger1.getHandlers();
       // 循环rootLogger的所有处理器.
       for (final Handler rootHandler : rootHandlers) {
@@ -126,7 +126,7 @@ public final class StudyJuliLogManager extends AbstractLogManager {
         logger.addHandler(rootHandler);
       }
       // 将当前的日志级别设置成包的日志级别.
-      final Logger rootLogger2 = this.getRootLogger();
+      final Recorder rootLogger2 = this.getRootLogger();
       final Level level = rootLogger2.getLevel();
       logger.setLevel(level);
     }
@@ -146,7 +146,7 @@ public final class StudyJuliLogManager extends AbstractLogManager {
    * @author admin
    */
   private boolean isExtracted(
-      final Logger logger, final ClassLoader classLoader, final String loggerName) {
+      final Recorder logger, final ClassLoader classLoader, final String loggerName) {
     // 获取当前Logger的日志级别.
     final String levelString = this.getProperty(loggerName + Constants.LEVEL);
     // 如果日志级别没配置,直接采用全局配置的日志级别.
@@ -158,7 +158,7 @@ public final class StudyJuliLogManager extends AbstractLogManager {
       logger.setLevel(level);
     } else {
       // 获取当前类加载器下存储的信息.获取全局的Logger.
-      final Logger rootLogger = this.getRootLogger();
+      final Recorder rootLogger = this.getRootLogger();
       // 将当前的日志级别设置成包的日志级别.
       final Level level = rootLogger.getLevel();
       logger.setLevel(level);

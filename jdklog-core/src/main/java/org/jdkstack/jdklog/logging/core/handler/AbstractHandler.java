@@ -13,7 +13,6 @@ import org.jdkstack.jdklog.logging.api.exception.StudyJuliRuntimeException;
 import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.formatter.Formatter;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
@@ -21,7 +20,6 @@ import org.jdkstack.jdklog.logging.api.monitor.Monitor;
 import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 import org.jdkstack.jdklog.logging.core.context.StudyThreadFactory;
 import org.jdkstack.jdklog.logging.core.context.WorkerStudyContextImpl;
-import org.jdkstack.jdklog.logging.core.manager.AbstractLogManager;
 import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
 
 /**
@@ -33,8 +31,12 @@ import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
  */
 public abstract class AbstractHandler extends AbstractExecute implements Handler {
   /** 线程阻塞的最大时间时10秒.如果不超过15秒,打印warn.如果超过15秒打印异常堆栈. */
-  private static final Monitor CHECKER = new ThreadMonitor(15000L);
-  /** 线程池. */
+  private static final Monitor PRODUCER = new ThreadMonitor();
+  /** 线程阻塞的最大时间时10秒.如果不超过15秒,打印warn.如果超过15秒打印异常堆栈. */
+  private static final Monitor CONSUMER = new ThreadMonitor();
+  /** 线程阻塞的最大时间时10秒.如果不超过15秒,打印warn.如果超过15秒打印异常堆栈. */
+  private static final Monitor GUARDIAN_CONSUMER = new ThreadMonitor();
+  /** 守护消费线程定时执行. */
   private static final Monitor GUARDIAN = new GuardianConsumerMonitor();
   /** 线程池. */
   private static final ExecutorService LOG_PRODUCER =
@@ -44,7 +46,7 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
           0,
           TimeUnit.MILLISECONDS,
           new LinkedBlockingQueue<>(5000),
-          new StudyThreadFactory("log-producer", CHECKER),
+          new StudyThreadFactory("log-producer", PRODUCER),
           new StudyRejectedPolicy());
 
   /** 线程池. */
@@ -55,7 +57,7 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
           0,
           TimeUnit.MILLISECONDS,
           new LinkedBlockingQueue<>(5000),
-          new StudyThreadFactory("log-guardian-consumer", CHECKER),
+          new StudyThreadFactory("log-guardian-consumer", GUARDIAN_CONSUMER),
           new StudyRejectedPolicy());
 
   /** 线程池. CallerRunsPolicy 拒绝策略不丢数据,因为在主线程上执行. */
@@ -66,11 +68,11 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
           0,
           TimeUnit.MILLISECONDS,
           new LinkedBlockingQueue<>(5000),
-          new StudyThreadFactory("log-consumer", CHECKER),
+          new StudyThreadFactory("log-consumer", CONSUMER),
           new StudyRejectedPolicy());
   /** 服务器端的定时调度线程池. */
   private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE =
-      new ScheduledThreadPoolExecutor(3, new StudyThreadFactory("study_scheduled", null));
+      new ScheduledThreadPoolExecutor(4, new StudyThreadFactory("study_scheduled", null));
   /** 工作任务上下文. */
   protected static final WorkerContext LOG_PRODUCER_CONTEXT =
       new WorkerStudyContextImpl(LOG_PRODUCER, SCHEDULED_EXECUTOR_SERVICE);
@@ -83,9 +85,11 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
 
   static {
     // 线程监控任务.
-    CHECKER.monitor(LOG_PRODUCER_CONTEXT);
+    PRODUCER.monitor(LOG_PRODUCER_CONTEXT);
     // 线程监控任务.
-    CHECKER.monitor(LOG_CONSUMER_CONTEXT);
+    CONSUMER.monitor(LOG_CONSUMER_CONTEXT);
+    // 线程监控任务.
+    GUARDIAN_CONSUMER.monitor(LOG_GUARDIAN_CONSUMER_CONTEXT);
     // 守护消费监控任务.
     GUARDIAN.monitor(LOG_GUARDIAN_CONSUMER_CONTEXT);
   }
@@ -129,6 +133,7 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
     // 每个子类也要关闭响应的资源,暂时未处理.
     LOG_CONSUMER.shutdown();
     LOG_PRODUCER.shutdown();
+    LOG_GUARDIAN_CONSUMER.shutdown();
   }
 
   /**
@@ -176,35 +181,6 @@ public abstract class AbstractHandler extends AbstractExecute implements Handler
       // 提交一个任务,用于通知消费者线程去消费队列数据.
       this.flush();
     }
-  }
-
-  @Override
-  public final int size() {
-    return this.queue.size();
-  }
-
-  /**
-   * 用Key从JDL LogManager读取一个配置的value.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param name 属性名.
-   * @param defaultValue 默认属性名.
-   * @return 返回属性名对应的值.
-   * @author admin
-   */
-  @Override
-  public final String getProperty(final String name, final String defaultValue) {
-    // 获取当前类的配置属性.
-    String value = AbstractLogManager.getProperty1(name);
-    // 如果空,使用默认值.
-    if (null == value) {
-      value = defaultValue;
-    } else {
-      // 如果不为空,去掉空格.
-      value = value.trim();
-    }
-    return value;
   }
 
   /**

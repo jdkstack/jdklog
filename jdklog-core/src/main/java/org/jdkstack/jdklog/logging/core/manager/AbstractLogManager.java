@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
+import org.jdkstack.jdklog.logging.api.logger.Recorder;
 import org.jdkstack.jdklog.logging.api.manager.LoaderLogInfo;
 import org.jdkstack.jdklog.logging.api.manager.LogManager;
 import org.jdkstack.jdklog.logging.core.utils.ClassLoadingUtils;
@@ -82,7 +82,7 @@ public abstract class AbstractLogManager implements LogManager {
   }
 
   @Override
-  public final void put(final String loggerName, final Logger logger) {
+  public final void put(final String loggerName, final Recorder logger) {
     final LoaderLogInfo temp = getLoaderLogInfo();
     temp.put(loggerName, logger);
   }
@@ -93,13 +93,13 @@ public abstract class AbstractLogManager implements LogManager {
   }
 
   @Override
-  public final Logger getRootLogger() {
+  public final Recorder getRootLogger() {
     final LoaderLogInfo temp = getLoaderLogInfo();
     return temp.getRootLogger();
   }
 
   @Override
-  public final Logger getLogger1(final String name) {
+  public final Recorder getLogger1(final String name) {
     final LoaderLogInfo temp = getLoaderLogInfo();
     return temp.get(name);
   }
@@ -158,7 +158,7 @@ public abstract class AbstractLogManager implements LogManager {
 
   @Override
   public final Handler[] getHandlers(final String loggerName) {
-    final Logger logger1 = this.getLogger1(loggerName);
+    final Recorder logger1 = this.getLogger1(loggerName);
     return logger1.getHandlers();
   }
 }

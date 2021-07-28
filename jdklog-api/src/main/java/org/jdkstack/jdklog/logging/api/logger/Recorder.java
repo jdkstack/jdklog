@@ -12,7 +12,7 @@ import org.jdkstack.jdklog.logging.api.metainfo.Record;
  *
  * @author admin
  */
-public interface Logger {
+public interface Recorder {
 
   /**
    * This is a method description.

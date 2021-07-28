@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.jdkstack.jdklog.logging.api.context.Bean;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 
 /**
  * .

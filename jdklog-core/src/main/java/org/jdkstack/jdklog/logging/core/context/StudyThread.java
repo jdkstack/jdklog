@@ -1,6 +1,5 @@
 package org.jdkstack.jdklog.logging.core.context;
 
-import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdklog.logging.api.context.Bean;
 import org.jdkstack.jdklog.logging.api.context.StudyContext;
 import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
@@ -15,10 +14,6 @@ import org.jdkstack.jdklog.logging.api.context.StudyThreadImpl;
  * @author admin
  */
 public final class StudyThread extends Thread implements StudyThreadImpl {
-  /** 线程最大的执行时间. */
-  private final long maxExecTime;
-  /** 线程最大的执行单位. */
-  private final TimeUnit maxExecTimeUnit;
   /** 线程开始运行的时间(毫秒). */
   private long execStart;
   /** 线程运行的上下文环境. */
@@ -33,29 +28,10 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
    *
    * @param targetParam 线程任务.
    * @param nameParam 线程名.
-   * @param maxExecTimeParam 线程最大执行时间.
-   * @param maxExecTimeUnitParam 线程最大执行时间单位.
    * @author admin
    */
-  public StudyThread(
-      final Runnable targetParam,
-      final String nameParam,
-      final long maxExecTimeParam,
-      final TimeUnit maxExecTimeUnitParam) {
+  public StudyThread(final Runnable targetParam, final String nameParam) {
     super(targetParam, nameParam);
-    this.maxExecTime = maxExecTimeParam;
-    this.maxExecTimeUnit = maxExecTimeUnitParam;
-  }
-
-  /**
-   * 返回线程的最大执行时间单位.
-   *
-   * @return 返回线程的最大执行时间单位.
-   * @author admin
-   */
-  @Override
-  public TimeUnit maxExecTimeUnit() {
-    return this.maxExecTimeUnit;
   }
 
   /**
@@ -67,17 +43,6 @@ public final class StudyThread extends Thread implements StudyThreadImpl {
   @Override
   public long startTime() {
     return this.execStart;
-  }
-
-  /**
-   * 获取线程的最大运行时间.
-   *
-   * @return 返回线程的最大运行时间.
-   * @author admin
-   */
-  @Override
-  public long maxExecTime() {
-    return this.maxExecTime;
   }
 
   /**

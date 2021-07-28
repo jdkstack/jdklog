@@ -1,17 +1,6 @@
 package org.jdkstack.jdklog.logging.core.factory;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
-import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
-import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.LogLevel;
-import org.jdkstack.jdklog.logging.api.metainfo.LogRecord;
-import org.jdkstack.jdklog.logging.api.metainfo.Record;
-import org.jdkstack.jdklog.logging.api.spi.Log;
-import org.jdkstack.jdklog.logging.core.formatter.StudyJuliMessageFormat;
-import org.jdkstack.jdklog.logging.core.manager.JuliLogger;
 
 /**
  * Juli日志的核心API,提供所有日志级别的方法,由LogFactory动态创建.
@@ -20,15 +9,7 @@ import org.jdkstack.jdklog.logging.core.manager.JuliLogger;
  *
  * @author admin
  */
-public class JuliLog implements Log {
-  /** 全局Logger日志计数. */
-  private static final AtomicLong GLOBAL_COUNTER = new AtomicLong(0L);
-  /** 单个Logger日志计数. */
-  protected final AtomicLong counter = new AtomicLong(0L);
-  /** 一个Logger对象对应一个Logging对象. */
-  private final Logger logger;
-  /** 方法的当前堆栈元素,采用全局变量的原因是同一个对象,方法调用栈都是相同的,不用每次方法都调用一次(否则性能下降很多). */
-  private StackTraceElement stackTraceElement;
+public class JuliLog extends AbstractJuliLog {
 
   /**
    * This is a method description.
@@ -38,8 +19,7 @@ public class JuliLog implements Log {
    * @author admin
    */
   public JuliLog() {
-    final String name = JuliLog.class.getName();
-    this.logger = JuliLogger.getLogger(name);
+    //
   }
 
   /**
@@ -51,111 +31,7 @@ public class JuliLog implements Log {
    * @author admin
    */
   public JuliLog(final String name) {
-    this.logger = JuliLogger.getLogger(name);
-  }
-
-  /**
-   * 日志的核心方法.此方法必须经过logCore调用.
-   *
-   * <p>否则方法调用栈会出现异常.
-   *
-   * @param logLevel 日志打印级别.
-   * @param message 日志消息.
-   * @param throwable 日志传递进来的异常.
-   * @author admin
-   */
-  private void log(final Level logLevel, final String message, final Throwable throwable) {
-    final Record lr = new LogRecord(logLevel, message);
-    // 一个Logging实例初始化一次. 因为调用栈都是一样的,直接获取某个元素即可.
-    if (null == this.stackTraceElement) {
-      // 当前方法的异常.
-      final Throwable stackTrace = new Throwable();
-      // 当前方法的调用栈.
-      final StackTraceElement[] stackTraceElements = stackTrace.getStackTrace();
-      // 当前方法的调用栈深度是4. 因此获取第三个元素即可拿到调用者类.
-      this.stackTraceElement = stackTraceElements[Constants.STACK_TRACE_ELEMENT];
-    }
-    // 设置异常栈.
-    lr.setThrown(throwable);
-    // 获取当前方法调用者的类全路径.
-    final String className = this.logger.getName();
-    // 获取当前方法调用者的类方法.
-    final String classMethod = this.stackTraceElement.getMethodName();
-    // 设置日志调用的源类路径和方法.
-    lr.setCustom("className", className);
-    lr.setCustom("classMethod", classMethod);
-    // 设置行号.
-    final int lineNumber = this.stackTraceElement.getLineNumber();
-    lr.setCustom("lineNumber", Integer.toString(lineNumber));
-    // 全局logger处理的日志数量.
-    final long globalCounter = GLOBAL_COUNTER.incrementAndGet();
-    lr.setCustom("globalLoggerCounter", Long.toString(globalCounter));
-    // 单个logger处理的日志数量.
-    final long singleCounter = counter.incrementAndGet();
-    lr.setCustom("singleLoggerCounter", Long.toString(singleCounter));
-    this.logger.logp(lr);
-  }
-
-  /**
-   * 日志的核心方法.
-   *
-   * <p>所有公共的方法,必须先调用logCore调用.
-   *
-   * @param logLevel 日志打印级别.
-   * @param message 日志消息.
-   * @param args 日志传递进来的参数.
-   * @author admin
-   */
-  private void logCore(final Level logLevel, final String message, final Object... args) {
-    Objects.requireNonNull(message, "日志消息不能为空.");
-    Objects.requireNonNull(args, "日志消息参数不能为空.");
-    final int argsLen = args.length;
-    // 没找到大括号,直接返回原消息.
-    final int index = message.indexOf(Constants.BRACE);
-    final boolean isLen = 0 == args.length;
-    final boolean isIndex = -1 == index;
-    if (isLen || isIndex) {
-      this.log(logLevel, message, null);
-    } else {
-      // 检查最后一个参数是不是异常参数.
-      final int lastArrIdx = argsLen - 1;
-      final Object lastEntry = args[lastArrIdx];
-      Throwable throwable = null;
-      if (lastEntry instanceof Throwable) {
-        throwable = (Throwable) lastEntry;
-      }
-      final String messageFormat = StudyJuliMessageFormat.format(message, args);
-      this.log(logLevel, messageFormat, throwable);
-    }
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param handler .
-   * @throws SecurityException .
-   * @author admin
-   */
-  @Override
-  public final void addHandler(final Handler handler) {
-    Objects.requireNonNull(handler);
-    this.logger.addHandler(handler);
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @param newLogLevel .
-   * @throws SecurityException .
-   * @author admin
-   */
-  @Override
-  public final void setLevel(final Level newLogLevel) {
-    this.logger.setLevel(newLogLevel);
+    super(name);
   }
 
   /**

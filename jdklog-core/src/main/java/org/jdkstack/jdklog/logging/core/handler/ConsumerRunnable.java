@@ -1,7 +1,6 @@
 package org.jdkstack.jdklog.logging.core.handler;
 
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.metainfo.Constants;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 import org.jdkstack.jdklog.logging.api.queue.StudyQueue;
 

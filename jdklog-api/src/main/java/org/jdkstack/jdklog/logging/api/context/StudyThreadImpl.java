@@ -1,7 +1,5 @@
 package org.jdkstack.jdklog.logging.api.context;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * This is a class description.
  *
@@ -16,30 +14,10 @@ public interface StudyThreadImpl {
    *
    * <p>Another description after blank line.
    *
-   * @return TimeUnit TimeUnit.
-   * @author admin
-   */
-  TimeUnit maxExecTimeUnit();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
    * @return long long.
    * @author admin
    */
   long startTime();
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @return long long.
-   * @author admin
-   */
-  long maxExecTime();
 
   /**
    * This is a method description.

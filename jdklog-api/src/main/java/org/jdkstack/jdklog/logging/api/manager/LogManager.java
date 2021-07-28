@@ -1,7 +1,7 @@
 package org.jdkstack.jdklog.logging.api.manager;
 
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
+import org.jdkstack.jdklog.logging.api.logger.Recorder;
 
 /**
  * This is a class description.
@@ -21,7 +21,7 @@ public interface LogManager {
    * @return b.
    * @author admin
    */
-  boolean addLogger(Logger logger);
+  boolean addLogger(Recorder logger);
 
   /**
    * This is a method description.
@@ -84,7 +84,7 @@ public interface LogManager {
    * @param loggerName loggerName.
    * @author admin
    */
-  void put(String loggerName, Logger logger);
+  void put(String loggerName, Recorder logger);
 
   /**
    * This is a method description.
@@ -105,7 +105,7 @@ public interface LogManager {
    * @return Logger Logger.
    * @author admin
    */
-  Logger getRootLogger();
+  Recorder getRootLogger();
 
   /**
    * This is a method description.
@@ -138,7 +138,7 @@ public interface LogManager {
    * @return Logger.
    * @author admin
    */
-  Logger getLogger1(String name);
+  Recorder getLogger1(String name);
 
   /**
    * This is a method description.

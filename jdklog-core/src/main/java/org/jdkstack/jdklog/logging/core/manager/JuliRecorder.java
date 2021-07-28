@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import org.jdkstack.jdklog.logging.api.filter.Filter;
 import org.jdkstack.jdklog.logging.api.handler.Handler;
-import org.jdkstack.jdklog.logging.api.logger.Logger;
+import org.jdkstack.jdklog.logging.api.logger.Recorder;
 import org.jdkstack.jdklog.logging.api.metainfo.Level;
 import org.jdkstack.jdklog.logging.api.metainfo.Record;
 
@@ -15,7 +15,7 @@ import org.jdkstack.jdklog.logging.api.metainfo.Record;
  *
  * @author admin
  */
-public class JuliLogger extends AbstractJuliLogger {
+public class JuliRecorder extends AbstractJuliRecorder {
 
   /**
    * .
@@ -25,7 +25,7 @@ public class JuliLogger extends AbstractJuliLogger {
    * @param name .
    * @author admin
    */
-  protected JuliLogger(final String name) {
+  protected JuliRecorder(final String name) {
     super(name);
   }
 
@@ -38,10 +38,10 @@ public class JuliLogger extends AbstractJuliLogger {
    * @return JuliLogger .
    * @author admin
    */
-  public static Logger getLogger(final String name) {
-    Logger result = MANAGER.getLogger1(name);
+  public static Recorder getLogger(final String name) {
+    Recorder result = MANAGER.getLogger1(name);
     if (result == null) {
-      final Logger newLogger = new JuliLogger(name);
+      final Recorder newLogger = new JuliRecorder(name);
       if (MANAGER.addLogger(newLogger)) {
         result = newLogger;
       }

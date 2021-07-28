@@ -67,7 +67,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     return sb.toString();
   }
 
-  private void handlerMessage(Record logRecord, StringBuilder sb) {
+  private void handlerMessage(final Record logRecord, final StringBuilder sb) {
     // 首先兼容JDK原生的日志格式,然后进行格式化处理.
     final String message = defaultFormat(logRecord);
     // json key.
@@ -78,7 +78,7 @@ public final class StudyJuliMessageJsonFormatter extends AbstractMessageFormatte
     sb.append(messageKey).append(": ").append(messageValue);
   }
 
-  private void handlerThrowable(Record logRecord, StringBuilder sb) {
+  private void handlerThrowable(final Record logRecord, final StringBuilder sb) {
     final Throwable thrown = logRecord.getThrown();
     if (null != thrown) {
       final String stacktrace = inQuotes("stacktrace");

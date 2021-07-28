@@ -116,4 +116,24 @@ public interface Handler {
    * @author admin
    */
   String getProperty(String name, String defaultValue);
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @return int int.
+   * @author admin
+   */
+  int state();
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @param state s.
+   * @author admin
+   */
+  void setState(int state);
 }
