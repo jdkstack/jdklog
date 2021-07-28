@@ -18,7 +18,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/jdkstack/jdklog/badge/dev)](https://www.codefactor.io/repository/github/jdkstack/jdklog/overview/dev)
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog)
-    
+
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?branch=dev&project=org.jdkstack%3Ajdklog&metric=bugs)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog&branch=dev)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?branch=dev&project=org.jdkstack%3Ajdklog&metric=code_smells)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog&branch=dev)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?branch=dev&project=org.jdkstack%3Ajdklog&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog&branch=dev)
@@ -29,8 +29,12 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?branch=dev&project=org.jdkstack%3Ajdklog&metric=security_rating)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog&branch=dev)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?branch=dev&project=org.jdkstack%3Ajdklog&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdklog&branch=dev)
 
-A lightweight, high performance, open source, application layer log service framework.
-Although the performance is lower than log4j2(It didn't use lock-free queue,such as ring buffer), but the advantage is  no dependency lib, only need openjdk.
+A lightweight, high performance, open source, application layer log service framework. Although the performance is lower than log4j2(It didn't use lock-free queue,such as ring
+buffer), but the advantage is no dependency lib, only need openjdk.
 
-After jmh benchmark,the performance of log4j2 is higher than that of jdklog, but less than an order of magnitude(Even lower).
-Log4j2 performance is poor when output location information, the jdklog has no performance loss.
+一个轻量级,高性能,开源,应用层日志服务框架.虽然性能低于LOG4J2(它没有使用无锁队列,如环形缓冲区),优势是没有依赖,只需要OPENJDK.
+
+After jmh benchmark,the performance of log4j2 is higher than that of jdklog, but less than an order of magnitude(Even lower). Log4j2 performance is poor when output location
+information, the jdklog has no performance loss.
+
+在JMH基准测试之后,LOG4J2的性能高于JDKLOG的性能,但没有达到一个数量级(甚至更低). LOG4J2在输出位置信息时性能非常差,而JDKLOG没有性能损失.
