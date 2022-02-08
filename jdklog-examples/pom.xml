@@ -30,7 +30,7 @@
         </configuration>
         <!-- https://maven.apache.org/plugins/maven-jar-plugin/examples/include-exclude.html-->
         <groupId>org.apache.maven.plugins</groupId>
-        <version>3.2.0</version>
+        <version>3.2.2</version>
       </plugin>
     </plugins>
   </build>
